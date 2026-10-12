@@ -1,0 +1,826 @@
+"""ME Motion website generator.
+
+Reads the editable content in ./content (projects, settings, wedding prices),
+copies ./assets and ./media, and writes the finished website to ./public.
+Run:  python3 build.py
+"""
+import html
+import json
+import os
+import pathlib
+import re
+import shutil
+
+ROOT = pathlib.Path(__file__).resolve().parent
+OUT = ROOT / "public"
+CONTENT = ROOT / "content"
+ARTIFACT = os.environ.get("ARTIFACT") == "1"   # preview mode used while designing; not needed for hosting
+
+
+def load(name, default):
+    try:
+        return json.loads((CONTENT / name).read_text(encoding="utf-8"))
+    except Exception as err:  # missing or broken file: fall back so the site still builds
+        print(f"note: could not read content/{name} ({err}); using defaults")
+        return default
+
+
+def e(v):
+    return html.escape(str(v or ""), quote=True)
+
+
+SETTINGS = load("settings.json", {})
+BRAND = "ME Motion"
+EMAIL = (SETTINGS.get("email") or "info@memotion.se").strip()
+PHONE = (SETTINGS.get("phone") or "").strip()
+PHONE_TEL = re.sub(r"[^\d+]", "", PHONE)
+INSTAGRAM = (SETTINGS.get("instagram") or "https://www.instagram.com/").strip()
+BUNNY = re.sub(r"^https?://", "", (SETTINGS.get("bunny_host") or "").strip()).strip("/")
+SITE_URL = "https://memotion.se"
+
+# fresh output folder with the static assets and uploaded media
+if OUT.exists():
+    shutil.rmtree(OUT)
+OUT.mkdir(parents=True)
+for f in (ROOT / "assets").iterdir():
+    if f.is_file():
+        shutil.copy2(f, OUT / f.name)
+if (ROOT / "media").is_dir():
+    shutil.copytree(ROOT / "media", OUT / "media", ignore=shutil.ignore_patterns(".gitkeep"))
+
+
+def optimise_photos(folder, max_side=2400):
+    """Shrink very large uploads so pages load fast. Originals stay untouched in ./media."""
+    try:
+        from PIL import Image, ImageOps
+    except ImportError:
+        print("note: Pillow not installed, photos are published at their original size")
+        return
+    for f in folder.rglob("*"):
+        if f.suffix.lower() not in (".jpg", ".jpeg", ".png", ".webp"):
+            continue
+        try:
+            with Image.open(f) as im:
+                im = ImageOps.exif_transpose(im)
+                if max(im.size) <= max_side and f.stat().st_size < 1_500_000:
+                    continue
+                im.thumbnail((max_side, max_side))
+                fmt = {".jpg": "JPEG", ".jpeg": "JPEG", ".png": "PNG", ".webp": "WEBP"}[f.suffix.lower()]
+                if fmt == "JPEG" and im.mode not in ("RGB", "L"):
+                    im = im.convert("RGB")
+                opts = {"quality": 82, "optimize": True}
+                if fmt == "JPEG":
+                    opts["progressive"] = True
+                if fmt == "PNG":
+                    opts = {"optimize": True}
+                im.save(f, fmt, **opts)
+        except Exception as err:
+            print(f"note: could not optimise {f.name} ({err})")
+
+
+optimise_photos(OUT / "media")
+
+
+def media_url(v):
+    """Image value from the admin panel -> URL ('' if empty)."""
+    if isinstance(v, list):
+        v = v[0] if v else ""
+    if isinstance(v, dict):
+        v = v.get("src") or v.get("path") or ""
+    v = str(v or "").strip()
+    if not v:
+        return ""
+    if v.startswith(("http://", "https://", "/")):
+        return v
+    return "/" + v
+
+
+def media_list(v):
+    if not v:
+        return []
+    if not isinstance(v, list):
+        v = [v]
+    return [u for u in (media_url(x) for x in v) if u]
+
+
+def bunny_id(v):
+    v = str(v or "").strip()
+    m = re.search(r"([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})", v, re.I)
+    return m.group(1) if m else v
+
+
+def video_srcs(v, sizes=("1080p", "720p", "360p")):
+    """Bunny video ID (or a full .mp4 link) -> list of playable MP4 URLs, best first."""
+    v = str(v or "").strip()
+    if not v:
+        return []
+    if re.search(r"\.(mp4|webm|mov)(\?|$)", v, re.I):   # a direct video file link
+        return [v]
+    if not BUNNY:
+        return []
+    vid = bunny_id(v)   # accepts the plain ID or any Bunny link that contains it
+    return [f"https://{BUNNY}/{vid}/play_{sz}.mp4" for sz in sizes]
+
+
+def video_thumb(v):
+    v = str(v or "").strip()
+    if not v or not BUNNY or re.search(r"\.(mp4|webm|mov)(\?|$)", v, re.I):
+        return ""
+    return f"https://{BUNNY}/{bunny_id(v)}/thumbnail.jpg"
+
+
+def frame(img, scene, seed, cls="", alt="", inner=""):
+    """A picture box: the real image if there is one, otherwise the generated placeholder."""
+    c = ("frame " + cls).strip()
+    if img:
+        return f'<div class="{c}"><img src="{e(img)}" alt="{e(alt)}" loading="lazy" decoding="async">{inner}</div>'
+    return f'<div class="{c}" data-scene="{scene}" data-seed="{seed}">{inner}</div>'
+
+
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">'
+
+# Sets language and saved theme before paint. No saved theme = device setting decides.
+BOOT = ('<script>(function(){var d=document.documentElement,l,t;try{l=localStorage.getItem("me-motion-lang");t=localStorage.getItem("me-motion-theme");}catch(e){}'
+        'if(l!=="sv"&&l!=="en"){l=/^(sv|no|nb|nn|da|fi)/i.test(navigator.language||"sv")?"sv":"en";}'
+        'd.setAttribute("data-lang",l);d.lang=l;var h=d.getAttribute("data-theme");if(h)d.setAttribute("data-host-theme",h);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);try{if(localStorage.getItem("me-motion-nav")==="closed")d.setAttribute("data-nav","closed");}catch(e){}})();</script>')
+
+
+def T(sv, en, tag="span", attrs=""):
+    a = f" {attrs}" if attrs else ""
+    return f'<{tag} data-l="sv" lang="sv"{a}>{sv}</{tag}><{tag} data-l="en" lang="en"{a}>{en}</{tag}>'
+
+
+ARROW = ' <span class="arrow">→</span>'
+
+NAV = [("./", "Hem", "Home", "home"), ("work.html", "Arbeten", "Work", "work"),
+       ("services.html", "Tjänster", "Services", "services"), ("about.html", "Om", "About", "about"),
+       ("contact.html", "Kontakt", "Contact", "contact")]
+
+
+ICONS = {
+    "home": '<path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3z"/>',
+    "work": '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',
+    "services": '<path d="M4 6h16M4 12h16M4 18h10"/>',
+    "about": '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',
+    "contact": '<rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3 7 9 6 9-6"/>',
+}
+
+
+def icon(k):
+    return f'<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">{ICONS[k]}</svg>'
+
+
+def sidebar(active):
+    links = "".join('<a href="%s"%s><span class="nav-label">%s</span></a>' % (
+        h, ' aria-current="page"' if k == active else "", T(sv, en)) for h, sv, en, k in NAV)
+    return f'''<aside class="sidebar">
+  <div class="side-top">
+    <a class="brand" href="./" aria-label="{BRAND} – Mikael Edström"><span class="logo logo-full" aria-hidden="true"></span><span class="logo logo-mark" aria-hidden="true"></span></a>
+    <button class="side-toggle" type="button" aria-expanded="true" aria-label="Stäng meny / Close menu"><svg class="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg><svg class="i-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+  <nav class="nav" aria-label="Meny / Menu">{links}</nav>
+  <div class="side-foot">
+    <div class="side-controls">
+      <div class="lang-switch" role="group" aria-label="Språk / Language"><button type="button" data-set-lang="sv" aria-pressed="true">SV</button><button type="button" data-set-lang="en" aria-pressed="false">EN</button></div>
+      <div class="seg theme-seg" role="group" aria-label="Tema / Theme">
+        <button type="button" data-set-theme="auto" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg><span class="lbl">Auto</span></button>
+        <button type="button" data-set-theme="light" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="lbl"></span></button>
+        <button type="button" data-set-theme="dark" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="lbl"></span></button>
+      </div>
+    </div>
+    <div class="contact-mini stack" style="gap:4px"><span class="mono">{EMAIL}</span></div>
+  </div>
+</aside>'''
+
+
+FOOTER = f'''<footer class="site-footer">
+  <div class="wrap">
+    <div class="stack" style="gap:10px">
+      <span class="brand-foot">{BRAND}</span>
+    </div>
+    <nav aria-label="Sidor / Pages"><h4>{T("Sidor", "Pages")}</h4><ul>
+      <li><a href="./">{T("Hem", "Home")}</a></li>
+      <li><a href="work.html">{T("Arbeten", "Work")}</a></li>
+      <li><a href="services.html">{T("Tjänster", "Services")}</a></li>
+      <li><a href="about.html">{T("Om", "About")}</a></li>
+      <li><a href="contact.html">{T("Kontakt", "Contact")}</a></li>
+    </ul></nav>
+    <div><h4>{T("Kontakt", "Contact")}</h4><ul>
+      <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
+      <li><a href="tel:{PHONE_TEL}">{PHONE}</a></li>
+      <li><a href="{e(INSTAGRAM)}" target="_blank" rel="noopener">Instagram</a></li>
+    </ul></div>
+    <div class="legal" style="grid-column:1/-1"><span>© 2026 {BRAND}. {T("Alla rättigheter förbehållna.", "All rights reserved.")}</span><span>{T("Stockholm", "Stockholm")}</span></div>
+  </div>
+</footer>'''
+
+
+DESC = {
+    "index.html": ("ME Motion – film och foto i Stockholm för företag, evenemang och bröllop.",
+                   "ME Motion – film and photography in Stockholm for companies, events and weddings."),
+    "work.html": ("Utvalda filmer och bildserier från ME Motion.", "Selected films and photo series by ME Motion."),
+    "services.html": ("Film och foto för företag, evenemang och bröllop. Bröllopspaket med fasta priser.",
+                      "Film and photography for companies, events and weddings. Wedding packages with fixed prices."),
+    "about.html": ("Om ME Motion och grundaren Mikael Edström.", "About ME Motion and its founder Mikael Edström."),
+    "contact.html": ("Kontakta ME Motion för film och foto i Stockholm.", "Contact ME Motion for film and photography in Stockholm."),
+}
+
+
+def page(name, title_sv, title_en, active, body, full=True):
+    full = not (ARTIFACT and name == "index.html")
+    d_sv, d_en = DESC.get(name, DESC["index.html"])
+    url = SITE_URL + ("/" if name == "index.html" else "/" + name)
+    meta = (f'<meta name="description" content="{e(d_sv)}">\n'
+            f'<link rel="icon" type="image/png" href="logo-mark.png">\n'
+            f'<link rel="canonical" href="{url}">\n'
+            f'<meta property="og:type" content="website">\n<meta property="og:site_name" content="{BRAND}">\n'
+            f'<meta property="og:title" content="{e(title_sv)}">\n<meta property="og:description" content="{e(d_sv)}">\n'
+            f'<meta property="og:url" content="{url}">\n')
+    head = f'<title>{title_sv}</title>\n{BOOT}\n{FONTS}\n<link rel="stylesheet" href="styles.css">\n'
+    shell = (f'<span id="page-title" data-sv="{title_sv}" data-en="{title_en}" hidden></span>\n'
+             f'<div class="layout">\n{sidebar(active)}\n<div class="main">\n<main>\n{body}\n</main>\n{FOOTER}\n</div>\n</div>\n<script src="site.js"></script>\n')
+    if full:
+        content = ('<!doctype html>\n<html lang="sv">\n<head>\n<meta charset="utf-8">\n'
+                   '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+                   + meta +
+                   '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n'
+                   + head + '</head>\n<body>\n' + shell + '</body>\n</html>\n')
+    else:
+        content = head + shell
+    (OUT / name).write_text(content, encoding="utf-8")
+
+
+def vf(meta="", info="", live=False):
+    tc = '<span class="tc" data-timecode>00:00:12:04</span>' if live else ""
+    return (f'<div class="vf" aria-hidden="true"><span class="c tl"></span><span class="c tr"></span><span class="c bl"></span><span class="c br"></span>'
+            f'<span class="meta">{meta}</span><span class="info">{info}</span>{tc}</div>')
+
+
+CTA = f'''<section class="cta-band">
+  <div class="wrap">
+    <div class="stack">
+      {T("Nästa steg", "Next step", "span", 'class="eyebrow"')}
+      {T("Berätta om din dag", "Tell me about your day", "h2")}
+      {T("Datum, plats och det som betyder mest för dig. Svar kommer personligen inom två arbetsdagar.", "The date, the place and what matters most to you. A personal reply follows within two working days.", "p", 'class="lede"')}
+    </div>
+    <a class="btn primary" href="contact.html">{T("Kontakta mig", "Contact me")}{ARROW}</a>
+  </div>
+</section>'''
+
+# ---------------- PROJECTS (from content/projects/*.json) ----------------
+CATNAME = {"wedding": ("Bröllop", "Wedding"), "business": ("Företag", "Business"), "event": ("Evenemang", "Event"),
+           "drone": ("Drönare", "Drone"), "stills": ("Övrigt", "Other")}
+DEFAULT_SCENE = {"wedding": "wedding", "business": "interview", "event": "event", "drone": "aerial", "stills": "studio"}
+MAIN_FILM = {"wedding": ("Highlightfilm", "Highlight film"), "business": ("Huvudfilm", "Main film"),
+             "event": ("Sammanfattning", "Recap"), "drone": ("Film", "Film"), "stills": ("Film", "Film")}
+SAMPLE = ["sample-film.mp4"]   # demo clip, only used by the example projects
+DEMO_FILMS = {
+    "wedding": [("Highlightfilm", "Highlight film", None), ("Hela vigseln", "The full ceremony", "ca 20 min"), ("Talen", "The speeches", "ca 30 min")],
+    "business": [("Huvudfilm", "Main film", None), ("Version för sociala medier, 9:16", "Social media cut, 9:16", "0:30")],
+    "event": [("Sammanfattning", "Recap", None), ("Klipp för sociala medier", "Social media edit", "0:45")],
+    "drone": [("Film", "Film", None)],
+}
+
+
+def two(d, k):
+    sv, en = str(d.get(k + "_sv") or "").strip(), str(d.get(k + "_en") or "").strip()
+    return (sv or en, en or sv)
+
+
+def load_projects():
+    out = []
+    folder = CONTENT / "projects"
+    for f in sorted(folder.glob("*.json")) if folder.is_dir() else []:
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+        except Exception as err:
+            print(f"note: skipped {f.name} ({err})")
+            continue
+        if d.get("hidden") or d.get("draft"):
+            continue
+        d["id"] = re.sub(r"[^a-z0-9-]+", "-", f.stem.lower()).strip("-") or "project"
+        if d.get("category") not in CATNAME:
+            d["category"] = "stills"
+        d["type"] = "series" if d.get("type") == "series" else "film"
+        d["video"] = str(d.get("video") or "").strip()
+        d["image_urls"] = media_list(d.get("images"))
+        d["cover_url"] = media_url(d.get("cover")) or video_thumb(d["video"]) or (d["image_urls"][0] if d["image_urls"] else "")
+        d["scene"] = d.get("scene") or DEFAULT_SCENE[d["category"]]
+        try:
+            d["seed"] = int(d.get("seed") or (sum(map(ord, d["id"])) % 90 + 3))
+        except (TypeError, ValueError):
+            d["seed"] = 7
+        d["demo"] = not (d["cover_url"] or d["video"] or d["image_urls"])
+        try:
+            d["_order"] = float(d.get("order") if d.get("order") not in (None, "") else 999)
+        except (TypeError, ValueError):
+            d["_order"] = 999
+        out.append(d)
+    out.sort(key=lambda d: (d["_order"], two(d, "title")[0].lower()))
+    return out
+
+
+PROJECTS = load_projects()
+
+
+def p_length(p):
+    ln = str(p.get("length") or "").strip()
+    if not ln and p["type"] == "series" and p["image_urls"]:
+        ln = str(len(p["image_urls"]))
+    return ln
+
+
+def clip(p):
+    cat, series = p["category"], p["type"] == "series"
+    wide = bool(p.get("wide"))
+    ln = p_length(p)
+    meta = T(*CATNAME[cat]) + (f" · {e(ln)}" + (T(" bilder", " images") if series else "") if ln else "")
+    play = f'<span class="play{" plus" if series else ""}" aria-hidden="true"></span>'
+    t = [e(x) for x in two(p, "title")]
+    return f'''<a class="clip{" wide" if wide else ""}" href="#{p["id"]}" data-project="{p["id"]}" data-cat="{cat}">
+  {frame(p["cover_url"], p["scene"], p["seed"], "ratio-scope" if wide else "ratio-16x9", t[0], play)}
+  <div class="clip-meta">{T(*t, "h3")}<span class="mono">{meta}</span></div>
+</a>'''
+
+
+def project_json(p):
+    cat = p["category"]
+    o = {"id": p["id"], "type": p["type"], "cat": cat, "length": p_length(p), "fmt": str(p.get("format") or ""),
+         "scene": p["scene"], "seed": p["seed"], "cover": p["cover_url"], "kind": {"sv": CATNAME[cat][0], "en": CATNAME[cat][1]}}
+    for k in ("title", "client", "summary", "process"):
+        sv, en = two(p, k)
+        o[k] = {"sv": sv, "en": en}
+    # pictures
+    if p["image_urls"]:
+        gallery = [{"img": u, "sv": f"Bild {i + 1}", "en": f"Image {i + 1}"} for i, u in enumerate(p["image_urls"])]
+    elif p["demo"]:
+        gallery = [{"scene": p["scene"], "seed": p["seed"] + k * 7, "sv": f"Bild {k}", "en": f"Image {k}"} for k in range(1, 10)]
+    else:
+        gallery = []
+    # films
+    films = []
+    if p["video"]:
+        n_sv, n_en = MAIN_FILM[cat]
+        films.append({"sv": n_sv, "en": n_en, "length": p_length(p) if p["type"] == "film" else "",
+                      "src": video_srcs(p["video"]), "img": video_thumb(p["video"]), "scene": p["scene"], "seed": p["seed"]})
+    for x in p.get("extra_films") or []:
+        if not isinstance(x, dict) or not str(x.get("video") or "").strip():
+            continue
+        sv, en = two(x, "name")
+        films.append({"sv": sv or "Film", "en": en or "Film", "length": str(x.get("length") or ""),
+                      "src": video_srcs(x["video"]), "img": video_thumb(x["video"]), "scene": p["scene"], "seed": p["seed"] + 5})
+    if p["demo"] and p["type"] == "film":
+        films = [{"sv": a, "en": b, "length": ln or p_length(p), "src": SAMPLE, "scene": p["scene"], "seed": p["seed"]}
+                 for a, b, ln in DEMO_FILMS.get(cat, [])]
+    films = [f for f in films if f.get("src")]
+    o["films"] = films
+    o["all"] = gallery
+    # story: paragraphs with the project's pictures woven in between
+    sv_t, en_t = two(p, "story")
+    sv_p = [x.strip() for x in re.split(r"\n\s*\n", sv_t) if x.strip()]
+    en_p = [x.strip() for x in re.split(r"\n\s*\n", en_t) if x.strip()]
+    if sv_p or en_p:
+        blocks, pics, n = [], list(gallery), max(len(sv_p), len(en_p))
+        for i in range(n):
+            a = sv_p[i] if i < len(sv_p) else (en_p[i] if i < len(en_p) else "")
+            b = en_p[i] if i < len(en_p) else a
+            blocks.append({"type": "text", "sv": a, "en": b})
+            if i % 2 == 0 and pics:
+                blocks.append({"type": "full", "img": pics.pop(0)})
+            elif len(pics) >= 2:
+                blocks.append({"type": "pair", "imgs": [pics.pop(0), pics.pop(0)]})
+        o["story"] = {"blocks": blocks, "credits": []}
+    elif gallery:
+        o["frames"] = gallery[:6]
+    return o
+
+
+# ---------------- HOME ----------------
+SHOWREEL = str(SETTINGS.get("showreel") or "").strip()
+REEL = "|".join(video_srcs(SHOWREEL)) or "sample-film.mp4"
+REEL_POSTER = video_thumb(SHOWREEL)
+PORTRAIT = media_url(SETTINGS.get("portrait"))
+
+
+def loop_video(srcs, preload="metadata"):
+    return f'<video class="bg-loop" data-loop-src="{e(srcs)}" muted loop playsinline autoplay preload="{preload}" aria-hidden="true"></video>'
+
+
+def lens_item(p):
+    v = ""
+    if p["video"] and BUNNY:
+        v = loop_video("|".join(video_srcs(p["video"], ("720p", "360p"))))
+    elif p["demo"] and p.get("demo_loop"):
+        v = loop_video("sample-film.mp4")
+    t = two(p, "title")
+    return (f'<a class="lens-item tall" href="work.html#{p["id"]}" data-cat="{p["category"]}" aria-label="{e(t[0])}">'
+            f'{frame(p["cover_url"], p["scene"], p["seed"], "", t[0], v)}'
+            f'<span class="lens-cat mono">{T(*CATNAME[p["category"]])}</span></a>')
+
+
+LENS_HTML = "".join(lens_item(p) for p in PROJECTS if p.get("show_on_home"))
+
+
+home = f'''<section class="hero">
+  <div class="wrap">
+    {frame(REEL_POSTER, "archipelago", 3, "ratio-scope hero-reel", "", loop_video(REEL, "auto"))[:-6]}<button class="reel-toggle" type="button" aria-pressed="false"><span class="ic-pause" aria-hidden="true"></span><span class="ic-play" aria-hidden="true"></span><span class="rt-label">{T("Pausa", "Pause")}</span></button></div>
+    <div class="hero-copy">
+      {T("Berättelser som rör sig", "Stories that move", "h1")}
+      <a class="btn primary hero-cta" href="mailto:{EMAIL}">{T("Boka ett samtal", "Book a call")}{ARROW}</a>
+    </div>
+  </div>
+</section>
+
+<section class="behind">
+  <div class="wrap behind-grid">
+    {frame(PORTRAIT, "interview", 61, "ratio-4x5 behind-portrait", "Mikael Edström")}
+    <div class="stack behind-copy">
+      {T("Bakom kameran", "Behind the camera", "span", 'class="eyebrow"')}
+      {T("Lugn på plats, noggrann i efterarbetet", "Calm on location, meticulous in post-production", "h2")}
+      {T("Varje projekt börjar med ett samtal, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.", "Every project starts with a conversation, long before the camera comes out. The work begins once the feeling you're after is clear.", "p", 'class="lede"')}
+      <a class="btn behind-link" href="about.html">{T("Läs om ME Motion", "About ME Motion")}{ARROW}</a>
+    </div>
+  </div>
+</section>
+
+<section class="lens">
+  <div class="wrap">
+    <div class="section-head split">
+      <div class="stack">{T("Utvalda projekt", "Selected work", "span", 'class="eyebrow"')}{T("Genom linsen", "Through the lens", "h2")}</div>
+      <div class="lens-tools">
+        <button class="icon-btn lens-prev" type="button" aria-label="Föregående / Previous">←</button>
+        <button class="icon-btn lens-next" type="button" aria-label="Nästa / Next">→</button>
+      </div>
+    </div>
+  </div>
+  <div class="lens-track" tabindex="0" aria-label="Utvalt arbete / Selected work">{LENS_HTML}</div>
+</section>
+
+<section class="doing-sec">
+  <div class="wrap doing">
+    <div class="doing-intro">
+      {T("Vad ME Motion gör", "What ME Motion does", "span", 'class="eyebrow"')}
+      {T("Bilder som gör jobbet", "Footage that does a job", "h2")}
+      {T("Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?", "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?", "p")}
+      {T("Samma person planerar, filmar och klipper. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.", "The same person plans, films and edits. That means short decision paths and a film that holds together all the way from idea to delivery.", "p")}
+    </div>
+    <div class="doing-side">
+      <ul class="doing-list">
+        <li data-cat="business"><a href="services.html#business-panel"><span class="doing-num">01</span><span class="doing-text">{T("Företag", "Companies", "strong")}{T("Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.", "Commercials and brand films, interviews, YouTube, social media clips and product photography.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
+        <li data-cat="event"><a href="services.html#event-panel"><span class="doing-num">02</span><span class="doing-text">{T("Evenemang och idrott", "Events and sport", "strong")}{T("Konferenser, lanseringar, matcher och fester, fångade medan de pågår.", "Conferences, launches, matches and parties, captured as they happen.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
+        <li data-cat="wedding"><a href="services.html#wedding-panel"><span class="doing-num">03</span><span class="doing-text">{T("Bröllop", "Weddings", "strong")}{T("Film och foto från vigseln till sista dansen.", "Film and photography from the ceremony to the last dance.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
+        <li data-cat="drone"><a href="services.html#addons"><span class="doing-num">04</span><span class="doing-text">{T("Drönare", "Drone", "strong")}{T("Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial footage of the archipelago, properties and events, wherever flying is permitted.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
+      </ul>
+      <p class="doing-note">{T("Något helt annat i tankarna?", "Something else entirely in mind?")} <a href="contact.html">{T("Berätta om det", "Tell me about it")}</a></p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+'''
+page("index.html", BRAND, BRAND, "home", home, full=False)
+
+# ---------------- WORK ----------------
+grid = "\n".join(clip(p) for p in PROJECTS)
+data = json.dumps([project_json(p) for p in PROJECTS], ensure_ascii=False).replace("</", "<\\/")
+chips = [("all", "Alla", "All"), ("wedding", "Bröllop", "Weddings"), ("business", "Företag", "Companies"),
+         ("event", "Evenemang", "Events"), ("drone", "Drönare", "Drone"), ("stills", "Övrigt", "Other")]
+chip_html = "".join(f'<button class="chip" data-filter="{f}" aria-pressed="{"true" if f == "all" else "false"}">{T(sv, en)}</button>' for f, sv, en in chips)
+work = f'''<div class="wrap page-hero">
+  {T("Arbeten", "Work", "span", 'class="eyebrow"')}
+  {T("Projekt och berättelser", "Projects and stories", "h1")}
+  {T("Ett urval av projekt. Öppna ett för att se allt material och läsa berättelsen bakom.", "A selection of projects. Open one to see it in full and read the story behind it.", "p", 'class="lede"')}
+</div>
+<section style="padding-top: 0;">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="filters" role="group" aria-label="Filter">{chip_html}</div>
+    </div>
+    <div class="reel">
+{grid}
+    </div>
+  </div>
+</section>
+<div class="modal" id="project-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-panel" tabindex="-1">
+    <div class="modal-bar">
+      <div class="modal-nav"><button class="icon-btn" type="button" data-step="-1" aria-label="Föregående / Previous">←</button><button class="icon-btn" type="button" data-step="1" aria-label="Nästa / Next">→</button></div>
+      <button class="icon-btn" type="button" data-close aria-label="Stäng / Close">✕</button>
+    </div>
+    <div class="modal-body" id="pm-body"></div>
+  </div>
+</div>
+<script type="application/json" id="projects">{data}</script>
+'''
+page("work.html", f"Arbeten · {BRAND}", f"Work · {BRAND}", "work", work)
+
+
+
+
+# ---------------- SERVICES ----------------
+def svc_panel(pid, scene, seed, eb, title, intro, lis, btn):
+    lis_html = "".join(f"<li>{T(sv, en)}</li>" for sv, en in lis)
+    return f'''<article class="svc" id="{pid}-panel">
+      <div class="frame" data-scene="{scene}" data-seed="{seed}"></div>
+      <div class="wedding-body">
+        {T(*eb, "span", 'class="eyebrow"')}
+        {T(*title, "h2")}
+        {T(*intro, "p", 'class="lede"')}
+        <div class="w-panel"><ul>{lis_html}</ul></div>
+        {T("Pris enligt offert, utifrån projektets omfattning.", "Price on request, shaped around the scope of the project.", "p", 'class="note"')}
+        <div class="actions"><a class="btn primary" href="contact.html">{T(*btn)}{ARROW}</a></div>
+      </div>
+    </article>'''
+
+
+biz_panel = svc_panel("business", "interview", 12, ("Företag", "Companies"), ("Er historia", "Your story"),
+    ("Film och bilder som visar vilka ni är, från en halvdag hos er till större produktioner.", "Film and photography that show who you are, from a half-day shoot on site to larger productions."), [
+        ("Varumärkes- och reklamfilm", "Brand and commercial film"),
+        ("YouTube och korta klipp för sociala medier", "YouTube and short clips for social media"),
+        ("Intervjuer och rekryteringsfilm", "Interviews and recruitment film"),
+        ("Porträtt och produktbilder för webb och press", "Portraits and product images for web and press")], ("Berätta er historia", "Tell your story"))
+evt_panel = svc_panel("event", "event", 23, ("Evenemang", "Events"), ("Ögonblicket", "The moment"),
+    ("Lanseringar, konferenser, fester och sport, fångade medan de pågår.", "Launches, conferences, parties and sport, captured as they happen."), [
+        ("En film som fångar stämningen", "A film that captures the atmosphere"),
+        ("Ett kort klipp för sociala medier samma vecka", "A short social clip the same week"),
+        ("Bilder redo att publicera dagen efter", "Images ready to post the next day"),
+        ("Korta intervjuer med gäster och talare", "Short interviews with guests and speakers")], ("Fånga ögonblicket", "Capture the moment"))
+
+
+# ---- Wedding builder: coverage x length, one card, no columns ----
+COV = [("photo", "Bilder", "Images"), ("film", "Film", "Film"), ("both", "Båda", "Both")]
+LEN = [("3", "3 h", "3 h"), ("6", "6 h", "6 h"), ("10", "Hela dagen", "Full day")]
+TIER = {
+    "3": ("Intim vigsel", "Intimate ceremony", "3 timmar", "3 hours", "Vigseln, parporträtt och familjebilder", "Ceremony, couple portraits and family photos"),
+    "6": ("Halva dagen", "Half-day story", "6 timmar", "6 hours", "Vigseln, porträtt, mingel och middagens viktigaste stunder", "Ceremony, portraits, drinks reception and the key moments of dinner"),
+    "10": ("Hela dagen", "The full day", "12+ timmar", "12+ hours", "Hela dagen, från förberedelserna till festen på kvällen", "The whole day, from getting ready to the party at night"),
+}
+WED = load("wedding.json", {})
+_WED_DEFAULT = {"photo_3": "7 800", "photo_6": "13 500", "photo_full": "18 900", "film_3": "8 500", "film_6": "14 000",
+                "film_full": "19 900", "both_3": "14 000", "both_6": "23 100", "both_full": "30 700"}
+
+
+def _price(key):
+    v = str(WED.get(key) or _WED_DEFAULT[key]).replace("kr", "").strip()
+    digits = re.sub(r"\D", "", v)
+    return f"{int(digits):,}".replace(",", " ") if digits else _WED_DEFAULT[key]
+
+
+PRICE = {(c, l): _price(f"{c}_{'full' if l == '10' else l}") for c in ("photo", "film", "both") for l in ("3", "6", "10")}
+IMG = {"3": "300+", "6": "500+", "10": "800+"}
+FILM = {
+    "3": [("Highlightfilm, 2–3 minuter", "Highlight film, 2–3 minutes"), ("Hela vigseln som egen film", "The full ceremony as its own film")],
+    "6": [("Highlightfilm, 3–5 minuter", "Highlight film, 3–5 minutes"), ("Vigseln och talen i sin helhet", "Ceremony and speeches in full"), ("Kort version för sociala medier", "Short version for socials")],
+    "10": [("Highlightfilm, 5–7 minuter", "Highlight film, 5–7 minutes"), ("Vigsel, tal och första dansen i sin helhet", "Ceremony, speeches and first dance in full"), ("Längre dokumentärfilm, 15–20 minuter", "Longer documentary film, 15–20 minutes"), ("Kort version för sociala medier", "Short version for socials")],
+}
+PHOTO_DAYS = {"3": "3", "6": "5", "10": "5"}
+FILM_WEEKS = {"3": "4", "6": "6", "10": "6"}
+
+
+def w_items(cov, ln):
+    t = TIER[ln]
+    items = [(t[4], t[5])]
+    if cov in ("photo", "both"):
+        items += [(f"{IMG[ln]} redigerade bilder", f"{IMG[ln]} edited images"),
+                  ("Ett första smakprov inom 48 timmar", "A first sneak peek within 48 hours")]
+    if cov in ("film", "both"):
+        items += FILM[ln]
+    if cov == "photo":
+        items.append((f"Levereras inom {PHOTO_DAYS[ln]} veckor", f"Delivered within {PHOTO_DAYS[ln]} weeks"))
+    elif cov == "film":
+        items.append((f"Levereras inom {FILM_WEEKS[ln]} veckor", f"Delivered within {FILM_WEEKS[ln]} weeks"))
+    else:
+        items.append((f"Bilder inom {PHOTO_DAYS[ln]} veckor, film inom {FILM_WEEKS[ln]} veckor", f"Images within {PHOTO_DAYS[ln]} weeks, film within {FILM_WEEKS[ln]} weeks"))
+    return items
+
+def _kr(v):
+    return int(v.replace(" ", ""))
+
+
+def save_line(c, l):
+    if c != "both":
+        return ""
+    diff = _kr(PRICE[("photo", l)]) + _kr(PRICE[("film", l)]) - _kr(PRICE[("both", l)])
+    amt = f"{diff:,}".replace(",", " ")
+    return f'<p class="w-save">{T(f"Du sparar {amt} kr jämfört med bilder och film var för sig.", f"You save {amt} kr compared with booking images and film separately.")}</p>'
+
+
+panels = []
+for c, _, _ in COV:
+    for l, _, _ in LEN:
+        t = TIER[l]
+        lis = "".join(f"<li>{T(a, b)}</li>" for a, b in w_items(c, l))
+        hidden = "" if (c, l) == ("both", "10") else " hidden"
+        panels.append(f'''<div class="w-panel" data-cov="{c}" data-len="{l}"{hidden}>
+            <div class="w-head"><div>{T(t[0], t[1], "h3")}<span class="mono w-hours">{T(t[2], t[3])}</span></div><div class="amount">{PRICE[(c, l)]} kr<span class="vat">{T("inkl. moms", "incl. VAT")}</span></div></div>
+            <ul>{lis}</ul>{save_line(c, l)}
+          </div>''')
+
+
+def seg(group, opts, default):
+    return (f'<div class="seg pick-seg" role="group" data-group="{group}">' +
+            "".join(f'<button type="button" data-val="{v}" aria-pressed="{"true" if v == default else "false"}">{T(sv, en)}</button>' for v, sv, en in opts) + '</div>')
+
+
+wedding = f'''<article class="svc wedding" id="wedding-panel">
+      <div class="frame" data-scene="wedding" data-seed="44"></div>
+      <div class="wedding-body wedding-split">
+        <div class="w-left">
+          {T("Bröllop", "Weddings", "span", 'class="eyebrow"')}
+          {T("Välj det som passar er dag", "Choose what fits your day", "h2")}
+          <div class="pick">{T("Vad vill ni ha?", "What would you like?", "span", 'class="pick-label"')}{seg("cov", COV, "both")}</div>
+          <div class="pick">{T("Hur länge?", "How long?", "span", 'class="pick-label"')}{seg("len", LEN, "10")}</div>
+          {T("Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priserna gäller i Stockholms län. En handpenning på 30 % säkrar datumet.", "Every package includes a planning meeting and a private online gallery. Prices apply within Stockholm county. A 30% deposit holds the date.", "p", 'class="note"')}
+          <div class="actions"><a class="btn primary" href="contact.html">{T("Fråga om ert datum", "Ask about your date")}{ARROW}</a></div>
+        </div>
+        <div class="w-panels" aria-live="polite">
+          {"".join(panels)}
+        </div>
+      </div>
+    </article>'''
+
+
+steps = [("01", "Samtalet", "The conversation", "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av det.", "A first conversation about the idea, who's involved and what you hope to get out of it."),
+         ("02", "Planeringen", "The plan", "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår från det som är viktigast för dig.", "Location, schedule and details are worked out together, so the plan starts from what matters most to you."),
+         ("03", "Dagen", "The day", "Du fokuserar på det som händer. Allt annat är redan ordnat.", "You focus on what's happening. Everything else is taken care of."),
+         ("04", "Leveransen", "Delivery", "Ditt färdiga material, levererat i tid och redo att delas.", "Your finished work, delivered on time and ready to share.")]
+steps_html = "\n      ".join(f'<li class="tl-step"><span class="tl-dot">{n}</span>{T(hs, he, "h3")}{T(ps, pe, "p")}</li>' for n, hs, he, ps, pe in steps)
+
+addons = [("Resor", "Travel", "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid inräknad. Flyg och boende läggs till i offerten.", "Included within Stockholm county. Longer trips by car are charged per mil (10 km), travel time included. Flights and accommodation are added to the quote.", T("25 kr/mil", "25 kr/mil")),
+          ("Drönare", "Drone", "Flygbilder där det är tillåtet att flyga", "Drone shots where flying is allowed", "2 500 kr"),
+          ("Extra timme", "Extra hour", "Mer tid under dagen", "More time on the day", "1 200 kr"),
+          ("Råmaterial", "Raw footage", "Alla användbara klipp, sorterade per scen", "All usable clips, sorted by scene", "1 500 kr"),
+          ("Expressleverans", "Express delivery", "Leverans på halva den vanliga tiden", "Delivery in half the usual time", "+30 %"),
+          ("Tryckta bilder", "Printed frames", "Tio favoriter tryckta på arkivbeständigt papper", "Ten favourites on archival paper", "1 900 kr")]
+addon_html = "\n      ".join(f'<div class="addon"><div class="addon-top">{T(a, b, "h3")}<span class="addon-price">{p}</span></div>{T(c, d, "p")}</div>' for a, b, c, d, p in addons)
+
+TABS = [("business", "Företag", "Companies"), ("event", "Evenemang", "Events"), ("wedding", "Bröllop", "Weddings")]
+tabs_html = '<div class="seg svc-tabs" role="tablist">' + "".join(
+    f'<button type="button" role="tab" data-tab="{k}" aria-selected="{"true" if k == "business" else "false"}" aria-pressed="{"true" if k == "business" else "false"}">{T(sv, en)}</button>' for k, sv, en in TABS) + '</div>'
+
+services = f'''<div class="wrap page-hero">
+  {T("Tjänster", "Services", "span", 'class="eyebrow"')}
+  {T("Så går ett samarbete till", "Ways to work together", "h1")}
+  {T("Allt görs i egen regi, och du är med i varje steg.", "Everything is made in-house, and you're involved in every step.", "p", 'class="lede"')}
+</div>
+
+<section style="padding-top: 0;">
+  <div class="wrap">
+    <div class="svc-grid">
+      {biz_panel}
+      {evt_panel}
+      {wedding}
+    </div>
+    <div class="idea">
+      <div class="stack">
+        {T("Har du en annan idé?", "Have a different idea?", "h2")}
+        {T("Paketen är bara en utgångspunkt. Har du något annat i tankarna skräddarsys ett upplägg efter dig.", "The packages are only a starting point. If you have something else in mind, a setup is tailored to you.", "p", 'class="lede"')}
+      </div>
+      <a class="btn primary" href="contact.html">{T("Kontakta mig", "Contact me")}{ARROW}</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">{T("Så går det till", "How it goes", "span", 'class="eyebrow"')}{T("Från första meddelandet till färdig film", "From first message to final file", "h2")}{T("En tydlig process från första samtalet till leverans, där du är med i varje steg.", "A clear process from the first conversation to delivery, with you involved at every step.", "p", 'class="lede"')}</div>
+    <ol class="timeline">
+      {steps_html}
+    </ol>
+  </div>
+</section>
+
+<section id="addons" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">{T("Tillval", "Add-ons", "span", 'class="eyebrow"')}{T("Tillval efter behov", "Extras as needed", "h2")}</div>
+    <div class="addons">
+      {addon_html}
+    </div>
+  </div>
+</section>
+'''
+page("services.html", f"Tjänster · {BRAND}", f"Services · {BRAND}", "services", services)
+
+# ---------------- ABOUT ----------------
+about = f'''<div class="wrap page-hero">
+  {T("Om", "About", "span", 'class="eyebrow"')}
+  {T("Om ME Motion", "About ME Motion", "h1")}
+  {T("Berättelser i rörelse, från första samtalet till sista bildrutan.", "Stories in motion, from the first conversation to the last frame.", "p", 'class="lede"')}
+</div>
+<section style="padding-top: 0;">
+  <div class="wrap founder-grid">
+    {frame(PORTRAIT, "interview", 61, "ratio-4x5", "Mikael Edström", "" if PORTRAIT else vf(meta="4:5"))}
+    <div class="stack founder-copy">
+      {T("Grundaren", "The founder", "span", 'class="eyebrow"')}
+      {T("Mikael Edström", "Mikael Edström", "h2")}
+      {T("ME Motion är en studio för visuellt berättande i Stockholm, grundad av Mikael Edström. Uppdragen spänner från företagsfilm och evenemang till bröllop, med samma krav på hantverk oavsett vad det gäller.", "ME Motion is a visual storytelling studio in Stockholm, founded by Mikael Edström. The work spans company films, events and weddings, held to the same standard whatever the assignment.", "p", 'class="lede"')}
+      {T("Mikael kombinerar tekniskt kunnande med ett öga för detaljer. Planering och efterarbete får lika mycket omsorg som inspelningen, och målet är bilder som håller även när man ser dem en andra gång.", "Mikael combines technical precision with an eye for detail. Planning and post-production get as much care as the shoot, with the aim of images that still hold up on a second watch.", "p", 'class="lede"')}
+    </div>
+  </div>
+</section>
+
+<section class="values-sec">
+  <div class="wrap">
+    <div class="section-head">{T("Om arbetet", "About the work", "span", 'class="eyebrow"')}{T("Arbetssätt", "The approach", "h2")}</div>
+    <div class="values">
+      <div class="value">{T('Varje uppdrag får sin egen ton', 'Every project finds its own tone', "h3")}{T('Inget uppdrag är det andra likt. Uttrycket formas efter det som ska berättas, inte tvärtom.', 'No two projects are alike. The look is shaped by what needs to be told, not the other way around.', "p")}</div>
+      <div class="value">{T('Rätt format från början', 'The right format from the start', "h3")}{T('Materialet levereras i de format det ska användas i, från bred film till stående klipp för sociala medier.', 'Everything is delivered in the formats it will be used in, from widescreen film to vertical clips for social media.', "p")}</div>
+      <div class="value">{T('Detaljerna gör helheten', 'The details make the whole', "h3")}{T('Ljus, ljud och klipp får samma omsorg som själva inspelningen.', 'Light, sound and cut get the same care as the shoot itself.', "p")}</div>
+    </div>
+  </div>
+</section>
+
+
+'''
+page("about.html", f"Om · {BRAND}", f"About · {BRAND}", "about", about)
+
+
+# ---------------- CONTACT ----------------
+def fseg(group, opts, mode):
+    cls = "seg form-seg" if mode == "single" else "chips-multi"
+    return (f'<div class="{cls}" role="group" data-group="{group}" data-mode="{mode}">' +
+            "".join(f'<button type="button" data-val="{v}" data-sv="{sv}" data-en="{en}" aria-pressed="false">{T(sv, en)}</button>' for v, sv, en in opts) + '</div>')
+
+
+def opt(sv, en):
+    return f'<option data-sv="{sv}" data-en="{en}">{sv}</option>'
+
+
+faq = [("Hur långt i förväg behöver jag boka?", "How far in advance do I need to book?",
+        "Vanligtvis rekommenderas att boka 6–9 månader i förväg. Men även med kort varsel går det ofta att lösa, så hör av dig ändå.",
+        "It's usually recommended to book 6–9 months ahead. But even at short notice it can often be arranged, so get in touch anyway."),
+       ("Hur hittar ni berättelsen?", "How do you find the story?",
+        "Genom att lyssna först. Innan kameran kommer fram pratar man igenom vad och vilka som är viktiga, och vad du vill känna när du ser resultatet. Berättelsen finns oftast redan där. Uppgiften är att se den.",
+        "By listening first. Before the camera comes out, the conversation covers what matters, who matters and what you want to feel when you look back on it. The story is usually already there. The job is to notice it."),
+       ("Hur mycket behöver jag planera själv?", "How much of the planning do I need to do?",
+        "Väldigt lite. Berätta vad som känns viktigt för dig, så tar ME Motion hand om upplägget, tiderna och detaljerna.",
+        "Very little. Share whatever feels important to you, and ME Motion takes care of the plan, the timing and the details."),
+       ("Jobbar ni utanför Stockholm?", "Do you work outside Stockholm?",
+        "Ja, både i Sverige och utomlands. Resekostnaden beror på avstånd och färdsätt och finns alltid med i offerten.",
+        "Yes, both in Sweden and abroad. Travel costs depend on the distance and the way of travel, and they're always part of your quote."),
+       ("Vad får jag när allt är klart?", "What do I get in the end?",
+        "Färdigt material, redo att använda. Film i de format du behöver, från bred film till stående klipp, och bilder i full upplösning för webb och tryck. Allt levereras via en privat länk, på det datum som bestämts från start.",
+        "Finished material, ready to use. Film in the formats you need, from widescreen to vertical clips, and images in full resolution for web and print. Everything is delivered via a private link, on the date agreed from the start.")]
+faq_html = "\n          ".join(
+    f'<details{" open" if i == 0 else ""}><summary>{T(qs, qe)}</summary>{T(as_, ae, "p")}</details>'
+    for i, (qs, qe, as_, ae) in enumerate(faq))
+
+contact = f'''<div class="wrap page-hero">
+  {T("Kontakt", "Contact", "span", 'class="eyebrow"')}
+  {T("Kontakta mig", "Contact me", "h1")}
+  {T("Berätta lite om vad du planerar. Datumet får gärna vara ungefärligt. Alla meddelanden läses och besvaras personligen.", "Share a little about what you're planning. The date can be rough. Every message is read and answered personally.", "p", 'class="lede"')}
+</div>
+<section style="padding-top: 0;">
+  <div class="wrap two-col">
+    <div class="stack">
+      <form class="form" id="enquiry" novalidate>
+        <div class="row">
+          <div class="field"><label for="name">{T("Namn", "Name")}</label><input id="name" autocomplete="name"><span class="err" id="name-err" hidden>{T("Skriv ditt namn.", "Add your name.")}</span></div>
+          <div class="field"><label for="email">{T("E-post", "Email")}</label><input id="email" type="email" autocomplete="email"><span class="err" id="email-err" hidden>{T("Skriv en e-postadress, t.ex. namn@exempel.se.", "Add an email address like name@example.se.")}</span></div>
+        </div>
+        <div class="field" id="occasion">
+          {T("Vad gäller det?", "What's it about?", "span", 'class="flabel"')}
+          {fseg("type", [("business", "Företag", "Company"), ("event", "Evenemang", "Event"), ("wedding", "Bröllop", "Wedding"), ("other", "Något annat", "Something else")], "single")}
+          <div class="sub" data-for="wedding" hidden>
+            {fseg("wcov", COV, "single")}
+            {fseg("wlen", LEN, "single")}
+          </div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="phone">{T("Telefon (valfritt)", "Phone (optional)")}</label><input id="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="date">{T("Datum", "Date")}</label><input id="date" type="date"></div>
+        </div>
+        <div class="field"><label for="location">{T("Plats", "Location")}</label><input id="location" data-sv-placeholder="t.ex. Grand Hôtel, Stockholm" data-en-placeholder="e.g. Grand Hôtel, Stockholm" placeholder="t.ex. Grand Hôtel, Stockholm"></div>
+        <div class="field"><label for="message">{T("Berätta mer", "The details")}</label><textarea id="message" data-sv-placeholder="Vad ska hända, vilka är med och vad är viktigast för dig?" data-en-placeholder="What's happening, who's involved and what matters most to you?" placeholder="Vad ska hända, vilka är med och vad är viktigast för dig?"></textarea><span class="err" id="message-err" hidden>{T("Skriv några rader om vad du planerar.", "Write a few lines about what you're planning.")}</span></div>
+        <div><button class="btn primary" type="submit">{T("Skicka meddelande", "Send message")}{ARROW}</button></div>
+      </form>
+      <div class="result" id="enquiry-result" hidden aria-live="polite">
+        {T("Nästan klart!", "Almost there!", "strong")}
+        {T("Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.", "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath.", "p", 'class="note"')}
+        <pre id="enquiry-text"></pre>
+        <div class="copyline"><button class="btn primary" type="button" data-copy="enquiry-text">{T("Kopiera meddelandet", "Copy message")}</button><code id="mail-addr">{EMAIL}</code></div>
+      </div>
+    </div>
+    <div class="stack" style="gap:32px">
+      <div class="stack">
+        {T("Kontaktuppgifter", "Contact details", "span", 'class="eyebrow"')}
+        <p class="contact-line"><a href="mailto:{EMAIL}">{EMAIL}</a></p>
+        <p class="contact-line"><a href="tel:{PHONE_TEL}">{PHONE}</a></p>
+      </div>
+      <div class="stack">
+        {T("FAQ", "FAQ", "span", 'class="eyebrow faq-eyebrow"')}
+        <div class="faq">
+          {faq_html}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>'''
+page("contact.html", f"Kontakt · {BRAND}", f"Contact · {BRAND}", "contact", contact)
+print("ok")
