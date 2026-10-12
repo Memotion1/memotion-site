@@ -59,6 +59,7 @@ content:
   - {name: bunny_host,label: Bunny video address (not needed with Vimeo),description: "Leave empty. Only used if videos are hosted on Bunny instead of Vimeo.",type: string}
   - {name: showreel,label: Showreel - Vimeo link,description: "The silent looping film at the top of the home page, e.g. https://vimeo.com/1235029705",type: string}
   - {name: portrait,label: Portrait of Mikael,type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+  - {name: about_images,label: About page - behind-the-scenes photos,description: "Shown as a photo wall on the About page. Pick several. Leave empty to show placeholders.",type: image,options: {multiple: true,extensions: [jpg,jpeg,png,webp]}}
 - name: wedding
   label: Wedding prices
   type: file
@@ -415,7 +416,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: work_003
-    label: "Projekt och berättelser"
+    label: "Projekt"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1099,7 +1100,7 @@ content:
   format: json
   fields:
   - name: about_001
-    label: "Om ME Motion"
+    label: "Det här är ME Motion"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1107,7 +1108,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_002
-    label: "Berättelser i rörelse, från första samtalet till sista bildrutan."
+    label: "ME Motion är en studio för film och foto i Stockholm. Uppdragen kommer…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1115,7 +1116,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_003
-    label: "Grundaren"
+    label: "Allt görs från början till slut av samma person. Samma öga som planera…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1123,7 +1124,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_004
-    label: "Mikael Edström"
+    label: "Ingen produktion är för liten för att göras ordentligt, och ingen är s…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1131,7 +1132,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_005
-    label: "ME Motion är en studio för visuellt berättande i Stockholm, grundad av…"
+    label: "Bas"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1139,7 +1140,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_006
-    label: "Mikael kombinerar tekniskt kunnande med ett öga för detaljer. Planerin…"
+    label: "Arbetar"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1147,7 +1148,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_007
-    label: "Om arbetet"
+    label: "I hela Sverige och utomlands"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1155,7 +1156,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_008
-    label: "Arbetssätt"
+    label: "Gör"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1163,7 +1164,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_009
-    label: "Varje uppdrag får sin egen ton"
+    label: "Film, foto och drönarbilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1171,7 +1172,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_010
-    label: "Inget uppdrag är det andra likt. Uttrycket formas efter det som ska be…"
+    label: "Levererar"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1179,7 +1180,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_011
-    label: "Rätt format från början"
+    label: "I de format du behöver"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1187,7 +1188,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_012
-    label: "Materialet levereras i de format det ska användas i, från bred film ti…"
+    label: "Grundaren"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1195,7 +1196,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_013
-    label: "Detaljerna gör helheten"
+    label: "Mikael Edström"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1203,7 +1204,119 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: about_014
+    label: "ME Motion är en studio för visuellt berättande i Stockholm, grundad av…"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_015
+    label: "Mikael kombinerar tekniskt kunnande med ett öga för detaljer. Planerin…"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_016
+    label: "Om arbetet"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_017
+    label: "Arbetssätt"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_018
+    label: "Varje uppdrag får sin egen ton"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_019
+    label: "Inget uppdrag är det andra likt. Uttrycket formas efter det som ska be…"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_020
+    label: "Rätt format från början"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_021
+    label: "Materialet levereras i de format det ska användas i, från bred film ti…"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_022
+    label: "Detaljerna gör helheten"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_023
     label: "Ljus, ljud och klipp får samma omsorg som själva inspelningen."
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_024
+    label: "Bakom kulisserna"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_025
+    label: "På plats"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_026
+    label: "Har du ett projekt på gång?"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_027
+    label: "Stockholm, Sverige"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: about_028
+    label: "Skicka ett meddelande"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}

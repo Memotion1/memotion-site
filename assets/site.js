@@ -260,6 +260,7 @@
       [[795, 0], [667.8, 0], [452.2, 475.6], [582.1, 475.6]], [[840.2, 357.1], [710.9, 357.1], [657.2, 475.6], [787.1, 475.6]],
       [[1000, 0], [872.9, 0], [813.6, 130.7], [941.5, 130.7]], [[919, 181.1], [790.7, 181.1], [733.7, 306.7], [862.8, 306.7]]];
     return {
+      mark: mark,
       logo: mark.map(function (q) { return q.map(function (p) { return [180 + p[0] * 0.64, 348 + p[1] * 0.64]; }); }),
       pause: [[[440, 230], [310, 230], [310, 770], [440, 770]], [[690, 230], [560, 230], [560, 770], [690, 770]]],
       play: [[[590, 374.9], [330, 220], [330, 780], [590, 625.1]], [[746, 467.8], [694, 436.8], [694, 563.2], [746, 532.2]],
@@ -394,6 +395,84 @@
     sync();
   });
 
+
+  /* ---------- Resting the pointer on a project: the picture darkens, the logo strokes drop in and
+     shimmer in the middle, and the project's film starts playing silently behind them ---------- */
+  (function () {
+    var tiles = document.querySelectorAll(".clip, .lens-item");
+    if (!tiles.length) return;
+    var NS = "http://www.w3.org/2000/svg";
+    function markSVG() {
+      var svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("viewBox", "-20 -20 1040 515.6"); svg.setAttribute("aria-hidden", "true");
+      RT.mark.forEach(function (q, i) {
+        var pl = document.createElementNS(NS, "polygon");
+        pl.setAttribute("points", q.map(function (pt) { return pt[0] + "," + pt[1]; }).join(" "));
+        pl.style.setProperty("--i", i);
+        svg.appendChild(pl);
+      });
+      return svg;
+    }
+    var canHover = window.matchMedia && matchMedia("(hover: hover) and (pointer: fine)").matches;
+    tiles.forEach(function (tile) {
+      var fr = tile.querySelector(".frame");
+      if (!fr) return;
+      var hov = document.createElement("span");
+      hov.className = "tile-hover"; hov.setAttribute("aria-hidden", "true");
+      hov.appendChild(markSVG());
+      fr.appendChild(hov);
+      if (!canHover) return;
+      var src = tile.getAttribute("data-preview"), ratio = parseFloat(tile.getAttribute("data-preview-r")) || 16 / 9;
+      var pv = null, kind = "", wait = 0, out = 0, inside = false;
+      function fit() {
+        if (!pv || kind !== "vimeo") return;
+        var w = fr.clientWidth, h = fr.clientHeight; if (!w || !h) return;
+        if (w / h > ratio) { pv.style.width = w + "px"; pv.style.height = Math.ceil(w / ratio) + "px"; }
+        else { pv.style.height = h + "px"; pv.style.width = Math.ceil(h * ratio) + "px"; }
+      }
+      function vimeo(m) { try { pv.contentWindow.postMessage(JSON.stringify({ method: m }), "https://player.vimeo.com"); } catch (e) {} }
+      function start() {
+        if (!src || reduce || !inside) return;
+        if (!pv) {
+          if (isVimeo(src)) {
+            kind = "vimeo";
+            pv = document.createElement("iframe");
+            pv.className = "tile-preview"; pv.setAttribute("tabindex", "-1"); pv.setAttribute("aria-hidden", "true");
+            pv.setAttribute("allow", "autoplay; fullscreen"); pv.title = "";
+            pv.addEventListener("load", function () {
+              setTimeout(function () { pv.dataset.ready = "1"; if (inside) pv.classList.add("on"); else vimeo("pause"); }, 700);
+            });
+            pv.src = vimeoURL(src, "background=1&dnt=1&muted=1");
+            fr.insertBefore(pv, hov); fit();
+          } else {
+            kind = "video";
+            pv = document.createElement("video");
+            pv.className = "tile-preview"; pv.muted = true; pv.loop = true; pv.playsInline = true; pv.setAttribute("aria-hidden", "true");
+            pv.addEventListener("playing", function () { if (inside) pv.classList.add("on"); });
+            setSrcs(pv, srcList(src));
+            fr.insertBefore(pv, hov);
+          }
+        }
+        if (kind === "vimeo") { if (pv.dataset.ready) { vimeo("play"); setTimeout(function () { if (inside) pv.classList.add("on"); }, 120); } }
+        else { var pr = pv.play(); if (pr && pr.catch) pr.catch(function () {}); }
+      }
+      function stop() {
+        if (!pv) return;
+        pv.classList.remove("on");
+        if (kind === "vimeo") vimeo("pause"); else pv.pause();
+      }
+      tile.addEventListener("mouseenter", function () {
+        inside = true; clearTimeout(out); tile.classList.remove("is-leaving"); tile.classList.add("is-rolling");
+        clearTimeout(wait); wait = setTimeout(start, 140);
+      });
+      tile.addEventListener("mouseleave", function () {
+        inside = false; clearTimeout(wait); stop();
+        tile.classList.remove("is-rolling"); tile.classList.add("is-leaving");
+        out = setTimeout(function () { tile.classList.remove("is-leaving"); }, 320);
+      });
+      if (window.ResizeObserver) new ResizeObserver(fit).observe(fr);
+    });
+  })();
 
   /* ---------- "Through the lens" strip: arrows + native swipe, page scroll untouched ---------- */
   document.querySelectorAll(".lens").forEach(function (sec) {

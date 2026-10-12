@@ -418,6 +418,17 @@ def p_length(p):
     return ln
 
 
+def preview_attr(p):
+    """Film shown when the pointer rests on a project (Vimeo or a direct video file)."""
+    srcs = video_srcs(p["video"], ("720p", "360p")) if p["video"] else []
+    if not srcs and p["demo"] and p["type"] == "film":
+        srcs = SAMPLE
+    if not srcs:
+        return ""
+    ratio = vimeo_ratio(vimeo_ref(p["video"])) if p["video"] and vimeo_ref(p["video"]) else 16 / 9
+    return f' data-preview="{e("|".join(srcs))}" data-preview-r="{ratio:.4f}"'
+
+
 def clip(p):
     cat, series = p["category"], p["type"] == "series"
     wide = bool(p.get("wide"))
@@ -425,7 +436,7 @@ def clip(p):
     meta = T(*CATNAME[cat]) + (f" · {e(ln)}" + (T(" bilder", " images") if series else "") if ln else "")
     play = f'<span class="play{" plus" if series else ""}" aria-hidden="true"></span>'
     t = [e(x) for x in two(p, "title")]
-    return f'''<a class="clip{" wide" if wide else ""}" href="#{p["id"]}" data-project="{p["id"]}" data-cat="{cat}">
+    return f'''<a class="clip{" wide" if wide else ""}" href="#{p["id"]}" data-project="{p["id"]}" data-cat="{cat}"{preview_attr(p)}>
   {frame(p["cover_url"], p["scene"], p["seed"], "ratio-scope" if wide else "ratio-16x9", t[0], play)}
   <div class="clip-meta">{T(*t, "h3", edit=False)}<span class="mono">{meta}</span></div>
 </a>'''
@@ -506,8 +517,9 @@ def lens_item(p):
     elif p["demo"] and p.get("demo_loop"):
         v = loop_video("sample-film.mp4")
     t = two(p, "title")
-    return (f'<a class="lens-item tall" href="work.html#{p["id"]}" data-cat="{p["category"]}" aria-label="{e(t[0])}">'
-            f'{frame(p["cover_url"], p["scene"], p["seed"], "", t[0], v)}'
+    title = T(e(t[0]), e(t[1]), "span", 'class="tile-title"', edit=False)
+    return (f'<a class="lens-item tall" href="work.html#{p["id"]}" data-cat="{p["category"]}" aria-label="{e(t[0])}"{"" if v else preview_attr(p)}>'
+            f'{frame(p["cover_url"], p["scene"], p["seed"], "", t[0], v + title)}'
             f'<span class="lens-cat mono">{T(*CATNAME[p["category"]])}</span></a>')
 
 
@@ -605,7 +617,7 @@ chips = [("all", "Alla", "All"), ("wedding", "Bröllop", "Weddings"), ("business
 chip_html = "".join(f'<button class="chip" data-filter="{f}" aria-pressed="{"true" if f == "all" else "false"}">{T(sv, en)}</button>' for f, sv, en in chips)
 work = f'''<div class="wrap page-hero">
   {T("Arbeten", "Work", "span", 'class="eyebrow"')}
-  {T("Projekt och berättelser", "Projects and stories", "h1")}
+  {T("Projekt", "Projects", "h1")}
   {T("Ett urval av projekt. Öppna ett för att se allt material och läsa berättelsen bakom.", "A selection of projects. Open one to see it in full and read the story behind it.", "p", 'class="lede"')}
 </div>
 <section style="padding-top: 0;">
@@ -822,11 +834,49 @@ page("services.html", f"Tjänster · {BRAND}", f"Services · {BRAND}", "services
 
 # ---------------- ABOUT ----------------
 SECTION[0] = "about"
-about = f'''<div class="wrap page-hero">
-  {T("Om", "About", "span", 'class="eyebrow"')}
-  {T("Om ME Motion", "About ME Motion", "h1")}
-  {T("Berättelser i rörelse, från första samtalet till sista bildrutan.", "Stories in motion, from the first conversation to the last frame.", "p", 'class="lede"')}
-</div>
+# Behind-the-scenes photos for the About page (admin panel: Site settings). Placeholders until there are real ones.
+ABOUT_IMGS = [u for u in (media_url(x) for x in (SETTINGS.get("about_images") or [])) if u]
+_BTS = [("interview", 64, "4 / 5"), ("event", 27, "16 / 10"), ("aerial", 33, "1 / 1"), ("wedding", 18, "4 / 5"),
+        ("studio", 45, "16 / 10"), ("archipelago", 52, "4 / 5"), ("event", 71, "1 / 1"), ("interview", 88, "16 / 10")]
+if ABOUT_IMGS:
+    BTS_HTML = "".join(f'<figure class="bts-item"><img src="{e(u)}" alt="" loading="lazy" decoding="async"></figure>' for u in ABOUT_IMGS)
+else:
+    BTS_HTML = "".join(f'<figure class="bts-item"><div class="frame" data-scene="{sc}" data-seed="{sd}" style="aspect-ratio: {ar}"></div></figure>'
+                       for sc, sd, ar in _BTS)
+
+
+def book_btn(cls="btn primary"):
+    label = T("Boka ett samtal", "Book a call")
+    if BOOKING:
+        return (f'<a class="{cls}" href="https://cal.com/{e(BOOKING)}" data-cal-link="{e(BOOKING)}" '
+                f'data-cal-config=\'{{"layout":"month_view"}}\' target="_blank" rel="noopener">{label}{ARROW}</a>')
+    return f'<a class="{cls}" href="contact.html">{label}{ARROW}</a>'
+
+
+IG_LINK = (f'<a href="{e(INSTAGRAM)}" target="_blank" rel="noopener">Instagram</a>' if INSTAGRAM else "")
+about = f'''<section class="about-hero">
+  <div class="wrap">
+    {T("Om", "About", "span", 'class="eyebrow"')}
+    {T("Det här är ME Motion", "This is ME Motion", "h1")}
+    <div class="about-intro">
+      {T("ME Motion är en studio för film och foto i Stockholm. Uppdragen kommer från företag, evenemang och brudpar, och varje bildruta får samma omsorg oavsett hur stort projektet är.", "ME Motion is a film and photography studio in Stockholm. The work comes from companies, events and couples, and every frame gets the same care however big the project is.", "p", 'class="about-lead"')}
+      {T("Allt görs från början till slut av samma person. Samma öga som planerar inspelningen står bakom kameran och sitter sedan vid klippbordet. Det gör vägen kort mellan idé och färdig film, och resultatet håller ihop.", "Everything is made from start to finish by the same person. The eye that plans the shoot is behind the camera and then at the edit. That keeps the path from idea to finished film short, and the result holds together.", "p")}
+      {T("Ingen produktion är för liten för att göras ordentligt, och ingen är så stor att den tappar det personliga.", "No production is too small to be done properly, and none is so big that it loses the personal touch.", "p")}
+    </div>
+  </div>
+</section>
+
+<section class="about-facts" aria-label="ME Motion">
+  <div class="wrap">
+    <dl class="facts-row">
+      <div>{T("Bas", "Based in", "dt")}{T("Stockholm", "Stockholm", "dd")}</div>
+      <div>{T("Arbetar", "Works", "dt")}{T("I hela Sverige och utomlands", "Across Sweden and abroad", "dd")}</div>
+      <div>{T("Gör", "Makes", "dt")}{T("Film, foto och drönarbilder", "Film, photography and aerial footage", "dd")}</div>
+      <div>{T("Levererar", "Delivers", "dt")}{T("I de format du behöver", "In the formats you need", "dd")}</div>
+    </dl>
+  </div>
+</section>
+
 <section style="padding-top: 0;">
   <div class="wrap founder-grid">
     {frame(PORTRAIT, "interview", 61, "ratio-4x5", "Mikael Edström", "" if PORTRAIT else vf(meta="4:5"))}
@@ -839,18 +889,41 @@ about = f'''<div class="wrap page-hero">
   </div>
 </section>
 
-<section class="values-sec">
+<section class="approach-sec">
   <div class="wrap">
     <div class="section-head">{T("Om arbetet", "About the work", "span", 'class="eyebrow"')}{T("Arbetssätt", "The approach", "h2")}</div>
-    <div class="values">
-      <div class="value">{T('Varje uppdrag får sin egen ton', 'Every project finds its own tone', "h3")}{T('Inget uppdrag är det andra likt. Uttrycket formas efter det som ska berättas, inte tvärtom.', 'No two projects are alike. The look is shaped by what needs to be told, not the other way around.', "p")}</div>
-      <div class="value">{T('Rätt format från början', 'The right format from the start', "h3")}{T('Materialet levereras i de format det ska användas i, från bred film till stående klipp för sociala medier.', 'Everything is delivered in the formats it will be used in, from widescreen film to vertical clips for social media.', "p")}</div>
-      <div class="value">{T('Detaljerna gör helheten', 'The details make the whole', "h3")}{T('Ljus, ljud och klipp får samma omsorg som själva inspelningen.', 'Light, sound and cut get the same care as the shoot itself.', "p")}</div>
-    </div>
+    <ol class="approach">
+      <li><span class="approach-num">01</span>{T('Varje uppdrag får sin egen ton', 'Every project finds its own tone', "h3")}{T('Inget uppdrag är det andra likt. Uttrycket formas efter det som ska berättas, inte tvärtom.', 'No two projects are alike. The look is shaped by what needs to be told, not the other way around.', "p")}</li>
+      <li><span class="approach-num">02</span>{T('Rätt format från början', 'The right format from the start', "h3")}{T('Materialet levereras i de format det ska användas i, från bred film till stående klipp för sociala medier.', 'Everything is delivered in the formats it will be used in, from widescreen film to vertical clips for social media.', "p")}</li>
+      <li><span class="approach-num">03</span>{T('Detaljerna gör helheten', 'The details make the whole', "h3")}{T('Ljus, ljud och klipp får samma omsorg som själva inspelningen.', 'Light, sound and cut get the same care as the shoot itself.', "p")}</li>
+    </ol>
   </div>
 </section>
 
+<section class="bts-sec">
+  <div class="wrap">
+    <div class="section-head">{T("Bakom kulisserna", "Behind the scenes", "span", 'class="eyebrow"')}{T("På plats", "On location", "h2")}</div>
+  </div>
+  <div class="bts">{BTS_HTML}</div>
+</section>
 
+<section class="about-contact">
+  <div class="wrap">
+    {T("Kontakt", "Contact", "span", 'class="eyebrow"')}
+    {T("Har du ett projekt på gång?", "Got a project in mind?", "h2")}
+    <div class="about-contact-grid">
+      <div class="about-contact-lines">
+        <a class="big-link" href="mailto:{e(EMAIL)}">{e(EMAIL)}</a>
+        {f'<a class="big-link" href="tel:{e(PHONE_TEL)}">{e(PHONE)}</a>' if PHONE else ""}
+        <p class="mono about-place">{T("Stockholm, Sverige", "Stockholm, Sweden")}{(" · " + IG_LINK) if IG_LINK else ""}</p>
+      </div>
+      <div class="actions">
+        {book_btn()}
+        <a class="btn" href="contact.html">{T("Skicka ett meddelande", "Send a message")}{ARROW}</a>
+      </div>
+    </div>
+  </div>
+</section>
 '''
 page("about.html", f"Om · {BRAND}", f"About · {BRAND}", "about", about)
 
