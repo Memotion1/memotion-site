@@ -1231,14 +1231,6 @@ iframe.bg-loop { border: 0; inset: auto; top: 50%; left: 50%; width: 100%; heigh
 :root { --gutter: clamp(20px, 5vw, 40px); }
 h1, h2, h3 { overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
 
-/* Showreel: keeps its own shape at full width, never cropped at the sides */
-.hero { height: auto !important; min-height: 0 !important; overflow: visible !important; }
-.hero .hero-reel { flex: none !important; height: auto !important; min-height: 0 !important; aspect-ratio: var(--reel-r, 1.7778) !important; width: 100%; max-width: 100%; margin-inline: auto; }
-@media (min-width: 901px) {
-  .hero { min-height: calc(100svh - var(--hero-top)) !important; }
-  .hero .hero-reel { width: min(100%, calc((100svh - var(--hero-top) - 230px) * var(--reel-r, 1.7778))); }
-}
-
 /* Menu on top (tablet / phone): equal space between the words, whatever their length */
 @media (max-width: 900px) {
   .sidebar .nav { display: flex !important; justify-content: space-between; gap: 6px; }
@@ -1284,24 +1276,50 @@ h2 { font-size: clamp(1.5rem, 1.1rem + 1.9vw, 2.4rem); }
 .doing-num { color: var(--cat) !important; font-weight: 500; }
 .doing-list a:hover .doing-arrow { color: var(--cat); }
 /* Services: each card lightly tinted with its colour */
-#drone-panel { --cat: var(--c-drone); }
 .svc-grid .svc { background: color-mix(in srgb, var(--cat) 7%, var(--surface)) !important; }
-
-/* Services: Companies, Events, Drone side by side, Weddings full width below */
-.svc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
-.svc-grid .wedding { grid-column: 1 / -1 !important; }
-@media (max-width: 1280px) {
-  .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-  .svc-grid #drone-panel { grid-column: 1 / -1; display: grid !important; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); }
-  .svc-grid #drone-panel > .frame { height: auto; min-height: 100%; }
-}
-@media (max-width: 680px) {
-  .svc-grid { grid-template-columns: 1fr !important; }
-  .svc-grid #drone-panel { display: flex !important; grid-column: auto; }
-  .svc-grid #drone-panel > .frame { height: 170px; min-height: 0; }
-}
 
 /* Showreel button: the logo mark turns into pause / play */
 .reel-toggle .ic-pause, .reel-toggle .ic-play { display: none !important; }
 .reel-toggle .rt-icon { width: 20px; height: 20px; flex: none; fill: currentColor; overflow: visible; }
 .reel-toggle .rt-icon polygon { will-change: opacity; }
+
+/* ================= Round 13 ================= */
+/* Wider page: less empty space at the sides on big screens; phones keep their margins */
+:root { --wrap: max(1760px, 82vw); --gutter: clamp(20px, 4vw, 64px); }
+.hero .hero-copy { width: 100%; max-width: var(--wrap) !important; margin-inline: auto !important; box-sizing: border-box; }
+
+/* Showreel: the whole film, edge to edge across the page, height follows the film's own shape */
+.hero { height: auto !important; min-height: 0 !important; overflow: visible !important; }
+.hero > .wrap { height: auto !important; width: 100% !important; max-width: none !important; margin-inline: 0 !important; align-self: stretch !important; }
+.hero .hero-reel { flex: none !important; width: 100% !important; max-width: none !important; height: auto !important; min-height: 0 !important;
+  aspect-ratio: var(--reel-r, 1.7778) !important; margin: 0 !important; }
+.hero .hero-reel::after { display: none !important; }
+
+/* Through the lens: the strip runs edge to edge, no empty space at the start or the end
+   (phones keep the normal small page margin so the labels never touch the screen edge) */
+.lens-track { padding-inline: 0 !important; scroll-padding-inline: 0 !important; }
+@media (max-width: 900px) { .lens-track { padding-inline: var(--gutter) !important; scroll-padding-inline: var(--gutter) !important; } }
+
+/* Services: "Have a different idea?" can be linked to directly */
+#idea { scroll-margin-top: 40px; }
+@media (max-width: 900px) { #idea { scroll-margin-top: 130px; } }
+
+/* Services: card buttons wrap onto two lines in narrow cards instead of running past the edge */
+.svc-grid .actions .btn.btn.btn.btn { white-space: normal !important; max-width: 100%; text-wrap: balance; line-height: 1.35; }
+
+/* Services layout follows the space the cards actually get (menu open or closed):
+   wide: Companies | Events | Weddings (wider); medium: two cards, Weddings full width below; narrow: one column */
+.svc-wrap { container-type: inline-size; }
+.svc-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2.1fr) !important; }
+.svc-grid .wedding { grid-column: auto !important; }
+@container (max-width: 1239px) {
+  .svc-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; }
+  .svc-grid .wedding { grid-column: 1 / -1 !important; }
+}
+@container (max-width: 640px) {
+  .svc-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .wedding-split { grid-template-columns: minmax(0, 1fr) !important; }
+  .wedding-split .w-panel { border-left: 0 !important; padding-left: 0 !important; border-top: 1px solid var(--line) !important; padding-top: 16px !important; }
+}
+/* Add-ons: two per row on small laptops so long names never break */
+@media (min-width: 901px) and (max-width: 1180px) { .addons { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }

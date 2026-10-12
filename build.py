@@ -4,6 +4,7 @@ Reads the editable content in ./content (projects, settings, wedding prices),
 copies ./assets and ./media, and writes the finished website to ./public.
 Run:  python3 build.py
 """
+import hashlib
 import html
 import json
 import os
@@ -49,6 +50,8 @@ CAL_LOADER = ('<script>(function (C, A, L) { var p = function (a, ar) { a.q.push
               'p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })'
               '(window, "https://app.cal.com/embed/embed.js", "init"); Cal("init", { origin: "https://cal.com" });</script>\n')
 
+# version tag per file, so browsers fetch the new styles and script right after an update
+ASSET_V = {n: hashlib.md5((ROOT / "assets" / n).read_bytes()).hexdigest()[:8] for n in ("styles.css", "site.js")}
 # fresh output folder with the static assets and uploaded media
 if OUT.exists():
     shutil.rmtree(OUT)
@@ -321,9 +324,9 @@ def page(name, title_sv, title_en, active, body, full=True):
             f'<meta property="og:type" content="website">\n<meta property="og:site_name" content="{BRAND}">\n'
             f'<meta property="og:title" content="{e(title_sv)}">\n<meta property="og:description" content="{e(d_sv)}">\n'
             f'<meta property="og:url" content="{url}">\n')
-    head = f'<title>{title_sv}</title>\n{BOOT}\n{FONTS}\n<link rel="stylesheet" href="styles.css">\n'
+    head = f'<title>{title_sv}</title>\n{BOOT}\n{FONTS}\n<link rel="stylesheet" href="styles.css?v={ASSET_V["styles.css"]}">\n'
     shell = (f'<span id="page-title" data-sv="{title_sv}" data-en="{title_en}" hidden></span>\n'
-             f'<div class="layout">\n{sidebar(active)}\n<div class="main">\n<main>\n{body}\n</main>\n{FOOTER}\n</div>\n</div>\n' + (CAL_LOADER if BOOKING else "") + '<script src="site.js"></script>\n')
+             f'<div class="layout">\n{sidebar(active)}\n<div class="main">\n<main>\n{body}\n</main>\n{FOOTER}\n</div>\n</div>\n' + (CAL_LOADER if BOOKING else "") + f'<script src="site.js?v={ASSET_V["site.js"]}"></script>\n')
     if full:
         content = ('<!doctype html>\n<html lang="sv">\n<head>\n<meta charset="utf-8">\n'
                    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -475,8 +478,6 @@ def project_json(p):
             elif len(pics) >= 2:
                 blocks.append({"type": "pair", "imgs": [pics.pop(0), pics.pop(0)]})
         o["story"] = {"blocks": blocks, "credits": []}
-    elif gallery:
-        o["frames"] = gallery[:6]
     return o
 
 
@@ -579,7 +580,7 @@ home = f'''<section class="hero">
         <li data-cat="business"><a href="services.html#business-panel"><span class="doing-num">01</span><span class="doing-text">{T("Företag", "Companies", "strong")}{T("Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.", "Commercials and brand films, interviews, YouTube, social media clips and product photography.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
         <li data-cat="event"><a href="services.html#event-panel"><span class="doing-num">02</span><span class="doing-text">{T("Evenemang och idrott", "Events and sport", "strong")}{T("Konferenser, lanseringar, matcher och fester, fångade medan de pågår.", "Conferences, launches, matches and parties, captured as they happen.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
         <li data-cat="wedding"><a href="services.html#wedding-panel"><span class="doing-num">03</span><span class="doing-text">{T("Bröllop", "Weddings", "strong")}{T("Film och foto från vigseln till sista dansen.", "Film and photography from the ceremony to the last dance.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
-        <li data-cat="drone"><a href="services.html#drone-panel"><span class="doing-num">04</span><span class="doing-text">{T("Drönare", "Drone", "strong")}{T("Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial footage of the archipelago, properties and events, wherever flying is permitted.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
+        <li data-cat="drone"><a href="services.html#idea"><span class="doing-num">04</span><span class="doing-text">{T("Drönare", "Drone", "strong")}{T("Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial footage of the archipelago, properties and events, wherever flying is permitted.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
       </ul>
       <p class="doing-note">{T("Något helt annat i tankarna?", "Something else entirely in mind?")} <a href="contact.html">{T("Berätta om det", "Tell me about it")}</a></p>
     </div>
@@ -663,12 +664,6 @@ evt_panel = svc_panel("event", "event", 23, ("Evenemang", "Events"), ("Ögonblic
         ("Ett kort klipp för sociala medier samma vecka", "A short social clip the same week"),
         ("Bilder redo att publicera dagen efter", "Images ready to post the next day"),
         ("Korta intervjuer med gäster och talare", "Short interviews with guests and speakers")], ("Fånga ögonblicket", "Capture the moment"))
-drone_panel = svc_panel("drone", "aerial", 31, ("Drönare", "Drone"), ("Ovanifrån", "From above"),
-    ("Flygfilm och flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial film and photos of the archipelago, properties and events, wherever flying is permitted."), [
-        ("Fastigheter och mäklarbilder", "Property and real-estate shots"),
-        ("Evenemang och anläggningar från luften", "Events and venues from the air"),
-        ("Natur, skärgård och landskap", "Nature, archipelago and landscapes"),
-        ("Som tillägg till film eller foto", "As an add-on to any film or photo job")], ("Fråga om flygbilder", "Ask about aerial shots"))
 
 
 # ---- Wedding builder: coverage x length, one card, no columns ----
@@ -789,14 +784,13 @@ services = f'''<div class="wrap page-hero">
 </div>
 
 <section style="padding-top: 0;">
-  <div class="wrap">
+  <div class="wrap svc-wrap">
     <div class="svc-grid">
       {biz_panel}
       {evt_panel}
-      {drone_panel}
       {wedding}
     </div>
-    <div class="idea">
+    <div class="idea" id="idea">
       <div class="stack">
         {T("Har du en annan idé?", "Have a different idea?", "h2")}
         {T("Paketen är bara en utgångspunkt. Har du något annat i tankarna skräddarsys ett upplägg efter dig.", "The packages are only a starting point. If you have something else in mind, a setup is tailored to you.", "p", 'class="lede"')}

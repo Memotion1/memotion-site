@@ -461,11 +461,6 @@
       if (p.fmt) html += '<div><dt>Format</dt><dd class="mono">' + esc(p.fmt) + '</dd></div>';
       if (hasFilm || (p.all && p.all.length)) html += '<a class="jump" href="#pm-all">' + (p.films && p.films.length ? L("Se alla filmer och bilder", "See all films and images") : L("Se alla bilder", "See all images")) + ' ↓</a>';
       html += '</dl></div>';
-      if (p.frames && !p.story) {
-        html += '<div class="stack"><h3>' + (isSeries ? L("Ur serien", "From the series") : L("Från dagen", "From the day")) + '</h3><div class="gallery">';
-        html += p.frames.map(function (f, i) { return '<figure><button type="button" class="g-item" data-i="' + i + '" aria-pressed="' + (i === 0 ? "true" : "false") + '" aria-label="' + esc(f[lang()]) + '">' + frameHTML(f) + '</button><figcaption>' + esc(f[lang()]) + '</figcaption></figure>'; }).join("");
-        html += '</div></div>';
-      }
       if (p.story) {
         var fr = function (im, cls) { return '<figure class="' + cls + '">' + frameHTML(im) + (im.img ? '' : '<figcaption>' + esc(im[lang()]) + '</figcaption>') + '</figure>'; };
         html += '<div class="story"><h3>' + L("Berättelsen", "The story") + '</h3>';
@@ -491,20 +486,6 @@
       if (jump) jump.addEventListener("click", function (e) { e.preventDefault(); var t = body.querySelector("#pm-all"); panel.scrollTo({ top: t.offsetTop - 70, behavior: reduce ? "auto" : "smooth" }); });
       body.querySelectorAll(".all-item").forEach(function (b) { b.addEventListener("click", function () { lbOpen(media, +b.getAttribute("data-k"), b); }); });
       var tp = body.querySelector("[data-open-media]"); if (tp) tp.addEventListener("click", function () { lbOpen(media, 0, tp); });
-      if (p.frames && !p.story) {
-        var mm = body.querySelector(".modal-media"), cap = document.createElement("p");
-        cap.className = "media-cap mono"; cap.textContent = p.frames[0][lang()]; mm.appendChild(cap);
-        body.querySelectorAll(".g-item").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            var f = p.frames[+btn.getAttribute("data-i")], mf = mm.querySelector(".frame");
-            var tmp = document.createElement("div"); tmp.innerHTML = frameHTML(f); var nf = tmp.firstChild;
-            mf.parentNode.replaceChild(nf, mf); if (nf.hasAttribute("data-scene")) paint(nf);
-            cap.textContent = f[lang()];
-            body.querySelectorAll(".g-item").forEach(function (b) { b.setAttribute("aria-pressed", b === btn ? "true" : "false"); });
-            panel.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
-          });
-        });
-      }
       modal.querySelector(".modal-nav").hidden = visible().length < 2;
     }
     var lb = document.createElement("div"); lb.className = "lightbox"; lb.hidden = true; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true");
