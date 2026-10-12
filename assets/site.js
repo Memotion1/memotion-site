@@ -684,6 +684,41 @@
     if (location.hash && projects.some(function (p) { return p.id === location.hash.slice(1); })) open(location.hash.slice(1));
   }
 
+  /* ---------- Behind-the-scenes pictures: open large, step through with the arrows ---------- */
+  (function () {
+    var groups = {};
+    document.querySelectorAll("a[data-photo]").forEach(function (a) { var g = a.getAttribute("data-photo"); (groups[g] = groups[g] || []).push(a); });
+    if (!Object.keys(groups).length) return;
+    var v = document.createElement("div"); v.className = "lightbox photo-view"; v.hidden = true;
+    v.setAttribute("role", "dialog"); v.setAttribute("aria-modal", "true");
+    v.innerHTML = '<div class="lb-stage"><img class="lb-img" alt=""></div><div class="lb-bar"><button class="icon-btn" type="button" data-pv="-1" aria-label="Föregående / Previous">←</button><span class="mono lb-cap"></span><span class="mono lb-count"></span><button class="icon-btn" type="button" data-pv="1" aria-label="Nästa / Next">→</button><button class="icon-btn" type="button" data-pv="x" aria-label="Stäng / Close">✕</button></div>';
+    document.body.appendChild(v);
+    var list = [], i = 0, from = null, img = v.querySelector(".lb-img");
+    function cap(a) { return a.getAttribute("data-cap-" + lang()) || ""; }
+    function show() {
+      var a = list[i]; img.src = a.getAttribute("href"); img.alt = cap(a);
+      v.querySelector(".lb-cap").textContent = cap(a);
+      v.querySelector(".lb-count").textContent = (i + 1) + " / " + list.length;
+      v.classList.toggle("single", list.length < 2);
+    }
+    function open(g, k, a) { list = groups[g]; i = k; from = a; v.hidden = false; show(); v.querySelector('[data-pv="x"]').focus(); }
+    function close() { v.hidden = true; img.removeAttribute("src"); if (from) from.focus(); }
+    function go(d) { i = (i + d + list.length) % list.length; show(); }
+    Object.keys(groups).forEach(function (g) {
+      groups[g].forEach(function (a, k) { a.addEventListener("click", function (e) { e.preventDefault(); open(g, k, a); }); });
+    });
+    v.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-pv]");
+      if (b) { var d = b.getAttribute("data-pv"); if (d === "x") close(); else go(+d); return; }
+      if (e.target === v || e.target.classList.contains("lb-stage")) close();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (v.hidden) return;
+      if (e.key === "Escape") close(); else if (e.key === "ArrowRight") go(1); else if (e.key === "ArrowLeft") go(-1);
+    });
+    langListeners.push(function () { if (!v.hidden) show(); });
+  })();
+
   /* ---------- Copy helpers ---------- */
   function copy(text, btn, target) {
     function done(ok) { if (!btn.hasAttribute("data-label")) btn.setAttribute("data-label", btn.innerHTML); btn.textContent = ok ? L("Kopierat", "Copied") : L("Markera och kopiera", "Select and copy"); setTimeout(function () { btn.innerHTML = btn.getAttribute("data-label"); }, 1800); }

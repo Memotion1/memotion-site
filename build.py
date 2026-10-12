@@ -536,7 +536,31 @@ def lens_item(p):
             f'<span class="lens-cat mono">{T(*CATNAME[p["category"]])}</span></a>')
 
 
-LENS_HTML = "".join(lens_item(p) for p in PROJECTS if p.get("show_on_home"))
+# Behind-the-scenes pictures for the strip (admin panel: "Through the lens - BTS pictures"). Not projects:
+# they open as a large picture and never appear on the Work page.
+LENS_BTS = []
+for _x in (load("lens.json", {}) or {}).get("pictures") or []:
+    if isinstance(_x, dict) and media_url(_x.get("image")):
+        LENS_BTS.append({"img": media_url(_x.get("image")), "sv": str(_x.get("caption_sv") or "").strip(), "en": str(_x.get("caption_en") or "").strip()})
+
+
+def bts_item(b):
+    sv, en = b["sv"] or b["en"], b["en"] or b["sv"]
+    title = T(e(sv), e(en), "span", 'class="tile-title"', edit=False) if sv else ""
+    return (f'<a class="lens-item tall lens-bts" href="{e(b["img"])}" data-photo="lens" data-cap-sv="{e(sv)}" data-cap-en="{e(en)}" '
+            f'data-cat="stills" aria-label="{e(sv or "Bakom kulisserna")}">'
+            f'{frame(b["img"], "studio", 7, "", sv, title)}<span class="lens-cat mono">{T("Bakom kulisserna", "Behind the scenes")}</span></a>')
+
+
+# projects first, with a behind-the-scenes picture after every second one; any left over go at the end
+_lens_p = [lens_item(p) for p in PROJECTS if p.get("show_on_home")]
+_lens_b = [bts_item(b) for b in LENS_BTS]
+_lens = []
+for _k, _it in enumerate(_lens_p, 1):
+    _lens.append(_it)
+    if _k % 2 == 0 and _lens_b:
+        _lens.append(_lens_b.pop(0))
+LENS_HTML = "".join(_lens + _lens_b)
 
 
 if BOOKING:
@@ -852,7 +876,7 @@ ABOUT_IMGS = [u for u in (media_url(x) for x in (SETTINGS.get("about_images") or
 _BTS = [("interview", 64, "4 / 5"), ("event", 27, "16 / 10"), ("aerial", 33, "1 / 1"), ("wedding", 18, "4 / 5"),
         ("studio", 45, "16 / 10"), ("archipelago", 52, "4 / 5"), ("event", 71, "1 / 1"), ("interview", 88, "16 / 10")]
 if ABOUT_IMGS:
-    BTS_HTML = "".join(f'<figure class="bts-item"><img src="{e(u)}" alt="" loading="lazy" decoding="async"></figure>' for u in ABOUT_IMGS)
+    BTS_HTML = "".join(f'<a class="bts-item" href="{e(u)}" data-photo="about"><img src="{e(u)}" alt="" loading="lazy" decoding="async"></a>' for u in ABOUT_IMGS)
 else:
     BTS_HTML = "".join(f'<figure class="bts-item"><div class="frame" data-scene="{sc}" data-seed="{sd}" style="aspect-ratio: {ar}"></div></figure>'
                        for sc, sd, ar in _BTS)
