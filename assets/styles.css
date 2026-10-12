@@ -1206,3 +1206,13 @@ body, :root[data-theme="light"] body { background: var(--bg) !important; }
 .frame > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 .lb-stage .lb-img { display: block; max-width: min(100%, 1400px); max-height: calc(100vh - 120px); width: auto; height: auto; object-fit: contain; border-radius: 4px; }
 .lb-stage .lb-video { max-height: calc(100vh - 120px); }
+
+/* ---------- Vimeo films ---------- */
+iframe.bg-loop { border: 0; inset: auto; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%); background: transparent; }
+.lb-stage .lb-vimeo { display: block; width: min(100%, 1400px, calc((100vh - 120px) * 1.777)); aspect-ratio: 16 / 9; height: auto; max-height: calc(100vh - 120px); border: 0; background: #000; border-radius: 4px; }
+.lb-stage .lb-vimeo[hidden] { display: none; }
+
+/* ---------- Contact form: wedding choices wrap instead of scrolling sideways ---------- */
+#occasion .sub { flex-wrap: wrap; overflow-x: visible; }
+.result.sent { border-style: solid; }
+.result.sent:focus { outline: none; }

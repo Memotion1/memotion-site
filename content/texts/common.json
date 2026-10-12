@@ -1,0 +1,74 @@
+{
+  "common_001": {
+    "orig": "Sidor",
+    "orig_en": "Pages",
+    "sv": "Sidor",
+    "en": "Pages"
+  },
+  "common_002": {
+    "orig": "Hem",
+    "orig_en": "Home",
+    "sv": "Hem",
+    "en": "Home"
+  },
+  "common_003": {
+    "orig": "Arbeten",
+    "orig_en": "Work",
+    "sv": "Arbeten",
+    "en": "Work"
+  },
+  "common_004": {
+    "orig": "Tjänster",
+    "orig_en": "Services",
+    "sv": "Tjänster",
+    "en": "Services"
+  },
+  "common_005": {
+    "orig": "Om",
+    "orig_en": "About",
+    "sv": "Om",
+    "en": "About"
+  },
+  "common_006": {
+    "orig": "Kontakt",
+    "orig_en": "Contact",
+    "sv": "Kontakt",
+    "en": "Contact"
+  },
+  "common_007": {
+    "orig": "Alla rättigheter förbehållna.",
+    "orig_en": "All rights reserved.",
+    "sv": "Alla rättigheter förbehållna.",
+    "en": "All rights reserved."
+  },
+  "common_008": {
+    "orig": "Stockholm",
+    "orig_en": "Stockholm",
+    "sv": "Stockholm",
+    "en": "Stockholm"
+  },
+  "common_009": {
+    "orig": "Nästa steg",
+    "orig_en": "Next step",
+    "sv": "Nästa steg",
+    "en": "Next step"
+  },
+  "common_010": {
+    "orig": "Berätta om din dag",
+    "orig_en": "Tell me about your day",
+    "sv": "Berätta om din dag",
+    "en": "Tell me about your day"
+  },
+  "common_011": {
+    "orig": "Datum, plats och det som betyder mest för dig. Svar kommer personligen inom två arbetsdagar.",
+    "orig_en": "The date, the place and what matters most to you. A personal reply follows within two working days.",
+    "sv": "Datum, plats och det som betyder mest för dig. Svar kommer personligen inom två arbetsdagar.",
+    "en": "The date, the place and what matters most to you. A personal reply follows within two working days."
+  },
+  "common_012": {
+    "orig": "Kontakta mig",
+    "orig_en": "Contact me",
+    "sv": "Kontakta mig",
+    "en": "Contact me"
+  }
+}

@@ -10,6 +10,8 @@ import os
 import pathlib
 import re
 import shutil
+import urllib.parse
+import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent
 OUT = ROOT / "public"
@@ -37,6 +39,15 @@ PHONE_TEL = re.sub(r"[^\d+]", "", PHONE)
 INSTAGRAM = (SETTINGS.get("instagram") or "https://www.instagram.com/").strip()
 BUNNY = re.sub(r"^https?://", "", (SETTINGS.get("bunny_host") or "").strip()).strip("/")
 SITE_URL = "https://memotion.se"
+
+# Cal.com booking link from Site settings, e.g. "https://cal.com/memotion/introsamtal" -> "memotion/introsamtal"
+BOOKING = re.sub(r"^https?://(app\.)?cal\.com/", "", (SETTINGS.get("booking") or "").strip()).strip("/")
+CAL_LOADER = ('<script>(function (C, A, L) { var p = function (a, ar) { a.q.push(ar); }; var d = C.document; '
+              'C.Cal = C.Cal || function () { var cal = C.Cal; var ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; '
+              'd.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { var api = function () { p(api, arguments); }; '
+              'var namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; '
+              'p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })'
+              '(window, "https://app.cal.com/embed/embed.js", "init"); Cal("init", { origin: "https://cal.com" });</script>\n')
 
 # fresh output folder with the static assets and uploaded media
 if OUT.exists():
@@ -109,13 +120,57 @@ def bunny_id(v):
     return m.group(1) if m else v
 
 
+def vimeo_ref(v):
+    """A Vimeo link (or just its number) -> (video number, private hash) or None."""
+    v = str(v or "").strip()
+    if re.fullmatch(r"\d{5,}", v):
+        return v, ""
+    m = re.search(r"vimeo\.com/(?:[^?#]*?/)?(\d{5,})(?:/([0-9a-f]{6,}))?", v, re.I)
+    if not m:
+        return None
+    h = re.search(r"[?&]h=([0-9a-f]{6,})", v, re.I)
+    return m.group(1), (h.group(1) if h else (m.group(2) or ""))
+
+
+_VIMEO = {}
+
+
+def vimeo_info(ref):
+    """Title, size and thumbnail of a Vimeo video, looked up once while building."""
+    if ref in _VIMEO:
+        return _VIMEO[ref]
+    vid, h = ref
+    info = {}
+    try:
+        page_url = f"https://vimeo.com/{vid}" + (f"/{h}" if h else "")
+        q = urllib.parse.urlencode({"url": page_url, "width": 1920})
+        req = urllib.request.Request(f"https://vimeo.com/api/oembed.json?{q}", headers={"User-Agent": "memotion-site-build"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            info = json.loads(r.read().decode("utf-8"))
+    except Exception as err:
+        print(f"note: could not look up Vimeo video {vid} ({err})")
+    _VIMEO[ref] = info
+    return info
+
+
+def vimeo_ratio(ref):
+    info = vimeo_info(ref)
+    try:
+        return max(0.5, min(4.0, float(info["width"]) / float(info["height"])))
+    except Exception:
+        return 16 / 9
+
+
 def video_srcs(v, sizes=("1080p", "720p", "360p")):
-    """Bunny video ID (or a full .mp4 link) -> list of playable MP4 URLs, best first."""
+    """Vimeo link, Bunny video ID or a direct .mp4 link -> list of sources, best first."""
     v = str(v or "").strip()
     if not v:
         return []
     if re.search(r"\.(mp4|webm|mov)(\?|$)", v, re.I):   # a direct video file link
         return [v]
+    vr = vimeo_ref(v)
+    if vr:
+        return ["vimeo:" + vr[0] + (":" + vr[1] if vr[1] else "")]
     if not BUNNY:
         return []
     vid = bunny_id(v)   # accepts the plain ID or any Bunny link that contains it
@@ -124,7 +179,12 @@ def video_srcs(v, sizes=("1080p", "720p", "360p")):
 
 def video_thumb(v):
     v = str(v or "").strip()
-    if not v or not BUNNY or re.search(r"\.(mp4|webm|mov)(\?|$)", v, re.I):
+    if not v or re.search(r"\.(mp4|webm|mov)(\?|$)", v, re.I):
+        return ""
+    vr = vimeo_ref(v)
+    if vr:
+        return str(vimeo_info(vr).get("thumbnail_url") or "")
+    if not BUNNY:
         return ""
     return f"https://{BUNNY}/{bunny_id(v)}/thumbnail.jpg"
 
@@ -145,7 +205,33 @@ BOOT = ('<script>(function(){var d=document.documentElement,l,t;try{l=localStora
         'd.setAttribute("data-lang",l);d.lang=l;var h=d.getAttribute("data-theme");if(h)d.setAttribute("data-host-theme",h);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);try{if(localStorage.getItem("me-motion-nav")==="closed")d.setAttribute("data-nav","closed");}catch(e){}})();</script>')
 
 
-def T(sv, en, tag="span", attrs=""):
+# ---------------- EDITABLE TEXTS ----------------
+# Every Swedish/English text on the site goes through T(). Texts changed in the admin panel
+# ("Texts – ..." in Pages CMS, stored in content/texts/*.json) replace the originals here.
+TEXT_DIR = CONTENT / "texts"
+TEXT_PAGES = [("common", "Texts – Menu, footer & buttons"), ("home", "Texts – Home"), ("work", "Texts – Work"),
+              ("services", "Texts – Services"), ("about", "Texts – About"), ("contact", "Texts – Contact")]
+SECTION = ["common"]   # which page the texts below belong to (set further down)
+SEEN = {}              # original Swedish text -> [page, Swedish, English], in order of appearance
+TEXT_OVR = {}
+for _f in sorted(TEXT_DIR.glob("*.json")) if TEXT_DIR.is_dir() else []:
+    try:
+        for _k, _v in json.loads(_f.read_text(encoding="utf-8")).items():
+            if isinstance(_v, dict) and _v.get("orig"):
+                _sv, _en = str(_v.get("sv") or "").strip(), str(_v.get("en") or "").strip()
+                TEXT_OVR[_v["orig"]] = (_sv if _sv and _sv != _v["orig"] else None,
+                                        _en if _en and _en != _v.get("orig_en") else None)
+    except Exception as err:
+        print(f"note: could not read {_f.name} ({err})")
+
+
+def T(sv, en, tag="span", attrs="", edit=True):
+    if edit:   # edit=False: text that comes from elsewhere (project titles, calculated prices)
+        if sv not in SEEN:
+            SEEN[sv] = [SECTION[0], sv, en]
+        o = TEXT_OVR.get(sv)
+        if o:
+            sv, en = o[0] or sv, o[1] or en
     a = f" {attrs}" if attrs else ""
     return f'<{tag} data-l="sv" lang="sv"{a}>{sv}</{tag}><{tag} data-l="en" lang="en"{a}>{en}</{tag}>'
 
@@ -238,7 +324,7 @@ def page(name, title_sv, title_en, active, body, full=True):
             f'<meta property="og:url" content="{url}">\n')
     head = f'<title>{title_sv}</title>\n{BOOT}\n{FONTS}\n<link rel="stylesheet" href="styles.css">\n'
     shell = (f'<span id="page-title" data-sv="{title_sv}" data-en="{title_en}" hidden></span>\n'
-             f'<div class="layout">\n{sidebar(active)}\n<div class="main">\n<main>\n{body}\n</main>\n{FOOTER}\n</div>\n</div>\n<script src="site.js"></script>\n')
+             f'<div class="layout">\n{sidebar(active)}\n<div class="main">\n<main>\n{body}\n</main>\n{FOOTER}\n</div>\n</div>\n' + (CAL_LOADER if BOOKING else "") + '<script src="site.js"></script>\n')
     if full:
         content = ('<!doctype html>\n<html lang="sv">\n<head>\n<meta charset="utf-8">\n'
                    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
@@ -339,7 +425,7 @@ def clip(p):
     t = [e(x) for x in two(p, "title")]
     return f'''<a class="clip{" wide" if wide else ""}" href="#{p["id"]}" data-project="{p["id"]}" data-cat="{cat}">
   {frame(p["cover_url"], p["scene"], p["seed"], "ratio-scope" if wide else "ratio-16x9", t[0], play)}
-  <div class="clip-meta">{T(*t, "h3")}<span class="mono">{meta}</span></div>
+  <div class="clip-meta">{T(*t, "h3", edit=False)}<span class="mono">{meta}</span></div>
 </a>'''
 
 
@@ -396,6 +482,7 @@ def project_json(p):
 
 
 # ---------------- HOME ----------------
+SECTION[0] = "home"
 SHOWREEL = str(SETTINGS.get("showreel") or "").strip()
 REEL = "|".join(video_srcs(SHOWREEL)) or "sample-film.mp4"
 REEL_POSTER = video_thumb(SHOWREEL)
@@ -403,12 +490,18 @@ PORTRAIT = media_url(SETTINGS.get("portrait"))
 
 
 def loop_video(srcs, preload="metadata"):
+    if srcs.startswith("vimeo:"):   # Vimeo's background player: silent, looping, no controls
+        vid, _, h = srcs[6:].partition("|")[0].partition(":")
+        q = "background=1&dnt=1" + (f"&h={h}" if h else "")
+        return (f'<iframe class="bg-loop vimeo-loop" src="https://player.vimeo.com/video/{e(vid)}?{q}" '
+                f'data-ratio="{vimeo_ratio((vid, h)):.4f}" allow="autoplay; fullscreen; picture-in-picture" '
+                f'tabindex="-1" aria-hidden="true" title="Showreel"></iframe>')
     return f'<video class="bg-loop" data-loop-src="{e(srcs)}" muted loop playsinline autoplay preload="{preload}" aria-hidden="true"></video>'
 
 
 def lens_item(p):
     v = ""
-    if p["video"] and BUNNY:
+    if p["video"] and BUNNY and not vimeo_ref(p["video"]):
         v = loop_video("|".join(video_srcs(p["video"], ("720p", "360p"))))
     elif p["demo"] and p.get("demo_loop"):
         v = loop_video("sample-film.mp4")
@@ -421,12 +514,18 @@ def lens_item(p):
 LENS_HTML = "".join(lens_item(p) for p in PROJECTS if p.get("show_on_home"))
 
 
+if BOOKING:
+    BOOK_BTN = (f'<a class="btn primary hero-cta" href="https://cal.com/{e(BOOKING)}" data-cal-link="{e(BOOKING)}" '
+                f'data-cal-config=\'{{"layout":"month_view"}}\' target="_blank" rel="noopener">{T("Boka ett samtal", "Book a call")}{ARROW}</a>')
+else:
+    BOOK_BTN = f'<a class="btn primary hero-cta" href="mailto:{EMAIL}">{T("Boka ett samtal", "Book a call")}{ARROW}</a>'
+
 home = f'''<section class="hero">
   <div class="wrap">
     {frame(REEL_POSTER, "archipelago", 3, "ratio-scope hero-reel", "", loop_video(REEL, "auto"))[:-6]}<button class="reel-toggle" type="button" aria-pressed="false"><span class="ic-pause" aria-hidden="true"></span><span class="ic-play" aria-hidden="true"></span><span class="rt-label">{T("Pausa", "Pause")}</span></button></div>
     <div class="hero-copy">
       {T("Berättelser som rör sig", "Stories that move", "h1")}
-      <a class="btn primary hero-cta" href="mailto:{EMAIL}">{T("Boka ett samtal", "Book a call")}{ARROW}</a>
+      {BOOK_BTN}
     </div>
   </div>
 </section>
@@ -486,6 +585,7 @@ home = f'''<section class="hero">
 page("index.html", BRAND, BRAND, "home", home, full=False)
 
 # ---------------- WORK ----------------
+SECTION[0] = "work"
 grid = "\n".join(clip(p) for p in PROJECTS)
 data = json.dumps([project_json(p) for p in PROJECTS], ensure_ascii=False).replace("</", "<\\/")
 chips = [("all", "Alla", "All"), ("wedding", "Bröllop", "Weddings"), ("business", "Företag", "Companies"),
@@ -524,6 +624,7 @@ page("work.html", f"Arbeten · {BRAND}", f"Work · {BRAND}", "work", work)
 
 
 # ---------------- SERVICES ----------------
+SECTION[0] = "services"
 def svc_panel(pid, scene, seed, eb, title, intro, lis, btn):
     lis_html = "".join(f"<li>{T(sv, en)}</li>" for sv, en in lis)
     return f'''<article class="svc" id="{pid}-panel">
@@ -608,7 +709,7 @@ def save_line(c, l):
         return ""
     diff = _kr(PRICE[("photo", l)]) + _kr(PRICE[("film", l)]) - _kr(PRICE[("both", l)])
     amt = f"{diff:,}".replace(",", " ")
-    return f'<p class="w-save">{T(f"Du sparar {amt} kr jämfört med bilder och film var för sig.", f"You save {amt} kr compared with booking images and film separately.")}</p>'
+    return f'<p class="w-save">{T(f"Du sparar {amt} kr jämfört med bilder och film var för sig.", f"You save {amt} kr compared with booking images and film separately.", edit=False)}</p>'
 
 
 panels = []
@@ -708,6 +809,7 @@ services = f'''<div class="wrap page-hero">
 page("services.html", f"Tjänster · {BRAND}", f"Services · {BRAND}", "services", services)
 
 # ---------------- ABOUT ----------------
+SECTION[0] = "about"
 about = f'''<div class="wrap page-hero">
   {T("Om", "About", "span", 'class="eyebrow"')}
   {T("Om ME Motion", "About ME Motion", "h1")}
@@ -742,6 +844,7 @@ page("about.html", f"Om · {BRAND}", f"About · {BRAND}", "about", about)
 
 
 # ---------------- CONTACT ----------------
+SECTION[0] = "contact"
 def fseg(group, opts, mode):
     cls = "seg form-seg" if mode == "single" else "chips-multi"
     return (f'<div class="{cls}" role="group" data-group="{group}" data-mode="{mode}">' +
@@ -779,7 +882,8 @@ contact = f'''<div class="wrap page-hero">
 <section style="padding-top: 0;">
   <div class="wrap two-col">
     <div class="stack">
-      <form class="form" id="enquiry" novalidate>
+      <form class="form" id="enquiry" novalidate data-send="https://formsubmit.co/ajax/{e(EMAIL)}">
+        <input type="text" name="_honey" id="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <div class="row">
           <div class="field"><label for="name">{T("Namn", "Name")}</label><input id="name" autocomplete="name"><span class="err" id="name-err" hidden>{T("Skriv ditt namn.", "Add your name.")}</span></div>
           <div class="field"><label for="email">{T("E-post", "Email")}</label><input id="email" type="email" autocomplete="email"><span class="err" id="email-err" hidden>{T("Skriv en e-postadress, t.ex. namn@exempel.se.", "Add an email address like name@example.se.")}</span></div>
@@ -800,6 +904,10 @@ contact = f'''<div class="wrap page-hero">
         <div class="field"><label for="message">{T("Berätta mer", "The details")}</label><textarea id="message" data-sv-placeholder="Vad ska hända, vilka är med och vad är viktigast för dig?" data-en-placeholder="What's happening, who's involved and what matters most to you?" placeholder="Vad ska hända, vilka är med och vad är viktigast för dig?"></textarea><span class="err" id="message-err" hidden>{T("Skriv några rader om vad du planerar.", "Write a few lines about what you're planning.")}</span></div>
         <div><button class="btn primary" type="submit">{T("Skicka meddelande", "Send message")}{ARROW}</button></div>
       </form>
+      <div class="result sent" id="enquiry-sent" hidden tabindex="-1" aria-live="polite">
+        {T("Tack! Meddelandet är skickat.", "Thank you! Your message has been sent.", "strong")}
+        {T("Svaret kommer till e-postadressen du angav.", "The reply will come to the email address you entered.", "p", 'class="note"')}
+      </div>
       <div class="result" id="enquiry-result" hidden aria-live="polite">
         {T("Nästan klart!", "Almost there!", "strong")}
         {T("Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.", "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath.", "p", 'class="note"')}
@@ -823,4 +931,52 @@ contact = f'''<div class="wrap page-hero">
   </div>
 </section>'''
 page("contact.html", f"Kontakt · {BRAND}", f"Contact · {BRAND}", "contact", contact)
+
+
+# ---------------- KEEP THE ADMIN PANEL'S TEXT LIST UP TO DATE ----------------
+TEXTS_MARK = "# ===== Website texts: made automatically by build.py. Edit the texts in the admin panel, not here. ====="
+
+
+def sync_texts():
+    """Write content/texts/*.json and the matching 'Texts – ...' sections of .pages.yml.
+    Texts already edited in the admin panel are kept."""
+    old = {}
+    for f in TEXT_DIR.glob("*.json") if TEXT_DIR.is_dir() else []:
+        try:
+            for v in json.loads(f.read_text(encoding="utf-8")).values():
+                if isinstance(v, dict) and v.get("orig"):
+                    old[v["orig"]] = v
+        except Exception:
+            pass
+    TEXT_DIR.mkdir(exist_ok=True)
+    yml = [TEXTS_MARK]
+    for sec, label in TEXT_PAGES:
+        rows = [(orig, en) for orig, (s, _sv, en) in SEEN.items() if s == sec and re.search(r"[A-Za-zÅÄÖåäö]", orig)]
+        data = {}
+        fields = []
+        for i, (orig, en) in enumerate(rows, 1):
+            key = f"{sec}_{i:03d}"
+            o = old.get(orig, {})
+            sv_cur = str(o.get("sv") or "").strip() or orig
+            en_cur = str(o.get("en") or "").strip()
+            if not en_cur or en_cur == o.get("orig_en"):
+                en_cur = en   # not edited: follow the website's own English
+            data[key] = {"orig": orig, "orig_en": en, "sv": sv_cur, "en": en_cur}
+            name = re.sub(r"<[^>]+>", "", html.unescape(orig))
+            name = (name[:70] + "…") if len(name) > 72 else name
+            fields.append(f"  - name: {key}\n    label: {json.dumps(name, ensure_ascii=False)}\n    type: object\n    fields:\n"
+                          "    - {name: orig, type: string, hidden: true}\n    - {name: orig_en, type: string, hidden: true}\n"
+                          "    - {name: sv, label: Svenska, type: text}\n    - {name: en, label: English, type: text}")
+        (TEXT_DIR / f"{sec}.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        yml.append(f"- name: texts_{sec}\n  label: {json.dumps(label, ensure_ascii=False)}\n  type: file\n"
+                   f"  path: content/texts/{sec}.json\n  format: json\n  fields:\n" + "\n".join(fields))
+    cfg = ROOT / ".pages.yml"
+    base = cfg.read_text(encoding="utf-8") if cfg.exists() else ""
+    base = base.split(TEXTS_MARK)[0].rstrip() + "\n\n"
+    cfg.write_text(base + "\n".join(yml) + "\n", encoding="utf-8")
+    print(f"texts: {sum(1 for s in SEEN.values() if s[0])} texts written to content/texts and .pages.yml")
+
+
+if os.environ.get("SYNC_TEXTS") == "1":
+    sync_texts()
 print("ok")

@@ -241,6 +241,9 @@
     }
     if (list.length) v.src = list[0];
   }
+  /* Vimeo films are listed as "vimeo:<number>" or "vimeo:<number>:<private hash>" */
+  function isVimeo(u) { return /^vimeo:/.test(srcList(u)[0] || ""); }
+  function vimeoURL(u, q) { var p = srcList(u)[0].slice(6).split(":"); return "https://player.vimeo.com/video/" + p[0] + "?" + q + (p[1] ? "&h=" + p[1] : ""); }
 
   /* ---------- Silent looping showreel in the opening frame ---------- */
   document.querySelectorAll("video[data-loop-src]").forEach(function (v) {
@@ -260,6 +263,31 @@
     langListeners.push(sync);
     if (reduce) { v.removeAttribute("autoplay"); v.pause(); sync(); return; }
     var pr = v.play(); if (pr && pr.catch) pr.catch(function () { sync(); });
+    sync();
+  });
+
+  /* ---------- Showreel from Vimeo (background player): cover the frame, pause/play button ---------- */
+  document.querySelectorAll("iframe.vimeo-loop").forEach(function (ifr) {
+    var host = ifr.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), paused = false;
+    var ratio = parseFloat(ifr.getAttribute("data-ratio")) || 16 / 9;
+    function fit() {
+      if (!host) return;
+      var w = host.clientWidth, h = host.clientHeight; if (!w || !h) return;
+      if (w / h > ratio) { ifr.style.width = w + "px"; ifr.style.height = Math.ceil(w / ratio) + "px"; }
+      else { ifr.style.height = h + "px"; ifr.style.width = Math.ceil(h * ratio) + "px"; }
+    }
+    function send(m) { try { ifr.contentWindow.postMessage(JSON.stringify({ method: m }), "https://player.vimeo.com"); } catch (e) {} }
+    function sync() {
+      if (!btn) return;
+      btn.setAttribute("aria-pressed", paused ? "true" : "false");
+      btn.setAttribute("aria-label", paused ? L("Spela showreel", "Play showreel") : L("Pausa showreel", "Pause showreel"));
+      btn.classList.toggle("is-paused", paused);
+    }
+    if (host && btn) host.addEventListener("click", function (e) { if (e.target.closest("a")) return; paused = !paused; send(paused ? "pause" : "play"); sync(); });
+    ifr.addEventListener("load", function () { if (reduce || paused) { paused = true; send("pause"); sync(); } });
+    langListeners.push(sync);
+    fit(); window.addEventListener("resize", fit);
+    if (window.ResizeObserver && host) new ResizeObserver(fit).observe(host);
     sync();
   });
 
@@ -290,6 +318,18 @@
       var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
     });
   });
+
+  /* ---------- Booking (Cal.com): open as a pop-up on the site, matching light/dark ---------- */
+  (function () {
+    var calScript = document.querySelector('script[src*="cal.com/embed/embed.js"]'), calReady = false;
+    if (calScript) calScript.addEventListener("load", function () { calReady = true; });
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("[data-cal-link]"); if (!a) return;
+      var dark = root.getAttribute("data-theme") === "dark" || (root.getAttribute("data-theme") !== "light" && window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches);
+      a.setAttribute("data-cal-config", JSON.stringify({ layout: "month_view", theme: dark ? "dark" : "light" }));
+      if (calReady) e.preventDefault();   /* the pop-up opens; otherwise the link opens the booking page */
+    }, true);
+  })();
 
   /* ---------- Sidebar: open / close ---------- */
   var sideBtn = document.querySelector(".side-toggle");
@@ -386,13 +426,25 @@
       modal.querySelector(".modal-nav").hidden = visible().length < 2;
     }
     var lb = document.createElement("div"); lb.className = "lightbox"; lb.hidden = true; lb.setAttribute("role", "dialog"); lb.setAttribute("aria-modal", "true");
-    lb.innerHTML = '<div class="lb-stage"><div class="frame" data-scene="archipelago" data-seed="1"></div><img class="lb-img" alt="" hidden><video class="lb-video" controls playsinline preload="metadata" hidden></video></div><div class="lb-bar"><button class="icon-btn" type="button" data-lb="-1" aria-label="Föregående / Previous">←</button><span class="mono lb-cap"></span><span class="mono lb-count"></span><button class="icon-btn" type="button" data-lb="1" aria-label="Nästa / Next">→</button><button class="icon-btn" type="button" data-lb="x" aria-label="Stäng / Close">✕</button></div>';
+    lb.innerHTML = '<div class="lb-stage"><div class="frame" data-scene="archipelago" data-seed="1"></div><img class="lb-img" alt="" hidden><video class="lb-video" controls playsinline preload="metadata" hidden></video><iframe class="lb-vimeo" title="Film" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen hidden></iframe></div><div class="lb-bar"><button class="icon-btn" type="button" data-lb="-1" aria-label="Föregående / Previous">←</button><span class="mono lb-cap"></span><span class="mono lb-count"></span><button class="icon-btn" type="button" data-lb="1" aria-label="Nästa / Next">→</button><button class="icon-btn" type="button" data-lb="x" aria-label="Stäng / Close">✕</button></div>';
     document.body.appendChild(lb);
     var lbList = [], lbI = 0, lbFrom = null;
+    function lbStopVimeo() {
+      var vm = lb.querySelector(".lb-vimeo");
+      if (vm.getAttribute("data-key")) { vm.removeAttribute("data-key"); vm.src = "about:blank"; }
+      vm.hidden = true;
+    }
     function lbShow() {
       var im = lbList[lbI], f = lb.querySelector(".frame"), vid = lb.querySelector(".lb-video"), pic = lb.querySelector(".lb-img");
       vid.pause();
-      if (im.src) {
+      var onVimeo = !!(im.src && isVimeo(im.src));
+      if (!onVimeo) lbStopVimeo();
+      if (onVimeo) {
+        var vm = lb.querySelector(".lb-vimeo"), url = vimeoURL(im.src, "autoplay=1&dnt=1&title=0&byline=0&portrait=0");
+        f.hidden = true; pic.hidden = true; vid.hidden = true; vm.hidden = false;
+        if (vm.getAttribute("data-key") !== url) { vm.setAttribute("data-key", url); vm.src = url; }
+      }
+      else if (im.src) {
         f.hidden = true; pic.hidden = true; vid.hidden = false;
         var key = srcList(im.src).join("|");
         if (vid.getAttribute("data-key") !== key) { vid.setAttribute("data-key", key); vid.poster = im.img || ""; setSrcs(vid, srcList(im.src)); }
@@ -404,7 +456,7 @@
       lb.querySelector(".lb-count").textContent = (lbI + 1) + " / " + lbList.length;
     }
     function lbOpen(list, i, from) { lbList = list; lbI = i; lbFrom = from; lb.hidden = false; lbShow(); lb.querySelector('[data-lb="x"]').focus(); }
-    function lbClose() { lb.querySelector(".lb-video").pause(); lb.hidden = true; if (lbFrom) lbFrom.focus(); }
+    function lbClose() { lb.querySelector(".lb-video").pause(); lbStopVimeo(); lb.hidden = true; if (lbFrom) lbFrom.focus(); }
     lb.addEventListener("click", function (e) {
       var b = e.target.closest("[data-lb]");
       if (!b) { if (e.target === lb || e.target.classList.contains("lb-stage")) lbClose(); return; }
@@ -487,8 +539,35 @@
       document.getElementById("enquiry-text").textContent = text;
       var to = (document.getElementById("mail-addr") || {}).textContent || "";
       var subject = L("Förfrågan från ", "Enquiry from ") + v("name") + " · " + occasionText();
-      try { window.location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text); } catch (err) {}
-      var res = document.getElementById("enquiry-result"); res.hidden = false; res.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      /* Backup: open the visitor's own email app with everything filled in */
+      function viaMailApp() {
+        try { window.location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text); } catch (err) {}
+        var res = document.getElementById("enquiry-result"); res.hidden = false; res.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      }
+      var endpoint = form.getAttribute("data-send"), hp = document.getElementById("hp-field");
+      if (!endpoint || !window.fetch) { viaMailApp(); return; }
+      var btn = form.querySelector('button[type="submit"]'), label = btn.innerHTML;
+      btn.disabled = true; btn.setAttribute("aria-busy", "true"); btn.textContent = L("Skickar…", "Sending…");
+      fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          _subject: "Ny förfrågan från memotion.se · " + v("name"), _template: "table", _captcha: "false",
+          _honey: hp ? hp.value : "", _replyto: v("email"),
+          "Namn": v("name"), "email": v("email"), "Telefon": v("phone") || "–", "Gäller": occasionText(),
+          "Datum": v("date") || tbd, "Plats": v("location") || tbd, "Meddelande": v("message"), "Språk på sidan": lang().toUpperCase()
+        })
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok || String(j.success) !== "true") throw new Error(j.message || ("HTTP " + r.status));
+        });
+      }).then(function () {
+        form.hidden = true; document.getElementById("enquiry-result").hidden = true;
+        var done = document.getElementById("enquiry-sent"); done.hidden = false; done.focus();
+        done.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      }).catch(function () { viaMailApp(); }).then(function () {
+        btn.disabled = false; btn.removeAttribute("aria-busy"); btn.innerHTML = label;
+      });
     });
   }
 })();

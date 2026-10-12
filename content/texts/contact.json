@@ -1,0 +1,182 @@
+{
+  "contact_001": {
+    "orig": "Hur långt i förväg behöver jag boka?",
+    "orig_en": "How far in advance do I need to book?",
+    "sv": "Hur långt i förväg behöver jag boka?",
+    "en": "How far in advance do I need to book?"
+  },
+  "contact_002": {
+    "orig": "Vanligtvis rekommenderas att boka 6–9 månader i förväg. Men även med kort varsel går det ofta att lösa, så hör av dig ändå.",
+    "orig_en": "It's usually recommended to book 6–9 months ahead. But even at short notice it can often be arranged, so get in touch anyway.",
+    "sv": "Vanligtvis rekommenderas att boka 6–9 månader i förväg. Men även med kort varsel går det ofta att lösa, så hör av dig ändå.",
+    "en": "It's usually recommended to book 6–9 months ahead. But even at short notice it can often be arranged, so get in touch anyway."
+  },
+  "contact_003": {
+    "orig": "Hur hittar ni berättelsen?",
+    "orig_en": "How do you find the story?",
+    "sv": "Hur hittar ni berättelsen?",
+    "en": "How do you find the story?"
+  },
+  "contact_004": {
+    "orig": "Genom att lyssna först. Innan kameran kommer fram pratar man igenom vad och vilka som är viktiga, och vad du vill känna när du ser resultatet. Berättelsen finns oftast redan där. Uppgiften är att se den.",
+    "orig_en": "By listening first. Before the camera comes out, the conversation covers what matters, who matters and what you want to feel when you look back on it. The story is usually already there. The job is to notice it.",
+    "sv": "Genom att lyssna först. Innan kameran kommer fram pratar man igenom vad och vilka som är viktiga, och vad du vill känna när du ser resultatet. Berättelsen finns oftast redan där. Uppgiften är att se den.",
+    "en": "By listening first. Before the camera comes out, the conversation covers what matters, who matters and what you want to feel when you look back on it. The story is usually already there. The job is to notice it."
+  },
+  "contact_005": {
+    "orig": "Hur mycket behöver jag planera själv?",
+    "orig_en": "How much of the planning do I need to do?",
+    "sv": "Hur mycket behöver jag planera själv?",
+    "en": "How much of the planning do I need to do?"
+  },
+  "contact_006": {
+    "orig": "Väldigt lite. Berätta vad som känns viktigt för dig, så tar ME Motion hand om upplägget, tiderna och detaljerna.",
+    "orig_en": "Very little. Share whatever feels important to you, and ME Motion takes care of the plan, the timing and the details.",
+    "sv": "Väldigt lite. Berätta vad som känns viktigt för dig, så tar ME Motion hand om upplägget, tiderna och detaljerna.",
+    "en": "Very little. Share whatever feels important to you, and ME Motion takes care of the plan, the timing and the details."
+  },
+  "contact_007": {
+    "orig": "Jobbar ni utanför Stockholm?",
+    "orig_en": "Do you work outside Stockholm?",
+    "sv": "Jobbar ni utanför Stockholm?",
+    "en": "Do you work outside Stockholm?"
+  },
+  "contact_008": {
+    "orig": "Ja, både i Sverige och utomlands. Resekostnaden beror på avstånd och färdsätt och finns alltid med i offerten.",
+    "orig_en": "Yes, both in Sweden and abroad. Travel costs depend on the distance and the way of travel, and they're always part of your quote.",
+    "sv": "Ja, både i Sverige och utomlands. Resekostnaden beror på avstånd och färdsätt och finns alltid med i offerten.",
+    "en": "Yes, both in Sweden and abroad. Travel costs depend on the distance and the way of travel, and they're always part of your quote."
+  },
+  "contact_009": {
+    "orig": "Vad får jag när allt är klart?",
+    "orig_en": "What do I get in the end?",
+    "sv": "Vad får jag när allt är klart?",
+    "en": "What do I get in the end?"
+  },
+  "contact_010": {
+    "orig": "Färdigt material, redo att använda. Film i de format du behöver, från bred film till stående klipp, och bilder i full upplösning för webb och tryck. Allt levereras via en privat länk, på det datum som bestämts från start.",
+    "orig_en": "Finished material, ready to use. Film in the formats you need, from widescreen to vertical clips, and images in full resolution for web and print. Everything is delivered via a private link, on the date agreed from the start.",
+    "sv": "Färdigt material, redo att använda. Film i de format du behöver, från bred film till stående klipp, och bilder i full upplösning för webb och tryck. Allt levereras via en privat länk, på det datum som bestämts från start.",
+    "en": "Finished material, ready to use. Film in the formats you need, from widescreen to vertical clips, and images in full resolution for web and print. Everything is delivered via a private link, on the date agreed from the start."
+  },
+  "contact_011": {
+    "orig": "Berätta lite om vad du planerar. Datumet får gärna vara ungefärligt. Alla meddelanden läses och besvaras personligen.",
+    "orig_en": "Share a little about what you're planning. The date can be rough. Every message is read and answered personally.",
+    "sv": "Berätta lite om vad du planerar. Datumet får gärna vara ungefärligt. Alla meddelanden läses och besvaras personligen.",
+    "en": "Share a little about what you're planning. The date can be rough. Every message is read and answered personally."
+  },
+  "contact_012": {
+    "orig": "Namn",
+    "orig_en": "Name",
+    "sv": "Namn",
+    "en": "Name"
+  },
+  "contact_013": {
+    "orig": "Skriv ditt namn.",
+    "orig_en": "Add your name.",
+    "sv": "Skriv ditt namn.",
+    "en": "Add your name."
+  },
+  "contact_014": {
+    "orig": "E-post",
+    "orig_en": "Email",
+    "sv": "E-post",
+    "en": "Email"
+  },
+  "contact_015": {
+    "orig": "Skriv en e-postadress, t.ex. namn@exempel.se.",
+    "orig_en": "Add an email address like name@example.se.",
+    "sv": "Skriv en e-postadress, t.ex. namn@exempel.se.",
+    "en": "Add an email address like name@example.se."
+  },
+  "contact_016": {
+    "orig": "Vad gäller det?",
+    "orig_en": "What's it about?",
+    "sv": "Vad gäller det?",
+    "en": "What's it about?"
+  },
+  "contact_017": {
+    "orig": "Något annat",
+    "orig_en": "Something else",
+    "sv": "Något annat",
+    "en": "Something else"
+  },
+  "contact_018": {
+    "orig": "Telefon (valfritt)",
+    "orig_en": "Phone (optional)",
+    "sv": "Telefon (valfritt)",
+    "en": "Phone (optional)"
+  },
+  "contact_019": {
+    "orig": "Datum",
+    "orig_en": "Date",
+    "sv": "Datum",
+    "en": "Date"
+  },
+  "contact_020": {
+    "orig": "Plats",
+    "orig_en": "Location",
+    "sv": "Plats",
+    "en": "Location"
+  },
+  "contact_021": {
+    "orig": "Berätta mer",
+    "orig_en": "The details",
+    "sv": "Berätta mer",
+    "en": "The details"
+  },
+  "contact_022": {
+    "orig": "Skriv några rader om vad du planerar.",
+    "orig_en": "Write a few lines about what you're planning.",
+    "sv": "Skriv några rader om vad du planerar.",
+    "en": "Write a few lines about what you're planning."
+  },
+  "contact_023": {
+    "orig": "Skicka meddelande",
+    "orig_en": "Send message",
+    "sv": "Skicka meddelande",
+    "en": "Send message"
+  },
+  "contact_024": {
+    "orig": "Tack! Meddelandet är skickat.",
+    "orig_en": "Thank you! Your message has been sent.",
+    "sv": "Tack! Meddelandet är skickat.",
+    "en": "Thank you! Your message has been sent."
+  },
+  "contact_025": {
+    "orig": "Svaret kommer till e-postadressen du angav.",
+    "orig_en": "The reply will come to the email address you entered.",
+    "sv": "Svaret kommer till e-postadressen du angav.",
+    "en": "The reply will come to the email address you entered."
+  },
+  "contact_026": {
+    "orig": "Nästan klart!",
+    "orig_en": "Almost there!",
+    "sv": "Nästan klart!",
+    "en": "Almost there!"
+  },
+  "contact_027": {
+    "orig": "Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.",
+    "orig_en": "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath.",
+    "sv": "Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.",
+    "en": "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath."
+  },
+  "contact_028": {
+    "orig": "Kopiera meddelandet",
+    "orig_en": "Copy message",
+    "sv": "Kopiera meddelandet",
+    "en": "Copy message"
+  },
+  "contact_029": {
+    "orig": "Kontaktuppgifter",
+    "orig_en": "Contact details",
+    "sv": "Kontaktuppgifter",
+    "en": "Contact details"
+  },
+  "contact_030": {
+    "orig": "FAQ",
+    "orig_en": "FAQ",
+    "sv": "FAQ",
+    "en": "FAQ"
+  }
+}

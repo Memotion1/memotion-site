@@ -1,0 +1,152 @@
+{
+  "home_001": {
+    "orig": "Bröllop",
+    "orig_en": "Wedding",
+    "sv": "Bröllop",
+    "en": "Wedding"
+  },
+  "home_002": {
+    "orig": "Företag",
+    "orig_en": "Business",
+    "sv": "Företag",
+    "en": "Business"
+  },
+  "home_003": {
+    "orig": "Evenemang",
+    "orig_en": "Event",
+    "sv": "Evenemang",
+    "en": "Event"
+  },
+  "home_004": {
+    "orig": "Övrigt",
+    "orig_en": "Other",
+    "sv": "Övrigt",
+    "en": "Other"
+  },
+  "home_005": {
+    "orig": "Drönare",
+    "orig_en": "Drone",
+    "sv": "Drönare",
+    "en": "Drone"
+  },
+  "home_006": {
+    "orig": "Boka ett samtal",
+    "orig_en": "Book a call",
+    "sv": "Boka ett samtal",
+    "en": "Book a call"
+  },
+  "home_007": {
+    "orig": "Pausa",
+    "orig_en": "Pause",
+    "sv": "Pausa",
+    "en": "Pause"
+  },
+  "home_008": {
+    "orig": "Berättelser som rör sig",
+    "orig_en": "Stories that move",
+    "sv": "Berättelser som rör sig",
+    "en": "Stories that move"
+  },
+  "home_009": {
+    "orig": "Bakom kameran",
+    "orig_en": "Behind the camera",
+    "sv": "Bakom kameran",
+    "en": "Behind the camera"
+  },
+  "home_010": {
+    "orig": "Lugn på plats, noggrann i efterarbetet",
+    "orig_en": "Calm on location, meticulous in post-production",
+    "sv": "Lugn på plats, noggrann i efterarbetet",
+    "en": "Calm on location, meticulous in post-production"
+  },
+  "home_011": {
+    "orig": "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.",
+    "orig_en": "Every project starts with a conversation, long before the camera comes out. The work begins once the feeling you're after is clear.",
+    "sv": "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.",
+    "en": "Every project starts with a conversation, long before the camera comes out. The work begins once the feeling you're after is clear."
+  },
+  "home_012": {
+    "orig": "Läs om ME Motion",
+    "orig_en": "About ME Motion",
+    "sv": "Läs om ME Motion",
+    "en": "About ME Motion"
+  },
+  "home_013": {
+    "orig": "Utvalda projekt",
+    "orig_en": "Selected work",
+    "sv": "Utvalda projekt",
+    "en": "Selected work"
+  },
+  "home_014": {
+    "orig": "Genom linsen",
+    "orig_en": "Through the lens",
+    "sv": "Genom linsen",
+    "en": "Through the lens"
+  },
+  "home_015": {
+    "orig": "Vad ME Motion gör",
+    "orig_en": "What ME Motion does",
+    "sv": "Vad ME Motion gör",
+    "en": "What ME Motion does"
+  },
+  "home_016": {
+    "orig": "Bilder som gör jobbet",
+    "orig_en": "Footage that does a job",
+    "sv": "Bilder som gör jobbet",
+    "en": "Footage that does a job"
+  },
+  "home_017": {
+    "orig": "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?",
+    "orig_en": "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?",
+    "sv": "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?",
+    "en": "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?"
+  },
+  "home_018": {
+    "orig": "Samma person planerar, filmar och klipper. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.",
+    "orig_en": "The same person plans, films and edits. That means short decision paths and a film that holds together all the way from idea to delivery.",
+    "sv": "Samma person planerar, filmar och klipper. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.",
+    "en": "The same person plans, films and edits. That means short decision paths and a film that holds together all the way from idea to delivery."
+  },
+  "home_019": {
+    "orig": "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.",
+    "orig_en": "Commercials and brand films, interviews, YouTube, social media clips and product photography.",
+    "sv": "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.",
+    "en": "Commercials and brand films, interviews, YouTube, social media clips and product photography."
+  },
+  "home_020": {
+    "orig": "Evenemang och idrott",
+    "orig_en": "Events and sport",
+    "sv": "Evenemang och idrott",
+    "en": "Events and sport"
+  },
+  "home_021": {
+    "orig": "Konferenser, lanseringar, matcher och fester, fångade medan de pågår.",
+    "orig_en": "Conferences, launches, matches and parties, captured as they happen.",
+    "sv": "Konferenser, lanseringar, matcher och fester, fångade medan de pågår.",
+    "en": "Conferences, launches, matches and parties, captured as they happen."
+  },
+  "home_022": {
+    "orig": "Film och foto från vigseln till sista dansen.",
+    "orig_en": "Film and photography from the ceremony to the last dance.",
+    "sv": "Film och foto från vigseln till sista dansen.",
+    "en": "Film and photography from the ceremony to the last dance."
+  },
+  "home_023": {
+    "orig": "Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.",
+    "orig_en": "Aerial footage of the archipelago, properties and events, wherever flying is permitted.",
+    "sv": "Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.",
+    "en": "Aerial footage of the archipelago, properties and events, wherever flying is permitted."
+  },
+  "home_024": {
+    "orig": "Något helt annat i tankarna?",
+    "orig_en": "Something else entirely in mind?",
+    "sv": "Något helt annat i tankarna?",
+    "en": "Something else entirely in mind?"
+  },
+  "home_025": {
+    "orig": "Berätta om det",
+    "orig_en": "Tell me about it",
+    "sv": "Berätta om det",
+    "en": "Tell me about it"
+  }
+}

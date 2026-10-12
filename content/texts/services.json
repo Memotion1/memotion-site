@@ -1,0 +1,494 @@
+{
+  "services_001": {
+    "orig": "Varumärkes- och reklamfilm",
+    "orig_en": "Brand and commercial film",
+    "sv": "Varumärkes- och reklamfilm",
+    "en": "Brand and commercial film"
+  },
+  "services_002": {
+    "orig": "YouTube och korta klipp för sociala medier",
+    "orig_en": "YouTube and short clips for social media",
+    "sv": "YouTube och korta klipp för sociala medier",
+    "en": "YouTube and short clips for social media"
+  },
+  "services_003": {
+    "orig": "Intervjuer och rekryteringsfilm",
+    "orig_en": "Interviews and recruitment film",
+    "sv": "Intervjuer och rekryteringsfilm",
+    "en": "Interviews and recruitment film"
+  },
+  "services_004": {
+    "orig": "Porträtt och produktbilder för webb och press",
+    "orig_en": "Portraits and product images for web and press",
+    "sv": "Porträtt och produktbilder för webb och press",
+    "en": "Portraits and product images for web and press"
+  },
+  "services_005": {
+    "orig": "Er historia",
+    "orig_en": "Your story",
+    "sv": "Er historia",
+    "en": "Your story"
+  },
+  "services_006": {
+    "orig": "Film och bilder som visar vilka ni är, från en halvdag hos er till större produktioner.",
+    "orig_en": "Film and photography that show who you are, from a half-day shoot on site to larger productions.",
+    "sv": "Film och bilder som visar vilka ni är, från en halvdag hos er till större produktioner.",
+    "en": "Film and photography that show who you are, from a half-day shoot on site to larger productions."
+  },
+  "services_007": {
+    "orig": "Pris enligt offert, utifrån projektets omfattning.",
+    "orig_en": "Price on request, shaped around the scope of the project.",
+    "sv": "Pris enligt offert, utifrån projektets omfattning.",
+    "en": "Price on request, shaped around the scope of the project."
+  },
+  "services_008": {
+    "orig": "Berätta er historia",
+    "orig_en": "Tell your story",
+    "sv": "Berätta er historia",
+    "en": "Tell your story"
+  },
+  "services_009": {
+    "orig": "En film som fångar stämningen",
+    "orig_en": "A film that captures the atmosphere",
+    "sv": "En film som fångar stämningen",
+    "en": "A film that captures the atmosphere"
+  },
+  "services_010": {
+    "orig": "Ett kort klipp för sociala medier samma vecka",
+    "orig_en": "A short social clip the same week",
+    "sv": "Ett kort klipp för sociala medier samma vecka",
+    "en": "A short social clip the same week"
+  },
+  "services_011": {
+    "orig": "Bilder redo att publicera dagen efter",
+    "orig_en": "Images ready to post the next day",
+    "sv": "Bilder redo att publicera dagen efter",
+    "en": "Images ready to post the next day"
+  },
+  "services_012": {
+    "orig": "Korta intervjuer med gäster och talare",
+    "orig_en": "Short interviews with guests and speakers",
+    "sv": "Korta intervjuer med gäster och talare",
+    "en": "Short interviews with guests and speakers"
+  },
+  "services_013": {
+    "orig": "Ögonblicket",
+    "orig_en": "The moment",
+    "sv": "Ögonblicket",
+    "en": "The moment"
+  },
+  "services_014": {
+    "orig": "Lanseringar, konferenser, fester och sport, fångade medan de pågår.",
+    "orig_en": "Launches, conferences, parties and sport, captured as they happen.",
+    "sv": "Lanseringar, konferenser, fester och sport, fångade medan de pågår.",
+    "en": "Launches, conferences, parties and sport, captured as they happen."
+  },
+  "services_015": {
+    "orig": "Fånga ögonblicket",
+    "orig_en": "Capture the moment",
+    "sv": "Fånga ögonblicket",
+    "en": "Capture the moment"
+  },
+  "services_016": {
+    "orig": "Vigseln, parporträtt och familjebilder",
+    "orig_en": "Ceremony, couple portraits and family photos",
+    "sv": "Vigseln, parporträtt och familjebilder",
+    "en": "Ceremony, couple portraits and family photos"
+  },
+  "services_017": {
+    "orig": "300+ redigerade bilder",
+    "orig_en": "300+ edited images",
+    "sv": "300+ redigerade bilder",
+    "en": "300+ edited images"
+  },
+  "services_018": {
+    "orig": "Ett första smakprov inom 48 timmar",
+    "orig_en": "A first sneak peek within 48 hours",
+    "sv": "Ett första smakprov inom 48 timmar",
+    "en": "A first sneak peek within 48 hours"
+  },
+  "services_019": {
+    "orig": "Levereras inom 3 veckor",
+    "orig_en": "Delivered within 3 weeks",
+    "sv": "Levereras inom 3 veckor",
+    "en": "Delivered within 3 weeks"
+  },
+  "services_020": {
+    "orig": "Intim vigsel",
+    "orig_en": "Intimate ceremony",
+    "sv": "Intim vigsel",
+    "en": "Intimate ceremony"
+  },
+  "services_021": {
+    "orig": "3 timmar",
+    "orig_en": "3 hours",
+    "sv": "3 timmar",
+    "en": "3 hours"
+  },
+  "services_022": {
+    "orig": "inkl. moms",
+    "orig_en": "incl. VAT",
+    "sv": "inkl. moms",
+    "en": "incl. VAT"
+  },
+  "services_023": {
+    "orig": "Vigseln, porträtt, mingel och middagens viktigaste stunder",
+    "orig_en": "Ceremony, portraits, drinks reception and the key moments of dinner",
+    "sv": "Vigseln, porträtt, mingel och middagens viktigaste stunder",
+    "en": "Ceremony, portraits, drinks reception and the key moments of dinner"
+  },
+  "services_024": {
+    "orig": "500+ redigerade bilder",
+    "orig_en": "500+ edited images",
+    "sv": "500+ redigerade bilder",
+    "en": "500+ edited images"
+  },
+  "services_025": {
+    "orig": "Levereras inom 5 veckor",
+    "orig_en": "Delivered within 5 weeks",
+    "sv": "Levereras inom 5 veckor",
+    "en": "Delivered within 5 weeks"
+  },
+  "services_026": {
+    "orig": "Halva dagen",
+    "orig_en": "Half-day story",
+    "sv": "Halva dagen",
+    "en": "Half-day story"
+  },
+  "services_027": {
+    "orig": "6 timmar",
+    "orig_en": "6 hours",
+    "sv": "6 timmar",
+    "en": "6 hours"
+  },
+  "services_028": {
+    "orig": "Hela dagen, från förberedelserna till festen på kvällen",
+    "orig_en": "The whole day, from getting ready to the party at night",
+    "sv": "Hela dagen, från förberedelserna till festen på kvällen",
+    "en": "The whole day, from getting ready to the party at night"
+  },
+  "services_029": {
+    "orig": "800+ redigerade bilder",
+    "orig_en": "800+ edited images",
+    "sv": "800+ redigerade bilder",
+    "en": "800+ edited images"
+  },
+  "services_030": {
+    "orig": "Hela dagen",
+    "orig_en": "The full day",
+    "sv": "Hela dagen",
+    "en": "The full day"
+  },
+  "services_031": {
+    "orig": "12+ timmar",
+    "orig_en": "12+ hours",
+    "sv": "12+ timmar",
+    "en": "12+ hours"
+  },
+  "services_032": {
+    "orig": "Highlightfilm, 2–3 minuter",
+    "orig_en": "Highlight film, 2–3 minutes",
+    "sv": "Highlightfilm, 2–3 minuter",
+    "en": "Highlight film, 2–3 minutes"
+  },
+  "services_033": {
+    "orig": "Hela vigseln som egen film",
+    "orig_en": "The full ceremony as its own film",
+    "sv": "Hela vigseln som egen film",
+    "en": "The full ceremony as its own film"
+  },
+  "services_034": {
+    "orig": "Levereras inom 4 veckor",
+    "orig_en": "Delivered within 4 weeks",
+    "sv": "Levereras inom 4 veckor",
+    "en": "Delivered within 4 weeks"
+  },
+  "services_035": {
+    "orig": "Highlightfilm, 3–5 minuter",
+    "orig_en": "Highlight film, 3–5 minutes",
+    "sv": "Highlightfilm, 3–5 minuter",
+    "en": "Highlight film, 3–5 minutes"
+  },
+  "services_036": {
+    "orig": "Vigseln och talen i sin helhet",
+    "orig_en": "Ceremony and speeches in full",
+    "sv": "Vigseln och talen i sin helhet",
+    "en": "Ceremony and speeches in full"
+  },
+  "services_037": {
+    "orig": "Kort version för sociala medier",
+    "orig_en": "Short version for socials",
+    "sv": "Kort version för sociala medier",
+    "en": "Short version for socials"
+  },
+  "services_038": {
+    "orig": "Levereras inom 6 veckor",
+    "orig_en": "Delivered within 6 weeks",
+    "sv": "Levereras inom 6 veckor",
+    "en": "Delivered within 6 weeks"
+  },
+  "services_039": {
+    "orig": "Highlightfilm, 5–7 minuter",
+    "orig_en": "Highlight film, 5–7 minutes",
+    "sv": "Highlightfilm, 5–7 minuter",
+    "en": "Highlight film, 5–7 minutes"
+  },
+  "services_040": {
+    "orig": "Vigsel, tal och första dansen i sin helhet",
+    "orig_en": "Ceremony, speeches and first dance in full",
+    "sv": "Vigsel, tal och första dansen i sin helhet",
+    "en": "Ceremony, speeches and first dance in full"
+  },
+  "services_041": {
+    "orig": "Längre dokumentärfilm, 15–20 minuter",
+    "orig_en": "Longer documentary film, 15–20 minutes",
+    "sv": "Längre dokumentärfilm, 15–20 minuter",
+    "en": "Longer documentary film, 15–20 minutes"
+  },
+  "services_042": {
+    "orig": "Bilder inom 3 veckor, film inom 4 veckor",
+    "orig_en": "Images within 3 weeks, film within 4 weeks",
+    "sv": "Bilder inom 3 veckor, film inom 4 veckor",
+    "en": "Images within 3 weeks, film within 4 weeks"
+  },
+  "services_043": {
+    "orig": "Bilder inom 5 veckor, film inom 6 veckor",
+    "orig_en": "Images within 5 weeks, film within 6 weeks",
+    "sv": "Bilder inom 5 veckor, film inom 6 veckor",
+    "en": "Images within 5 weeks, film within 6 weeks"
+  },
+  "services_044": {
+    "orig": "Välj det som passar er dag",
+    "orig_en": "Choose what fits your day",
+    "sv": "Välj det som passar er dag",
+    "en": "Choose what fits your day"
+  },
+  "services_045": {
+    "orig": "Vad vill ni ha?",
+    "orig_en": "What would you like?",
+    "sv": "Vad vill ni ha?",
+    "en": "What would you like?"
+  },
+  "services_046": {
+    "orig": "Bilder",
+    "orig_en": "Images",
+    "sv": "Bilder",
+    "en": "Images"
+  },
+  "services_047": {
+    "orig": "Film",
+    "orig_en": "Film",
+    "sv": "Film",
+    "en": "Film"
+  },
+  "services_048": {
+    "orig": "Båda",
+    "orig_en": "Both",
+    "sv": "Båda",
+    "en": "Both"
+  },
+  "services_049": {
+    "orig": "Hur länge?",
+    "orig_en": "How long?",
+    "sv": "Hur länge?",
+    "en": "How long?"
+  },
+  "services_050": {
+    "orig": "3 h",
+    "orig_en": "3 h",
+    "sv": "3 h",
+    "en": "3 h"
+  },
+  "services_051": {
+    "orig": "6 h",
+    "orig_en": "6 h",
+    "sv": "6 h",
+    "en": "6 h"
+  },
+  "services_052": {
+    "orig": "Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priserna gäller i Stockholms län. En handpenning på 30 % säkrar datumet.",
+    "orig_en": "Every package includes a planning meeting and a private online gallery. Prices apply within Stockholm county. A 30% deposit holds the date.",
+    "sv": "Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priserna gäller i Stockholms län. En handpenning på 30 % säkrar datumet.",
+    "en": "Every package includes a planning meeting and a private online gallery. Prices apply within Stockholm county. A 30% deposit holds the date."
+  },
+  "services_053": {
+    "orig": "Fråga om ert datum",
+    "orig_en": "Ask about your date",
+    "sv": "Fråga om ert datum",
+    "en": "Ask about your date"
+  },
+  "services_054": {
+    "orig": "Samtalet",
+    "orig_en": "The conversation",
+    "sv": "Samtalet",
+    "en": "The conversation"
+  },
+  "services_055": {
+    "orig": "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av det.",
+    "orig_en": "A first conversation about the idea, who's involved and what you hope to get out of it.",
+    "sv": "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av det.",
+    "en": "A first conversation about the idea, who's involved and what you hope to get out of it."
+  },
+  "services_056": {
+    "orig": "Planeringen",
+    "orig_en": "The plan",
+    "sv": "Planeringen",
+    "en": "The plan"
+  },
+  "services_057": {
+    "orig": "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår från det som är viktigast för dig.",
+    "orig_en": "Location, schedule and details are worked out together, so the plan starts from what matters most to you.",
+    "sv": "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår från det som är viktigast för dig.",
+    "en": "Location, schedule and details are worked out together, so the plan starts from what matters most to you."
+  },
+  "services_058": {
+    "orig": "Dagen",
+    "orig_en": "The day",
+    "sv": "Dagen",
+    "en": "The day"
+  },
+  "services_059": {
+    "orig": "Du fokuserar på det som händer. Allt annat är redan ordnat.",
+    "orig_en": "You focus on what's happening. Everything else is taken care of.",
+    "sv": "Du fokuserar på det som händer. Allt annat är redan ordnat.",
+    "en": "You focus on what's happening. Everything else is taken care of."
+  },
+  "services_060": {
+    "orig": "Leveransen",
+    "orig_en": "Delivery",
+    "sv": "Leveransen",
+    "en": "Delivery"
+  },
+  "services_061": {
+    "orig": "Ditt färdiga material, levererat i tid och redo att delas.",
+    "orig_en": "Your finished work, delivered on time and ready to share.",
+    "sv": "Ditt färdiga material, levererat i tid och redo att delas.",
+    "en": "Your finished work, delivered on time and ready to share."
+  },
+  "services_062": {
+    "orig": "25 kr/mil",
+    "orig_en": "25 kr/mil",
+    "sv": "25 kr/mil",
+    "en": "25 kr/mil"
+  },
+  "services_063": {
+    "orig": "Resor",
+    "orig_en": "Travel",
+    "sv": "Resor",
+    "en": "Travel"
+  },
+  "services_064": {
+    "orig": "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid inräknad. Flyg och boende läggs till i offerten.",
+    "orig_en": "Included within Stockholm county. Longer trips by car are charged per mil (10 km), travel time included. Flights and accommodation are added to the quote.",
+    "sv": "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid inräknad. Flyg och boende läggs till i offerten.",
+    "en": "Included within Stockholm county. Longer trips by car are charged per mil (10 km), travel time included. Flights and accommodation are added to the quote."
+  },
+  "services_065": {
+    "orig": "Flygbilder där det är tillåtet att flyga",
+    "orig_en": "Drone shots where flying is allowed",
+    "sv": "Flygbilder där det är tillåtet att flyga",
+    "en": "Drone shots where flying is allowed"
+  },
+  "services_066": {
+    "orig": "Extra timme",
+    "orig_en": "Extra hour",
+    "sv": "Extra timme",
+    "en": "Extra hour"
+  },
+  "services_067": {
+    "orig": "Mer tid under dagen",
+    "orig_en": "More time on the day",
+    "sv": "Mer tid under dagen",
+    "en": "More time on the day"
+  },
+  "services_068": {
+    "orig": "Råmaterial",
+    "orig_en": "Raw footage",
+    "sv": "Råmaterial",
+    "en": "Raw footage"
+  },
+  "services_069": {
+    "orig": "Alla användbara klipp, sorterade per scen",
+    "orig_en": "All usable clips, sorted by scene",
+    "sv": "Alla användbara klipp, sorterade per scen",
+    "en": "All usable clips, sorted by scene"
+  },
+  "services_070": {
+    "orig": "Expressleverans",
+    "orig_en": "Express delivery",
+    "sv": "Expressleverans",
+    "en": "Express delivery"
+  },
+  "services_071": {
+    "orig": "Leverans på halva den vanliga tiden",
+    "orig_en": "Delivery in half the usual time",
+    "sv": "Leverans på halva den vanliga tiden",
+    "en": "Delivery in half the usual time"
+  },
+  "services_072": {
+    "orig": "Tryckta bilder",
+    "orig_en": "Printed frames",
+    "sv": "Tryckta bilder",
+    "en": "Printed frames"
+  },
+  "services_073": {
+    "orig": "Tio favoriter tryckta på arkivbeständigt papper",
+    "orig_en": "Ten favourites on archival paper",
+    "sv": "Tio favoriter tryckta på arkivbeständigt papper",
+    "en": "Ten favourites on archival paper"
+  },
+  "services_074": {
+    "orig": "Så går ett samarbete till",
+    "orig_en": "Ways to work together",
+    "sv": "Så går ett samarbete till",
+    "en": "Ways to work together"
+  },
+  "services_075": {
+    "orig": "Allt görs i egen regi, och du är med i varje steg.",
+    "orig_en": "Everything is made in-house, and you're involved in every step.",
+    "sv": "Allt görs i egen regi, och du är med i varje steg.",
+    "en": "Everything is made in-house, and you're involved in every step."
+  },
+  "services_076": {
+    "orig": "Har du en annan idé?",
+    "orig_en": "Have a different idea?",
+    "sv": "Har du en annan idé?",
+    "en": "Have a different idea?"
+  },
+  "services_077": {
+    "orig": "Paketen är bara en utgångspunkt. Har du något annat i tankarna skräddarsys ett upplägg efter dig.",
+    "orig_en": "The packages are only a starting point. If you have something else in mind, a setup is tailored to you.",
+    "sv": "Paketen är bara en utgångspunkt. Har du något annat i tankarna skräddarsys ett upplägg efter dig.",
+    "en": "The packages are only a starting point. If you have something else in mind, a setup is tailored to you."
+  },
+  "services_078": {
+    "orig": "Så går det till",
+    "orig_en": "How it goes",
+    "sv": "Så går det till",
+    "en": "How it goes"
+  },
+  "services_079": {
+    "orig": "Från första meddelandet till färdig film",
+    "orig_en": "From first message to final file",
+    "sv": "Från första meddelandet till färdig film",
+    "en": "From first message to final file"
+  },
+  "services_080": {
+    "orig": "En tydlig process från första samtalet till leverans, där du är med i varje steg.",
+    "orig_en": "A clear process from the first conversation to delivery, with you involved at every step.",
+    "sv": "En tydlig process från första samtalet till leverans, där du är med i varje steg.",
+    "en": "A clear process from the first conversation to delivery, with you involved at every step."
+  },
+  "services_081": {
+    "orig": "Tillval",
+    "orig_en": "Add-ons",
+    "sv": "Tillval",
+    "en": "Add-ons"
+  },
+  "services_082": {
+    "orig": "Tillval efter behov",
+    "orig_en": "Extras as needed",
+    "sv": "Tillval efter behov",
+    "en": "Extras as needed"
+  }
+}
