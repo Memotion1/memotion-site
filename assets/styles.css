@@ -1438,3 +1438,9 @@ iframe.tile-preview { inset: auto; top: 50%; left: 50%; transform: translate(-50
 .about-place a { color: inherit; }
 .about-contact .actions { display: flex; flex-wrap: wrap; gap: 14px 28px; }
 @media (max-width: 700px) { .bts { columns: 2; } }
+
+/* ================= Round 16 ================= */
+/* Film player window: the film's own shape, so vertical films are not boxed into a wide frame */
+.lb-stage .lb-vimeo { aspect-ratio: var(--r, 1.7778) !important; height: auto !important;
+  width: min(100%, 1400px, calc((100vh - 120px) * var(--r, 1.7778))) !important; max-height: calc(100vh - 120px); background: #000; }
+.lightbox.single [data-lb="-1"], .lightbox.single [data-lb="1"], .lightbox.single .lb-count { display: none; }

@@ -52,6 +52,12 @@ CAL_LOADER = ('<script>(function (C, A, L) { var p = function (a, ar) { a.q.push
 
 # version tag per file, so browsers fetch the new styles and script right after an update
 ASSET_V = {n: hashlib.md5((ROOT / "assets" / n).read_bytes()).hexdigest()[:8] for n in ("styles.css", "site.js", "favicon.svg")}
+# one id per version of the site; pages compare it with version.json and reload themselves if a newer version is out
+_bh = hashlib.md5(pathlib.Path(__file__).read_bytes())
+for _f in sorted([*(ROOT / "assets").rglob("*"), *(ROOT / "content").rglob("*")]):
+    if _f.is_file():
+        _bh.update(str(_f.relative_to(ROOT)).encode()); _bh.update(_f.read_bytes())
+BUILD_ID = _bh.hexdigest()[:10]
 # fresh output folder with the static assets and uploaded media
 if OUT.exists():
     shutil.rmtree(OUT)
@@ -178,6 +184,12 @@ def video_srcs(v, sizes=("1080p", "720p", "360p")):
         return []
     vid = bunny_id(v)   # accepts the plain ID or any Bunny link that contains it
     return [f"https://{BUNNY}/{vid}/play_{sz}.mp4" for sz in sizes]
+
+
+def film_ratio(v):
+    """Width / height of a Vimeo film (vertical films are below 1), so the player window fits it."""
+    vr = vimeo_ref(str(v or "").strip())
+    return round(vimeo_ratio(vr), 4) if vr else round(16 / 9, 4)
 
 
 def video_thumb(v):
@@ -329,7 +341,7 @@ def page(name, title_sv, title_en, active, body, full=True):
     shell = (f'<span id="page-title" data-sv="{title_sv}" data-en="{title_en}" hidden></span>\n'
              f'<div class="layout">\n{sidebar(active)}\n<div class="main">\n<main>\n{body}\n</main>\n{FOOTER}\n</div>\n</div>\n' + (CAL_LOADER if BOOKING else "") + f'<script src="site.js?v={ASSET_V["site.js"]}"></script>\n')
     if full:
-        content = ('<!doctype html>\n<html lang="sv">\n<head>\n<meta charset="utf-8">\n'
+        content = (f'<!doctype html>\n<html lang="sv" data-build="{BUILD_ID}">\n<head>\n<meta charset="utf-8">\n'
                    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
                    + meta +
                    '<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>\n'
@@ -462,13 +474,13 @@ def project_json(p):
     if p["video"]:
         n_sv, n_en = MAIN_FILM[cat]
         films.append({"sv": n_sv, "en": n_en, "length": p_length(p) if p["type"] == "film" else "",
-                      "src": video_srcs(p["video"]), "img": video_thumb(p["video"]), "scene": p["scene"], "seed": p["seed"]})
+                      "src": video_srcs(p["video"]), "img": video_thumb(p["video"]), "r": film_ratio(p["video"]), "scene": p["scene"], "seed": p["seed"]})
     for x in p.get("extra_films") or []:
         if not isinstance(x, dict) or not str(x.get("video") or "").strip():
             continue
         sv, en = two(x, "name")
         films.append({"sv": sv or "Film", "en": en or "Film", "length": str(x.get("length") or ""),
-                      "src": video_srcs(x["video"]), "img": video_thumb(x["video"]), "scene": p["scene"], "seed": p["seed"] + 5})
+                      "src": video_srcs(x["video"]), "img": video_thumb(x["video"]), "r": film_ratio(x["video"]), "scene": p["scene"], "seed": p["seed"] + 5})
     if p["demo"] and p["type"] == "film":
         films = [{"sv": a, "en": b, "length": ln or p_length(p), "src": SAMPLE, "scene": p["scene"], "seed": p["seed"]}
                  for a, b, ln in DEMO_FILMS.get(cat, [])]
@@ -1062,6 +1074,7 @@ def sync_texts():
     print(f"texts: {sum(1 for s in SEEN.values() if s[0])} texts written to content/texts and .pages.yml")
 
 
+(OUT / "version.json").write_text(json.dumps({"build": BUILD_ID}) + "\n", encoding="utf-8")
 if os.environ.get("SYNC_TEXTS") == "1":
     sync_texts()
 print("ok")

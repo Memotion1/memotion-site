@@ -186,7 +186,7 @@ content:
   format: json
   fields:
   - name: home_001
-    label: "Bröllop"
+    label: "Evenemang"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -194,7 +194,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_002
-    label: "Företag"
+    label: "Bröllop"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -202,7 +202,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_003
-    label: "Evenemang"
+    label: "Företag"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}

@@ -326,6 +326,18 @@
     };
   }
 
+  /* ---------- Always the newest version: a page kept from an earlier visit reloads itself once ---------- */
+  (function () {
+    var b = document.documentElement.getAttribute("data-build");
+    if (!b || !window.fetch || location.protocol === "file:") return;
+    fetch("version.json?t=" + Date.now(), { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+      if (!j || !j.build || j.build === b) return;
+      var k = "me-motion-fresh-" + j.build;
+      try { if (sessionStorage.getItem(k)) return; sessionStorage.setItem(k, "1"); } catch (e) { return; }
+      location.reload();
+    }).catch(function () {});
+  })();
+
   /* ---------- Big pause / play sign in the middle of the showreel ----------
      Same logo-stroke animation as the small button, large and centred. While the film is paused it stays
      as a play sign; when the film starts again it turns into pause and fades away. */
@@ -559,7 +571,8 @@
       html += '<div><dt>' + L("Typ", "Type") + '</dt><dd>' + tx(p.kind) + '</dd></div>';
       if (p.length) html += '<div><dt>' + (isSeries ? L("Antal", "Images") : L("Längd", "Length")) + '</dt><dd>' + esc(p.length) + (isSeries ? L(" bilder", " images") : "") + '</dd></div>';
       if (p.fmt) html += '<div><dt>Format</dt><dd class="mono">' + esc(p.fmt) + '</dd></div>';
-      if (hasFilm || (p.all && p.all.length)) html += '<a class="jump" href="#pm-all">' + (p.films && p.films.length ? L("Se alla filmer och bilder", "See all films and images") : L("Se alla bilder", "See all images")) + ' ↓</a>';
+      var mediaCount = (p.films || []).length + (p.all || []).length;
+      if (mediaCount > 1) html += '<a class="jump" href="#pm-all">' + (p.films && p.films.length ? L("Se alla filmer och bilder", "See all films and images") : L("Se alla bilder", "See all images")) + ' ↓</a>';
       html += '</dl></div>';
       if (p.story) {
         var fr = function (im, cls) { return '<figure class="' + cls + '">' + frameHTML(im) + (im.img ? '' : '<figcaption>' + esc(im[lang()]) + '</figcaption>') + '</figure>'; };
@@ -573,8 +586,8 @@
         html += '</div>';
       }
       var media = (p.films || []).concat(p.all || []);
-      if (media.length) html += '<section class="full-project" id="pm-all"><h3>' + L("Hela projektet", "The full project") + '</h3>';
-      if (media.length) html += '<div class="all-grid">' + media.map(function (im, i) {
+      if (media.length > 1) html += '<section class="full-project" id="pm-all"><h3>' + L("Hela projektet", "The full project") + '</h3>';
+      if (media.length > 1) html += '<div class="all-grid">' + media.map(function (im, i) {
         var isFilm = !!im.src;
         return '<button type="button" class="all-item' + (isFilm ? ' is-film' : '') + '" data-k="' + i + '" aria-label="' + esc(im[lang()]) + '">' + frameHTML(im, isFilm && !im.img ? 3 * (i + 1) : 0) +
           (isFilm ? '<span class="film-badge"><span class="film-play" aria-hidden="true"></span><span>' + tx(im) + '</span><span class="mono">' + esc(im.length || "") + '</span></span>' : '') + '</button>';
@@ -605,6 +618,7 @@
       if (onVimeo) {
         var vm = lb.querySelector(".lb-vimeo"), url = vimeoURL(im.src, "autoplay=1&dnt=1&title=0&byline=0&portrait=0");
         f.hidden = true; pic.hidden = true; vid.hidden = true; vm.hidden = false;
+        vm.style.setProperty("--r", String(+im.r > 0 ? +im.r : 16 / 9));
         if (vm.getAttribute("data-key") !== url) { vm.setAttribute("data-key", url); vm.src = url; }
       }
       else if (im.src) {
@@ -617,6 +631,7 @@
       else { vid.hidden = true; pic.hidden = true; f.hidden = false; f.setAttribute("data-scene", im.scene); f.setAttribute("data-seed", im.seed); paint(f); }
       lb.querySelector(".lb-cap").textContent = im[lang()];
       lb.querySelector(".lb-count").textContent = (lbI + 1) + " / " + lbList.length;
+      lb.classList.toggle("single", lbList.length < 2);
     }
     function lbOpen(list, i, from) { lbList = list; lbI = i; lbFrom = from; lb.hidden = false; lbShow(); lb.querySelector('[data-lb="x"]').focus(); }
     function lbClose() { lb.querySelector(".lb-video").pause(); lbStopVimeo(); lb.hidden = true; if (lbFrom) lbFrom.focus(); }

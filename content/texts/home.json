@@ -1,21 +1,21 @@
 {
   "home_001": {
+    "orig": "Evenemang",
+    "orig_en": "Event",
+    "sv": "Evenemang",
+    "en": "Event"
+  },
+  "home_002": {
     "orig": "Bröllop",
     "orig_en": "Wedding",
     "sv": "Bröllop",
     "en": "Wedding"
   },
-  "home_002": {
+  "home_003": {
     "orig": "Företag",
     "orig_en": "Business",
     "sv": "Företag",
     "en": "Business"
-  },
-  "home_003": {
-    "orig": "Evenemang",
-    "orig_en": "Event",
-    "sv": "Evenemang",
-    "en": "Event"
   },
   "home_004": {
     "orig": "Övrigt",
