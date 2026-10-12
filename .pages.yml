@@ -1,0 +1,76 @@
+media: {input: media,output: /media}
+content:
+- name: projects
+  label: Projects
+  type: collection
+  path: content/projects
+  format: json
+  filename: "{title_en}.json"
+  view: {primary: title_sv,fields: [title_sv,category,order],sort: order,order: asc}
+  fields:
+  - {name: title_sv,label: Title - Swedish,type: string,required: true}
+  - {name: title_en,label: Title - English,type: string,required: true}
+  - name: category
+    label: Category
+    type: select
+    required: true
+    options: {values: [{name: wedding,label: Bröllop / Wedding},{name: business,label: Företag / Business},{name: event,label: Evenemang / Event},{name: drone,label: Drönare / Drone},{name: stills,label: Övrigt / Other}]}
+  - {name: type,label: Kind of project,type: select,required: true,options: {values: [{name: film,label: Film},{name: series,label: Photo series}]}}
+  - {name: cover,label: Cover image,description: "Shown on the Work page and the home page. Leave empty to use the film's thumbnail from Bunny.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+  - {name: video,label: Main film - Bunny video ID,description: "In Bunny: Stream > your library > click the video > copy the Video ID. Leave empty for a photo series.",type: string}
+  - {name: images,label: Photos,description: "All photos for this project.",type: image,options: {multiple: true,extensions: [jpg,jpeg,png,webp]}}
+  - name: extra_films
+    label: More films (optional)
+    description: "e.g. the full ceremony, the speeches or a vertical social media cut."
+    type: object
+    list: true
+    fields:
+    - {name: name_sv,label: Name - Swedish,type: string}
+    - {name: name_en,label: Name - English,type: string}
+    - {name: video,label: Bunny video ID,type: string}
+    - {name: length,label: Length (e.g. 0:30),type: string}
+  - {name: client_sv,label: Client - Swedish,type: string}
+  - {name: client_en,label: Client - English,type: string}
+  - {name: summary_sv,label: Short description - Swedish,type: text}
+  - {name: summary_en,label: Short description - English,type: text}
+  - {name: process_sv,label: How it was made - Swedish,type: text}
+  - {name: process_en,label: How it was made - English,type: text}
+  - {name: story_sv,label: Story - Swedish (optional),description: "Empty line between paragraphs. Photos are placed between them.",type: text}
+  - {name: story_en,label: Story - English (optional),type: text}
+  - {name: length,label: Length,description: "e.g. 3:40. Leave empty for a photo series.",type: string}
+  - {name: format,label: Format (optional),description: "e.g. 4K · 16:9",type: string}
+  - {name: show_on_home,label: Show on the home page (Selected work),type: boolean}
+  - {name: wide,label: Wide box on the Work page (good for 2.39:1 films),type: boolean}
+  - {name: order,label: Order,description: "Lower number = shown earlier. Use 10, 20, 30…",type: number}
+  - {name: draft,label: Draft (hide from the website),type: boolean}
+  - {name: scene,type: string,hidden: true}
+  - {name: seed,type: number,hidden: true}
+  - {name: demo_loop,type: boolean,hidden: true}
+- name: settings
+  label: Site settings
+  type: file
+  path: content/settings.json
+  format: json
+  fields:
+  - {name: email,label: Email shown on the website,type: string}
+  - {name: phone,label: Phone shown on the website,type: string}
+  - {name: instagram,label: Instagram link,type: string}
+  - {name: booking,label: Booking link (Cal.com),description: "e.g. https://cal.com/memotion/introsamtal. Leave empty to open an email instead.",type: string}
+  - {name: bunny_host,label: Bunny video address (CDN hostname),description: "In Bunny: Stream > your library > API > CDN Hostname.",type: string}
+  - {name: showreel,label: Showreel - Bunny video ID,type: string}
+  - {name: portrait,label: Portrait of Mikael,type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+- name: wedding
+  label: Wedding prices
+  type: file
+  path: content/wedding.json
+  format: json
+  fields:
+  - {name: photo_3,label: Images - 3 hours (kr incl. VAT),type: string}
+  - {name: photo_6,label: Images - 6 hours,type: string}
+  - {name: photo_full,label: Images - full day,type: string}
+  - {name: film_3,label: Film - 3 hours,type: string}
+  - {name: film_6,label: Film - 6 hours,type: string}
+  - {name: film_full,label: Film - full day,type: string}
+  - {name: both_3,label: Both - 3 hours,type: string}
+  - {name: both_6,label: Both - 6 hours,type: string}
+  - {name: both_full,label: Both - full day,type: string}
