@@ -150,30 +150,24 @@
     "en": "The reply will come to the email address you entered."
   },
   "contact_026": {
-    "orig": "Nästan klart!",
-    "orig_en": "Almost there!",
-    "sv": "Nästan klart!",
-    "en": "Almost there!"
+    "orig": "Meddelandet kunde inte skickas.",
+    "orig_en": "The message couldn't be sent.",
+    "sv": "Meddelandet kunde inte skickas.",
+    "en": "The message couldn't be sent."
   },
   "contact_027": {
-    "orig": "Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.",
-    "orig_en": "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath.",
-    "sv": "Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.",
-    "en": "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath."
+    "orig": "Kontrollera internetanslutningen och försök igen om en stund. Det går också bra att skriva direkt till",
+    "orig_en": "Check your internet connection and try again in a moment. You can also write directly to",
+    "sv": "Kontrollera internetanslutningen och försök igen om en stund. Det går också bra att skriva direkt till",
+    "en": "Check your internet connection and try again in a moment. You can also write directly to"
   },
   "contact_028": {
-    "orig": "Kopiera meddelandet",
-    "orig_en": "Copy message",
-    "sv": "Kopiera meddelandet",
-    "en": "Copy message"
-  },
-  "contact_029": {
     "orig": "Kontaktuppgifter",
     "orig_en": "Contact details",
     "sv": "Kontaktuppgifter",
     "en": "Contact details"
   },
-  "contact_030": {
+  "contact_029": {
     "orig": "FAQ",
     "orig_en": "FAQ",
     "sv": "FAQ",

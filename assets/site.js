@@ -530,23 +530,14 @@
       if (!ok) return;
       var v = function (id) { return document.getElementById(id).value.trim(); };
       var tbd = L("Inte bestämt än", "Not set yet");
-      var text = L("Hej!", "Hi,") + "\n\n" + v("message") + "\n\n" +
-        L("Gäller: ", "About: ") + occasionText() + "\n" +
-        L("Datum: ", "Date: ") + (v("date") || tbd) + "\n" +
-        L("Plats: ", "Location: ") + (v("location") || tbd) + "\n" +
-        "\n" +
-        v("name") + "\n" + v("email") + (v("phone") ? "\n" + v("phone") : "");
-      document.getElementById("enquiry-text").textContent = text;
-      var to = (document.getElementById("mail-addr") || {}).textContent || "";
-      var subject = L("Förfrågan från ", "Enquiry from ") + v("name") + " · " + occasionText();
-      /* Backup: open the visitor's own email app with everything filled in */
-      function viaMailApp() {
-        try { window.location.href = "mailto:" + to + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text); } catch (err) {}
-        var res = document.getElementById("enquiry-result"); res.hidden = false; res.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
-      }
       var endpoint = form.getAttribute("data-send"), hp = document.getElementById("hp-field");
-      if (!endpoint || !window.fetch) { viaMailApp(); return; }
-      var btn = form.querySelector('button[type="submit"]'), label = btn.innerHTML;
+      var errBox = document.getElementById("enquiry-error"), btn = form.querySelector('button[type="submit"]'), label = btn.innerHTML;
+      function failed() {
+        errBox.hidden = false; errBox.focus();
+        errBox.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      }
+      errBox.hidden = true;
+      if (!endpoint || !window.fetch) { failed(); return; }
       btn.disabled = true; btn.setAttribute("aria-busy", "true"); btn.textContent = L("Skickar…", "Sending…");
       fetch(endpoint, {
         method: "POST",
@@ -562,10 +553,10 @@
           if (!r.ok || String(j.success) !== "true") throw new Error(j.message || ("HTTP " + r.status));
         });
       }).then(function () {
-        form.hidden = true; document.getElementById("enquiry-result").hidden = true;
+        form.hidden = true;
         var done = document.getElementById("enquiry-sent"); done.hidden = false; done.focus();
         done.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
-      }).catch(function () { viaMailApp(); }).then(function () {
+      }).catch(failed).then(function () {
         btn.disabled = false; btn.removeAttribute("aria-busy"); btn.innerHTML = label;
       });
     });

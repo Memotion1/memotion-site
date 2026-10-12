@@ -1216,3 +1216,5 @@ iframe.bg-loop { border: 0; inset: auto; top: 50%; left: 50%; width: 100%; heigh
 #occasion .sub { flex-wrap: wrap; overflow-x: visible; }
 .result.sent { border-style: solid; }
 .result.sent:focus { outline: none; }
+.result.send-error { border-style: solid; }
+.result.send-error:focus { outline: none; }

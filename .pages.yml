@@ -1409,7 +1409,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_026
-    label: "Nästan klart!"
+    label: "Meddelandet kunde inte skickas."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1417,7 +1417,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_027
-    label: "Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver…"
+    label: "Kontrollera internetanslutningen och försök igen om en stund. Det går …"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1425,14 +1425,6 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_028
-    label: "Kopiera meddelandet"
-    type: object
-    fields:
-    - {name: orig, type: string, hidden: true}
-    - {name: orig_en, type: string, hidden: true}
-    - {name: sv, label: Svenska, type: text}
-    - {name: en, label: English, type: text}
-  - name: contact_029
     label: "Kontaktuppgifter"
     type: object
     fields:
@@ -1440,7 +1432,7 @@ content:
     - {name: orig_en, type: string, hidden: true}
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
-  - name: contact_030
+  - name: contact_029
     label: "FAQ"
     type: object
     fields:

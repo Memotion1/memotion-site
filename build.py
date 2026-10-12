@@ -518,7 +518,7 @@ if BOOKING:
     BOOK_BTN = (f'<a class="btn primary hero-cta" href="https://cal.com/{e(BOOKING)}" data-cal-link="{e(BOOKING)}" '
                 f'data-cal-config=\'{{"layout":"month_view"}}\' target="_blank" rel="noopener">{T("Boka ett samtal", "Book a call")}{ARROW}</a>')
 else:
-    BOOK_BTN = f'<a class="btn primary hero-cta" href="mailto:{EMAIL}">{T("Boka ett samtal", "Book a call")}{ARROW}</a>'
+    BOOK_BTN = f'<a class="btn primary hero-cta" href="contact.html">{T("Boka ett samtal", "Book a call")}{ARROW}</a>'
 
 home = f'''<section class="hero">
   <div class="wrap">
@@ -908,11 +908,10 @@ contact = f'''<div class="wrap page-hero">
         {T("Tack! Meddelandet är skickat.", "Thank you! Your message has been sent.", "strong")}
         {T("Svaret kommer till e-postadressen du angav.", "The reply will come to the email address you entered.", "p", 'class="note"')}
       </div>
-      <div class="result" id="enquiry-result" hidden aria-live="polite">
-        {T("Nästan klart!", "Almost there!", "strong")}
-        {T("Ditt e-postprogram ska nu öppnas med meddelandet ifyllt, så du behöver bara trycka på Skicka. Öppnades det inte? Kopiera texten nedan och skicka den till adressen under.", "Your email app should open with the message filled in, so all you need to do is press send. Didn't it open? Copy the text below and send it to the address underneath.", "p", 'class="note"')}
-        <pre id="enquiry-text"></pre>
-        <div class="copyline"><button class="btn primary" type="button" data-copy="enquiry-text">{T("Kopiera meddelandet", "Copy message")}</button><code id="mail-addr">{EMAIL}</code></div>
+      <div class="result send-error" id="enquiry-error" hidden tabindex="-1" aria-live="assertive">
+        {T("Meddelandet kunde inte skickas.", "The message couldn't be sent.", "strong")}
+        {T("Kontrollera internetanslutningen och försök igen om en stund. Det går också bra att skriva direkt till", "Check your internet connection and try again in a moment. You can also write directly to", "p", 'class="note"')}
+        <p class="note"><span class="mono">{EMAIL}</span></p>
       </div>
     </div>
     <div class="stack" style="gap:32px">
