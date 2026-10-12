@@ -51,7 +51,7 @@ CAL_LOADER = ('<script>(function (C, A, L) { var p = function (a, ar) { a.q.push
               '(window, "https://app.cal.com/embed/embed.js", "init"); Cal("init", { origin: "https://cal.com" });</script>\n')
 
 # version tag per file, so browsers fetch the new styles and script right after an update
-ASSET_V = {n: hashlib.md5((ROOT / "assets" / n).read_bytes()).hexdigest()[:8] for n in ("styles.css", "site.js")}
+ASSET_V = {n: hashlib.md5((ROOT / "assets" / n).read_bytes()).hexdigest()[:8] for n in ("styles.css", "site.js", "favicon.svg")}
 # fresh output folder with the static assets and uploaded media
 if OUT.exists():
     shutil.rmtree(OUT)
@@ -319,7 +319,8 @@ def page(name, title_sv, title_en, active, body, full=True):
     d_sv, d_en = DESC.get(name, DESC["index.html"])
     url = SITE_URL + ("/" if name == "index.html" else "/" + name)
     meta = (f'<meta name="description" content="{e(d_sv)}">\n'
-            f'<link rel="icon" type="image/svg+xml" href="favicon.svg">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
+            f'<link rel="icon" href="favicon.ico?v={ASSET_V["favicon.svg"]}" sizes="32x32">\n<link rel="icon" type="image/svg+xml" href="favicon.svg?v={ASSET_V["favicon.svg"]}">\n'
+            f'<link rel="apple-touch-icon" href="apple-touch-icon.png?v={ASSET_V["favicon.svg"]}">\n'
             f'<link rel="canonical" href="{url}">\n'
             f'<meta property="og:type" content="website">\n<meta property="og:site_name" content="{BRAND}">\n'
             f'<meta property="og:title" content="{e(title_sv)}">\n<meta property="og:description" content="{e(d_sv)}">\n'
@@ -560,7 +561,7 @@ home = f'''<section class="hero">
     <div class="stack behind-copy">
       {T("Bakom kameran", "Behind the camera", "span", 'class="eyebrow"')}
       {T("Lugn på plats, noggrann i efterarbetet", "Calm on location, meticulous in post-production", "h2")}
-      {T("Varje projekt börjar med ett samtal, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.", "Every project starts with a conversation, long before the camera comes out. The work begins once the feeling you're after is clear.", "p", 'class="lede"')}
+      {T("Varje projekt börjar med en idé, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.", "Every project starts with an idea, long before the camera comes out. The work begins once the feeling you're after is clear.", "p", 'class="lede"')}
       <a class="btn behind-link" href="about.html">{T("Läs om ME Motion", "About ME Motion")}{ARROW}</a>
     </div>
   </div>

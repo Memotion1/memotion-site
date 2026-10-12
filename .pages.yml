@@ -274,7 +274,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_012
-    label: "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. …"
+    label: "Varje projekt börjar med en idé, långt innan kameran kommer fram. Förs…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
