@@ -269,9 +269,8 @@ def sidebar(active):
     <div class="side-controls">
       <div class="lang-switch" role="group" aria-label="Språk / Language"><button type="button" data-set-lang="sv" aria-pressed="true">SV</button><button type="button" data-set-lang="en" aria-pressed="false">EN</button></div>
       <div class="seg theme-seg" role="group" aria-label="Tema / Theme">
-        <button type="button" data-set-theme="auto" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg><span class="lbl">Auto</span></button>
-        <button type="button" data-set-theme="light" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="lbl"></span></button>
-        <button type="button" data-set-theme="dark" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="lbl"></span></button>
+        <button type="button" data-set-theme="light" aria-pressed="false" aria-label="Ljust / Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="lbl"></span></button>
+        <button type="button" data-set-theme="dark" aria-pressed="false" aria-label="Mörkt / Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="lbl"></span></button>
       </div>
     </div>
     <div class="contact-mini stack" style="gap:4px"><span class="mono">{EMAIL}</span></div>
@@ -317,7 +316,7 @@ def page(name, title_sv, title_en, active, body, full=True):
     d_sv, d_en = DESC.get(name, DESC["index.html"])
     url = SITE_URL + ("/" if name == "index.html" else "/" + name)
     meta = (f'<meta name="description" content="{e(d_sv)}">\n'
-            f'<link rel="icon" type="image/png" href="logo-mark.png">\n'
+            f'<link rel="icon" type="image/svg+xml" href="favicon.svg">\n<link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
             f'<link rel="canonical" href="{url}">\n'
             f'<meta property="og:type" content="website">\n<meta property="og:site_name" content="{BRAND}">\n'
             f'<meta property="og:title" content="{e(title_sv)}">\n<meta property="og:description" content="{e(d_sv)}">\n'
@@ -346,8 +345,8 @@ CTA = f'''<section class="cta-band">
   <div class="wrap">
     <div class="stack">
       {T("Nästa steg", "Next step", "span", 'class="eyebrow"')}
-      {T("Berätta om din dag", "Tell me about your day", "h2")}
-      {T("Datum, plats och det som betyder mest för dig. Svar kommer personligen inom två arbetsdagar.", "The date, the place and what matters most to you. A personal reply follows within two working days.", "p", 'class="lede"')}
+      {T("Berätta om ditt projekt", "Tell me about your project", "h2")}
+      {T("Datum, plats och vad du har i tankarna.", "The date, the place and what you have in mind.", "p", 'class="lede"')}
     </div>
     <a class="btn primary" href="contact.html">{T("Kontakta mig", "Contact me")}{ARROW}</a>
   </div>
@@ -520,9 +519,21 @@ if BOOKING:
 else:
     BOOK_BTN = f'<a class="btn primary hero-cta" href="contact.html">{T("Boka ett samtal", "Book a call")}{ARROW}</a>'
 
+# The showreel keeps its own shape (no cropping): its width/height ratio goes to the CSS
+_vr = vimeo_ref(SHOWREEL)
+REEL_RATIO = vimeo_ratio(_vr) if _vr else 16 / 9
+# Pause / play button drawn from the logo mark: six strokes the script re-shapes into pause or play
+_MARK = [[(342.8, 0), (215.7, 0), (0, 475.6), (130, 475.6)], [(575.1, 0), (448, 0), (232.3, 475.6), (362.3, 475.6)],
+         [(795, 0), (667.8, 0), (452.2, 475.6), (582.1, 475.6)], [(840.2, 357.1), (710.9, 357.1), (657.2, 475.6), (787.1, 475.6)],
+         [(1000, 0), (872.9, 0), (813.6, 130.7), (941.5, 130.7)], [(919, 181.1), (790.7, 181.1), (733.7, 306.7), (862.8, 306.7)]]
+RT_ICON = ('<svg class="rt-icon" viewBox="0 0 1000 1000" aria-hidden="true">' +
+           "".join('<polygon points="' + " ".join(f"{180 + x * 0.64:.1f},{348 + y * 0.64:.1f}" for x, y in q) + '"/>' for q in _MARK) + '</svg>')
+HERO_REEL = frame(REEL_POSTER, "archipelago", 3, "ratio-scope hero-reel", "", loop_video(REEL, "auto"))[:-6].replace(
+    'class="frame ratio-scope hero-reel"', f'class="frame ratio-scope hero-reel" style="--reel-r:{REEL_RATIO:.4f}"', 1)
+
 home = f'''<section class="hero">
   <div class="wrap">
-    {frame(REEL_POSTER, "archipelago", 3, "ratio-scope hero-reel", "", loop_video(REEL, "auto"))[:-6]}<button class="reel-toggle" type="button" aria-pressed="false"><span class="ic-pause" aria-hidden="true"></span><span class="ic-play" aria-hidden="true"></span><span class="rt-label">{T("Pausa", "Pause")}</span></button></div>
+    {HERO_REEL}<button class="reel-toggle" type="button" aria-pressed="false">{RT_ICON}<span class="rt-label">{T("Pausa", "Pause")}</span></button></div>
     <div class="hero-copy">
       {T("Berättelser som rör sig", "Stories that move", "h1")}
       {BOOK_BTN}
@@ -558,17 +569,17 @@ home = f'''<section class="hero">
 <section class="doing-sec">
   <div class="wrap doing">
     <div class="doing-intro">
-      {T("Vad ME Motion gör", "What ME Motion does", "span", 'class="eyebrow"')}
-      {T("Bilder som gör jobbet", "Footage that does a job", "h2")}
+      {T("Vad jag gör", "What I do", "span", 'class="eyebrow"')}
+      {T("Stora som små uppdrag", "Projects big and small", "h2")}
       {T("Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?", "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?", "p")}
-      {T("Samma person planerar, filmar och klipper. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.", "The same person plans, films and edits. That means short decision paths and a film that holds together all the way from idea to delivery.", "p")}
+      {T("Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.", "I plan, film and edit everything myself. That means short decision paths and a film that holds together all the way from idea to delivery.", "p")}
     </div>
     <div class="doing-side">
       <ul class="doing-list">
         <li data-cat="business"><a href="services.html#business-panel"><span class="doing-num">01</span><span class="doing-text">{T("Företag", "Companies", "strong")}{T("Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.", "Commercials and brand films, interviews, YouTube, social media clips and product photography.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
         <li data-cat="event"><a href="services.html#event-panel"><span class="doing-num">02</span><span class="doing-text">{T("Evenemang och idrott", "Events and sport", "strong")}{T("Konferenser, lanseringar, matcher och fester, fångade medan de pågår.", "Conferences, launches, matches and parties, captured as they happen.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
         <li data-cat="wedding"><a href="services.html#wedding-panel"><span class="doing-num">03</span><span class="doing-text">{T("Bröllop", "Weddings", "strong")}{T("Film och foto från vigseln till sista dansen.", "Film and photography from the ceremony to the last dance.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
-        <li data-cat="drone"><a href="services.html#addons"><span class="doing-num">04</span><span class="doing-text">{T("Drönare", "Drone", "strong")}{T("Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial footage of the archipelago, properties and events, wherever flying is permitted.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
+        <li data-cat="drone"><a href="services.html#drone-panel"><span class="doing-num">04</span><span class="doing-text">{T("Drönare", "Drone", "strong")}{T("Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial footage of the archipelago, properties and events, wherever flying is permitted.", "span")}</span><span class="doing-arrow" aria-hidden="true">→</span></a></li>
       </ul>
       <p class="doing-note">{T("Något helt annat i tankarna?", "Something else entirely in mind?")} <a href="contact.html">{T("Berätta om det", "Tell me about it")}</a></p>
     </div>
@@ -640,18 +651,24 @@ def svc_panel(pid, scene, seed, eb, title, intro, lis, btn):
     </article>'''
 
 
-biz_panel = svc_panel("business", "interview", 12, ("Företag", "Companies"), ("Er historia", "Your story"),
+biz_panel = svc_panel("business", "interview", 12, ("Företag", "Companies"), ("Ert företag i bild", "Your business on camera"),
     ("Film och bilder som visar vilka ni är, från en halvdag hos er till större produktioner.", "Film and photography that show who you are, from a half-day shoot on site to larger productions."), [
         ("Varumärkes- och reklamfilm", "Brand and commercial film"),
         ("YouTube och korta klipp för sociala medier", "YouTube and short clips for social media"),
         ("Intervjuer och rekryteringsfilm", "Interviews and recruitment film"),
-        ("Porträtt och produktbilder för webb och press", "Portraits and product images for web and press")], ("Berätta er historia", "Tell your story"))
+        ("Porträtt och produktbilder för webb och press", "Portraits and product images for web and press")], ("Berätta om projektet", "Tell me about the project"))
 evt_panel = svc_panel("event", "event", 23, ("Evenemang", "Events"), ("Ögonblicket", "The moment"),
     ("Lanseringar, konferenser, fester och sport, fångade medan de pågår.", "Launches, conferences, parties and sport, captured as they happen."), [
         ("En film som fångar stämningen", "A film that captures the atmosphere"),
         ("Ett kort klipp för sociala medier samma vecka", "A short social clip the same week"),
         ("Bilder redo att publicera dagen efter", "Images ready to post the next day"),
         ("Korta intervjuer med gäster och talare", "Short interviews with guests and speakers")], ("Fånga ögonblicket", "Capture the moment"))
+drone_panel = svc_panel("drone", "aerial", 31, ("Drönare", "Drone"), ("Ovanifrån", "From above"),
+    ("Flygfilm och flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.", "Aerial film and photos of the archipelago, properties and events, wherever flying is permitted."), [
+        ("Fastigheter och mäklarbilder", "Property and real-estate shots"),
+        ("Evenemang och anläggningar från luften", "Events and venues from the air"),
+        ("Natur, skärgård och landskap", "Nature, archipelago and landscapes"),
+        ("Som tillägg till film eller foto", "As an add-on to any film or photo job")], ("Fråga om flygbilder", "Ask about aerial shots"))
 
 
 # ---- Wedding builder: coverage x length, one card, no columns ----
@@ -776,6 +793,7 @@ services = f'''<div class="wrap page-hero">
     <div class="svc-grid">
       {biz_panel}
       {evt_panel}
+      {drone_panel}
       {wedding}
     </div>
     <div class="idea">
@@ -790,7 +808,7 @@ services = f'''<div class="wrap page-hero">
 
 <section>
   <div class="wrap">
-    <div class="section-head">{T("Så går det till", "How it goes", "span", 'class="eyebrow"')}{T("Från första meddelandet till färdig film", "From first message to final file", "h2")}{T("En tydlig process från första samtalet till leverans, där du är med i varje steg.", "A clear process from the first conversation to delivery, with you involved at every step.", "p", 'class="lede"')}</div>
+    <div class="section-head">{T("Så går det till", "How it goes", "span", 'class="eyebrow"')}{T("Från första meddelandet till färdig produkt", "From first message to finished product", "h2")}{T("En tydlig process från första samtalet till leverans, där du är med i varje steg.", "A clear process from the first conversation to delivery, with you involved at every step.", "p", 'class="lede"')}</div>
     <ol class="timeline">
       {steps_html}
     </ol>
@@ -901,7 +919,7 @@ contact = f'''<div class="wrap page-hero">
           <div class="field"><label for="date">{T("Datum", "Date")}</label><input id="date" type="date"></div>
         </div>
         <div class="field"><label for="location">{T("Plats", "Location")}</label><input id="location" data-sv-placeholder="t.ex. Grand Hôtel, Stockholm" data-en-placeholder="e.g. Grand Hôtel, Stockholm" placeholder="t.ex. Grand Hôtel, Stockholm"></div>
-        <div class="field"><label for="message">{T("Berätta mer", "The details")}</label><textarea id="message" data-sv-placeholder="Vad ska hända, vilka är med och vad är viktigast för dig?" data-en-placeholder="What's happening, who's involved and what matters most to you?" placeholder="Vad ska hända, vilka är med och vad är viktigast för dig?"></textarea><span class="err" id="message-err" hidden>{T("Skriv några rader om vad du planerar.", "Write a few lines about what you're planning.")}</span></div>
+        <div class="field"><label for="message">{T("Berätta mer", "The details")}</label><textarea id="message" data-sv-placeholder="Kort om projektet: vad det gäller, ungefär hur stort det är och annat som är bra att veta." data-en-placeholder="A few lines about the project: what it is, roughly how big, and anything else that's good to know." placeholder="Kort om projektet: vad det gäller, ungefär hur stort det är och annat som är bra att veta."></textarea><span class="err" id="message-err" hidden>{T("Skriv några rader om vad du planerar.", "Write a few lines about what you're planning.")}</span></div>
         <div><button class="btn primary" type="submit">{T("Skicka meddelande", "Send message")}{ARROW}</button></div>
       </form>
       <div class="result sent" id="enquiry-sent" hidden tabindex="-1" aria-live="polite">

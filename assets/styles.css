@@ -1218,3 +1218,90 @@ iframe.bg-loop { border: 0; inset: auto; top: 50%; left: 50%; width: 100%; heigh
 .result.sent:focus { outline: none; }
 .result.send-error { border-style: solid; }
 .result.send-error:focus { outline: none; }
+
+/* ================= Round 12 ================= */
+/* Logos: the brand's own SVG artwork, drawn in the text colour so it follows light / dark */
+.logo-full { aspect-ratio: 1000 / 250.7 !important; -webkit-mask-image: url("logo.svg") !important; mask-image: url("logo.svg") !important; }
+.logo-mark { aspect-ratio: 1000 / 475.6 !important; -webkit-mask-image: url("logo-mark.svg") !important; mask-image: url("logo-mark.svg") !important; }
+.brand { transition: opacity .2s ease; }
+.brand:hover { opacity: .7; }
+.brand:hover .logo { background: var(--fg); }
+
+/* Page edges: a little more breathing room on phones */
+:root { --gutter: clamp(20px, 5vw, 40px); }
+h1, h2, h3 { overflow-wrap: break-word; -webkit-hyphens: auto; hyphens: auto; }
+
+/* Showreel: keeps its own shape at full width, never cropped at the sides */
+.hero { height: auto !important; min-height: 0 !important; overflow: visible !important; }
+.hero .hero-reel { flex: none !important; height: auto !important; min-height: 0 !important; aspect-ratio: var(--reel-r, 1.7778) !important; width: 100%; max-width: 100%; margin-inline: auto; }
+@media (min-width: 901px) {
+  .hero { min-height: calc(100svh - var(--hero-top)) !important; }
+  .hero .hero-reel { width: min(100%, calc((100svh - var(--hero-top) - 230px) * var(--reel-r, 1.7778))); }
+}
+
+/* Menu on top (tablet / phone): equal space between the words, whatever their length */
+@media (max-width: 900px) {
+  .sidebar .nav { display: flex !important; justify-content: space-between; gap: 6px; }
+  .sidebar .nav a { flex: 0 0 auto; padding: 12px 0 !important; min-width: 0; font-size: clamp(0.66rem, 2.9vw, 0.82rem) !important; letter-spacing: 0.04em !important; }
+}
+
+/* Theme: two buttons; the device decides until one is chosen */
+.theme-seg button { padding: 6px 11px; }
+
+/* Type: larger section labels, calmer headings, so the jump between them is smaller */
+.eyebrow { font-size: clamp(0.86rem, 0.78rem + 0.32vw, 1rem) !important; letter-spacing: 0.13em !important; gap: 12px !important; }
+h2 { font-size: clamp(1.5rem, 1.1rem + 1.9vw, 2.4rem); }
+.behind h2, .doing-intro h2, .founder-copy h2, .behind-copy h2 { font-size: clamp(1.55rem, 1.1rem + 2vw, 2.55rem) !important; }
+.loop-copy h2, .statement h2 { font-size: clamp(1.55rem, 1.1rem + 2vw, 2.55rem) !important; }
+.lens .section-head h2 { font-size: clamp(1.3rem, 1rem + 1.1vw, 1.85rem) !important; }
+.page-hero h1 { font-size: clamp(1.95rem, 1.2rem + 3.3vw, 3.8rem) !important; line-height: 1 !important; }
+.hero .hero-copy h1 { font-size: clamp(1.85rem, min(4.1vw, 6.6vh), 4.4rem) !important; }
+:root[data-lang="sv"] .hero .hero-copy h1 { font-size: clamp(1.75rem, min(3.6vw, 5.9vh), 3.9rem) !important; }
+
+/* Buttons: no underline. On hover the letters open up and the arrow moves on */
+.btn.btn.btn.btn { background-image: none !important; animation: none !important; padding: 6px 0 !important; letter-spacing: 0.06em;
+  transition: letter-spacing .45s cubic-bezier(.2, .75, .2, 1), opacity .2s ease; }
+.btn.btn.btn.btn:hover { animation: none !important; letter-spacing: 0.14em; }
+.btn.btn.btn.btn .arrow { transition: transform .45s cubic-bezier(.2, .75, .2, 1); }
+.btn.btn.btn.btn:hover .arrow { transform: translateX(6px) !important; }
+@media (min-width: 901px) {
+  .sidebar .nav .nav-label { transition: letter-spacing .4s cubic-bezier(.2, .75, .2, 1); }
+  .sidebar .nav a:hover .nav-label { letter-spacing: 0.14em; }
+}
+@media (prefers-reduced-motion: reduce) { .btn.btn.btn.btn, .btn.btn.btn.btn .arrow, .sidebar .nav .nav-label { transition: none; } }
+
+/* Colour: the four category colours as slanted strokes, like the logo */
+:root { --strokes: linear-gradient(114deg, transparent 0 6%, var(--c-business) 6% 22%, transparent 22% 30%, var(--c-event) 30% 46%, transparent 46% 54%, var(--c-wedding) 54% 70%, transparent 70% 78%, var(--c-drone) 78% 94%, transparent 94%); }
+.eyebrow::before { width: 30px !important; height: 0.95em !important; background: var(--strokes) !important; }
+.svc-grid .svc .eyebrow::before, .modal .eyebrow::before { background: linear-gradient(114deg, transparent 0 30%, var(--cat) 30% 70%, transparent 70%) !important; width: 16px !important; }
+.site-footer { position: relative; }
+.site-footer::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px;
+  background: linear-gradient(90deg, var(--c-business) 0 25%, var(--c-event) 25% 50%, var(--c-wedding) 50% 75%, var(--c-drone) 75% 100%); }
+/* "What I do": each row in its own colour */
+.doing-list a { padding-inline: 14px; margin-inline: -14px; transition: background-color .3s ease; }
+.doing-list a:hover { background: color-mix(in srgb, var(--cat) 12%, transparent); }
+.doing-list a:hover strong { text-decoration: none; }
+.doing-num { color: var(--cat) !important; font-weight: 500; }
+.doing-list a:hover .doing-arrow { color: var(--cat); }
+/* Services: each card lightly tinted with its colour */
+#drone-panel { --cat: var(--c-drone); }
+.svc-grid .svc { background: color-mix(in srgb, var(--cat) 7%, var(--surface)) !important; }
+
+/* Services: Companies, Events, Drone side by side, Weddings full width below */
+.svc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+.svc-grid .wedding { grid-column: 1 / -1 !important; }
+@media (max-width: 1280px) {
+  .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .svc-grid #drone-panel { grid-column: 1 / -1; display: grid !important; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); }
+  .svc-grid #drone-panel > .frame { height: auto; min-height: 100%; }
+}
+@media (max-width: 680px) {
+  .svc-grid { grid-template-columns: 1fr !important; }
+  .svc-grid #drone-panel { display: flex !important; grid-column: auto; }
+  .svc-grid #drone-panel > .frame { height: 170px; min-height: 0; }
+}
+
+/* Showreel button: the logo mark turns into pause / play */
+.reel-toggle .ic-pause, .reel-toggle .ic-play { display: none !important; }
+.reel-toggle .rt-icon { width: 20px; height: 20px; flex: none; fill: currentColor; overflow: visible; }
+.reel-toggle .rt-icon polygon { will-change: opacity; }

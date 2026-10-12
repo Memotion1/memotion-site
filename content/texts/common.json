@@ -54,16 +54,16 @@
     "en": "Next step"
   },
   "common_010": {
-    "orig": "Berätta om din dag",
-    "orig_en": "Tell me about your day",
-    "sv": "Berätta om din dag",
-    "en": "Tell me about your day"
+    "orig": "Berätta om ditt projekt",
+    "orig_en": "Tell me about your project",
+    "sv": "Berätta om ditt projekt",
+    "en": "Tell me about your project"
   },
   "common_011": {
-    "orig": "Datum, plats och det som betyder mest för dig. Svar kommer personligen inom två arbetsdagar.",
-    "orig_en": "The date, the place and what matters most to you. A personal reply follows within two working days.",
-    "sv": "Datum, plats och det som betyder mest för dig. Svar kommer personligen inom två arbetsdagar.",
-    "en": "The date, the place and what matters most to you. A personal reply follows within two working days."
+    "orig": "Datum, plats och vad du har i tankarna.",
+    "orig_en": "The date, the place and what you have in mind.",
+    "sv": "Datum, plats och vad du har i tankarna.",
+    "en": "The date, the place and what you have in mind."
   },
   "common_012": {
     "orig": "Kontakta mig",

@@ -21,31 +21,38 @@
     b.addEventListener("click", function () { var l = b.getAttribute("data-set-lang"); try { localStorage.setItem(LKEY, l); } catch (e) {} applyLang(l); });
   });
 
-  /* ---------- Theme: follows the device, switchable ---------- */
+  /* ---------- Theme: follows the device; the sun / moon buttons override it ----------
+     Choosing the mode the device already uses removes the override, so the site goes back to following the device. */
   var KEY = "me-motion-theme";
   var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
   var themeBtns = document.querySelectorAll(".theme-seg button");
   function stored() { try { var v = localStorage.getItem(KEY); return v === "light" || v === "dark" ? v : "auto"; } catch (e) { return "auto"; } }
+  function deviceTheme() {
+    var host = root.getAttribute("data-host-theme");
+    if (host === "light" || host === "dark") return host;
+    return mq && mq.matches ? "light" : "dark";
+  }
+  function effectiveTheme() { var s = stored(); return s === "auto" ? deviceTheme() : s; }
   function setTheme(mode) {
+    if (mode !== "auto" && mode === deviceTheme()) mode = "auto";
     try { if (mode === "auto") localStorage.removeItem(KEY); else localStorage.setItem(KEY, mode); } catch (e) {}
     if (mode === "auto") {
-      // Follow the device again (or the app's own setting, if it set one before the page loaded).
       var host = root.getAttribute("data-host-theme");
       if (host === "light" || host === "dark") root.setAttribute("data-theme", host); else root.removeAttribute("data-theme");
     } else root.setAttribute("data-theme", mode);
     syncTheme();
   }
   function syncTheme() {
-    var mode = stored();
+    var now = effectiveTheme();
     themeBtns.forEach(function (b) {
       var m = b.getAttribute("data-set-theme");
-      b.setAttribute("aria-pressed", m === mode ? "true" : "false");
-      var t = m === "auto" ? L("Följ enhetens inställning", "Match device") : m === "light" ? L("Ljust", "Light") : L("Mörkt", "Dark");
+      b.setAttribute("aria-pressed", m === now ? "true" : "false");
+      var t = m === "light" ? L("Ljust läge", "Light mode") : L("Mörkt läge", "Dark mode");
       b.title = t; b.setAttribute("aria-label", t);
-      var lbl = b.querySelector(".lbl"); if (lbl) lbl.textContent = m === "auto" ? "Auto" : t;
     });
   }
   themeBtns.forEach(function (b) { b.addEventListener("click", function () { setTheme(b.getAttribute("data-set-theme")); }); });
+  if (mq) { var onMq = function () { syncTheme(); }; if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq); }
   langListeners.push(syncTheme);
   applyLang(lang());
 
@@ -245,17 +252,91 @@
   function isVimeo(u) { return /^vimeo:/.test(srcList(u)[0] || ""); }
   function vimeoURL(u, q) { var p = srcList(u)[0].slice(6).split(":"); return "https://player.vimeo.com/video/" + p[0] + "?" + q + (p[1] ? "&h=" + p[1] : ""); }
 
+  /* ---------- Showreel button: the logo's strokes become pause / play ----------
+     The icon starts as the logo mark. The two "M" strokes fall and straighten into the pause bars;
+     the "E" stroke and its three blocks fall into a triangle for play. */
+  var RT = (function () {
+    var mark = [[[342.8, 0], [215.7, 0], [0, 475.6], [130, 475.6]], [[575.1, 0], [448, 0], [232.3, 475.6], [362.3, 475.6]],
+      [[795, 0], [667.8, 0], [452.2, 475.6], [582.1, 475.6]], [[840.2, 357.1], [710.9, 357.1], [657.2, 475.6], [787.1, 475.6]],
+      [[1000, 0], [872.9, 0], [813.6, 130.7], [941.5, 130.7]], [[919, 181.1], [790.7, 181.1], [733.7, 306.7], [862.8, 306.7]]];
+    return {
+      logo: mark.map(function (q) { return q.map(function (p) { return [180 + p[0] * 0.64, 348 + p[1] * 0.64]; }); }),
+      pause: [[[440, 230], [310, 230], [310, 770], [440, 770]], [[690, 230], [560, 230], [560, 770], [690, 770]]],
+      play: [[[590, 374.9], [330, 220], [330, 780], [590, 625.1]], [[746, 467.8], [694, 436.8], [694, 563.2], [746, 532.2]],
+        [[800, 500], [768, 480.9], [768, 519.1], [800, 500]], [[672, 423.7], [612, 388], [612, 612], [672, 576.3]]]
+    };
+  })();
+  function rtIcon(svg) {
+    if (!svg) return null;
+    var polys = [].slice.call(svg.querySelectorAll("polygon")), raf = 0, state = "logo", started = Date.now(), timer = 0;
+    var cur = polys.map(function (pl, i) { return { pts: RT.logo[i], op: 1 }; });
+    function shift(q, dy) { return q.map(function (p) { return [p[0], p[1] + dy]; }); }
+    function target(st, i) {
+      if (st === "logo") return RT.logo[i];
+      if (st === "pause") return i < 2 ? RT.pause[i] : null;
+      return i >= 2 ? RT.play[i - 2] : null;
+    }
+    function draw() {
+      polys.forEach(function (pl, i) {
+        pl.setAttribute("points", cur[i].pts.map(function (p) { return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" "));
+        pl.style.opacity = cur[i].op.toFixed(3);
+      });
+    }
+    function backOut(k) { var c = 1.35; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); }
+    function go(st) {
+      if (st === state) return;
+      state = st;
+      var from = cur.map(function (c) { return { pts: c.pts, op: c.op }; }), order = 0;
+      var to = polys.map(function (pl, i) {
+        var t = target(st, i);
+        if (t) {
+          var entering = from[i].op < 0.05;
+          if (entering) from[i] = { pts: shift(RT.logo[i], -360), op: 0 };   /* drops in from above, still slanted */
+          return { pts: t, op: 1, enter: entering, delay: entering ? 55 * order++ : 0 };
+        }
+        return { pts: shift(from[i].pts, 360), op: 0, exit: true, delay: 0 };   /* falls away */
+      });
+      cancelAnimationFrame(raf);
+      if (reduce) { cur = to.map(function (t) { return { pts: t.pts, op: t.op }; }); draw(); return; }
+      var t0 = performance.now(), D = 620;
+      function tick(now) {
+        var done = true;
+        cur = to.map(function (t, i) {
+          var k = Math.min(1, Math.max(0, (now - t0 - t.delay) / D)); if (k < 1) done = false;
+          var e = t.exit ? k * k : backOut(k), f = from[i];
+          return {
+            pts: f.pts.map(function (p, j) { return [p[0] + (t.pts[j][0] - p[0]) * e, p[1] + (t.pts[j][1] - p[1]) * e]; }),
+            op: f.op + (t.op - f.op) * (t.exit ? Math.min(1, k * 1.6) : Math.min(1, k * 2.5))
+          };
+        });
+        draw();
+        if (!done) raf = requestAnimationFrame(tick);
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    draw();
+    return {
+      /* the first change waits a moment so the logo is seen before it turns into the icon */
+      show: function (st) {
+        clearTimeout(timer);
+        var wait = state === "logo" && !reduce ? Math.max(0, 900 - (Date.now() - started)) : 0;
+        if (wait) timer = setTimeout(function () { go(st); }, wait); else go(st);
+      }
+    };
+  }
+
   /* ---------- Silent looping showreel in the opening frame ---------- */
   document.querySelectorAll("video[data-loop-src]").forEach(function (v) {
     setSrcs(v, srcList(v.getAttribute("data-loop-src")));
     v.muted = true;
-    var host = v.closest(".frame"), btn = host && host.querySelector(".reel-toggle");
+    var host = v.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), icon = btn && rtIcon(btn.querySelector(".rt-icon"));
     function sync() {
       if (!btn) return;
       var paused = v.paused;
       btn.setAttribute("aria-pressed", paused ? "true" : "false");
       btn.setAttribute("aria-label", paused ? L("Spela showreel", "Play showreel") : L("Pausa showreel", "Pause showreel"));
       btn.classList.toggle("is-paused", paused);
+      if (icon) icon.show(paused ? "play" : "pause");
     }
     function toggle() { if (v.paused) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else v.pause(); }
     v.addEventListener("play", sync); v.addEventListener("pause", sync);
@@ -268,7 +349,7 @@
 
   /* ---------- Showreel from Vimeo (background player): cover the frame, pause/play button ---------- */
   document.querySelectorAll("iframe.vimeo-loop").forEach(function (ifr) {
-    var host = ifr.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), paused = false;
+    var host = ifr.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), paused = false, icon = btn && rtIcon(btn.querySelector(".rt-icon"));
     var ratio = parseFloat(ifr.getAttribute("data-ratio")) || 16 / 9;
     function fit() {
       if (!host) return;
@@ -282,6 +363,7 @@
       btn.setAttribute("aria-pressed", paused ? "true" : "false");
       btn.setAttribute("aria-label", paused ? L("Spela showreel", "Play showreel") : L("Pausa showreel", "Pause showreel"));
       btn.classList.toggle("is-paused", paused);
+      if (icon) icon.show(paused ? "play" : "pause");
     }
     if (host && btn) host.addEventListener("click", function (e) { if (e.target.closest("a")) return; paused = !paused; send(paused ? "pause" : "play"); sync(); });
     ifr.addEventListener("load", function () { if (reduce || paused) { paused = true; send("pause"); sync(); } });

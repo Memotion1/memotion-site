@@ -155,7 +155,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: common_010
-    label: "Berätta om din dag"
+    label: "Berätta om ditt projekt"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -163,7 +163,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: common_011
-    label: "Datum, plats och det som betyder mest för dig. Svar kommer personligen…"
+    label: "Datum, plats och vad du har i tankarna."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -297,7 +297,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_015
-    label: "Vad ME Motion gör"
+    label: "Vad jag gör"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -305,7 +305,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_016
-    label: "Bilder som gör jobbet"
+    label: "Stora som små uppdrag"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -321,7 +321,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_018
-    label: "Samma person planerar, filmar och klipper. Det ger korta beslutsvägar …"
+    label: "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -461,7 +461,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_005
-    label: "Er historia"
+    label: "Ert företag i bild"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -485,7 +485,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_008
-    label: "Berätta er historia"
+    label: "Berätta om projektet"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -549,7 +549,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_016
-    label: "Vigseln, parporträtt och familjebilder"
+    label: "Fastigheter och mäklarbilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -557,7 +557,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_017
-    label: "300+ redigerade bilder"
+    label: "Evenemang och anläggningar från luften"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -565,7 +565,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_018
-    label: "Ett första smakprov inom 48 timmar"
+    label: "Natur, skärgård och landskap"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -573,7 +573,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_019
-    label: "Levereras inom 3 veckor"
+    label: "Som tillägg till film eller foto"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -581,7 +581,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_020
-    label: "Intim vigsel"
+    label: "Ovanifrån"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -589,7 +589,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_021
-    label: "3 timmar"
+    label: "Flygfilm och flygbilder över skärgård, fastigheter och evenemang, där …"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -597,7 +597,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_022
-    label: "inkl. moms"
+    label: "Fråga om flygbilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -605,7 +605,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_023
-    label: "Vigseln, porträtt, mingel och middagens viktigaste stunder"
+    label: "Vigseln, parporträtt och familjebilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -613,7 +613,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_024
-    label: "500+ redigerade bilder"
+    label: "300+ redigerade bilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -621,7 +621,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_025
-    label: "Levereras inom 5 veckor"
+    label: "Ett första smakprov inom 48 timmar"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -629,7 +629,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_026
-    label: "Halva dagen"
+    label: "Levereras inom 3 veckor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -637,7 +637,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_027
-    label: "6 timmar"
+    label: "Intim vigsel"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -645,7 +645,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_028
-    label: "Hela dagen, från förberedelserna till festen på kvällen"
+    label: "3 timmar"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -653,7 +653,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_029
-    label: "800+ redigerade bilder"
+    label: "inkl. moms"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -661,7 +661,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_030
-    label: "Hela dagen"
+    label: "Vigseln, porträtt, mingel och middagens viktigaste stunder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -669,7 +669,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_031
-    label: "12+ timmar"
+    label: "500+ redigerade bilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -677,7 +677,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_032
-    label: "Highlightfilm, 2–3 minuter"
+    label: "Levereras inom 5 veckor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -685,7 +685,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_033
-    label: "Hela vigseln som egen film"
+    label: "Halva dagen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -693,7 +693,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_034
-    label: "Levereras inom 4 veckor"
+    label: "6 timmar"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -701,7 +701,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_035
-    label: "Highlightfilm, 3–5 minuter"
+    label: "Hela dagen, från förberedelserna till festen på kvällen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -709,7 +709,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_036
-    label: "Vigseln och talen i sin helhet"
+    label: "800+ redigerade bilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -717,7 +717,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_037
-    label: "Kort version för sociala medier"
+    label: "Hela dagen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -725,7 +725,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_038
-    label: "Levereras inom 6 veckor"
+    label: "12+ timmar"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -733,7 +733,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_039
-    label: "Highlightfilm, 5–7 minuter"
+    label: "Highlightfilm, 2–3 minuter"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -741,7 +741,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_040
-    label: "Vigsel, tal och första dansen i sin helhet"
+    label: "Hela vigseln som egen film"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -749,7 +749,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_041
-    label: "Längre dokumentärfilm, 15–20 minuter"
+    label: "Levereras inom 4 veckor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -757,7 +757,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_042
-    label: "Bilder inom 3 veckor, film inom 4 veckor"
+    label: "Highlightfilm, 3–5 minuter"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -765,7 +765,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_043
-    label: "Bilder inom 5 veckor, film inom 6 veckor"
+    label: "Vigseln och talen i sin helhet"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -773,7 +773,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_044
-    label: "Välj det som passar er dag"
+    label: "Kort version för sociala medier"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -781,7 +781,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_045
-    label: "Vad vill ni ha?"
+    label: "Levereras inom 6 veckor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -789,7 +789,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_046
-    label: "Bilder"
+    label: "Highlightfilm, 5–7 minuter"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -797,7 +797,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_047
-    label: "Film"
+    label: "Vigsel, tal och första dansen i sin helhet"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -805,7 +805,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_048
-    label: "Båda"
+    label: "Längre dokumentärfilm, 15–20 minuter"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -813,7 +813,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_049
-    label: "Hur länge?"
+    label: "Bilder inom 3 veckor, film inom 4 veckor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -821,7 +821,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_050
-    label: "3 h"
+    label: "Bilder inom 5 veckor, film inom 6 veckor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -829,7 +829,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_051
-    label: "6 h"
+    label: "Välj det som passar er dag"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -837,7 +837,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_052
-    label: "Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priser…"
+    label: "Vad vill ni ha?"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -845,7 +845,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_053
-    label: "Fråga om ert datum"
+    label: "Bilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -853,7 +853,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_054
-    label: "Samtalet"
+    label: "Film"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -861,7 +861,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_055
-    label: "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av…"
+    label: "Båda"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -869,7 +869,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_056
-    label: "Planeringen"
+    label: "Hur länge?"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -877,7 +877,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_057
-    label: "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår…"
+    label: "3 h"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -885,7 +885,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_058
-    label: "Dagen"
+    label: "6 h"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -893,7 +893,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_059
-    label: "Du fokuserar på det som händer. Allt annat är redan ordnat."
+    label: "Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priser…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -901,7 +901,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_060
-    label: "Leveransen"
+    label: "Fråga om ert datum"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -909,7 +909,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_061
-    label: "Ditt färdiga material, levererat i tid och redo att delas."
+    label: "Samtalet"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -917,7 +917,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_062
-    label: "25 kr/mil"
+    label: "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -925,7 +925,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_063
-    label: "Resor"
+    label: "Planeringen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -933,7 +933,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_064
-    label: "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid i…"
+    label: "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -941,7 +941,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_065
-    label: "Flygbilder där det är tillåtet att flyga"
+    label: "Dagen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -949,7 +949,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_066
-    label: "Extra timme"
+    label: "Du fokuserar på det som händer. Allt annat är redan ordnat."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -957,7 +957,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_067
-    label: "Mer tid under dagen"
+    label: "Leveransen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -965,7 +965,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_068
-    label: "Råmaterial"
+    label: "Ditt färdiga material, levererat i tid och redo att delas."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -973,7 +973,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_069
-    label: "Alla användbara klipp, sorterade per scen"
+    label: "25 kr/mil"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -981,7 +981,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_070
-    label: "Expressleverans"
+    label: "Resor"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -989,7 +989,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_071
-    label: "Leverans på halva den vanliga tiden"
+    label: "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid i…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -997,7 +997,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_072
-    label: "Tryckta bilder"
+    label: "Flygbilder där det är tillåtet att flyga"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1005,7 +1005,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_073
-    label: "Tio favoriter tryckta på arkivbeständigt papper"
+    label: "Extra timme"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1013,7 +1013,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_074
-    label: "Så går ett samarbete till"
+    label: "Mer tid under dagen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1021,7 +1021,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_075
-    label: "Allt görs i egen regi, och du är med i varje steg."
+    label: "Råmaterial"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1029,7 +1029,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_076
-    label: "Har du en annan idé?"
+    label: "Alla användbara klipp, sorterade per scen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1037,7 +1037,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_077
-    label: "Paketen är bara en utgångspunkt. Har du något annat i tankarna skrädda…"
+    label: "Expressleverans"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1045,7 +1045,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_078
-    label: "Så går det till"
+    label: "Leverans på halva den vanliga tiden"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1053,7 +1053,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_079
-    label: "Från första meddelandet till färdig film"
+    label: "Tryckta bilder"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1061,7 +1061,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_080
-    label: "En tydlig process från första samtalet till leverans, där du är med i …"
+    label: "Tio favoriter tryckta på arkivbeständigt papper"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1069,7 +1069,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_081
-    label: "Tillval"
+    label: "Så går ett samarbete till"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1077,6 +1077,62 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: services_082
+    label: "Allt görs i egen regi, och du är med i varje steg."
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_083
+    label: "Har du en annan idé?"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_084
+    label: "Paketen är bara en utgångspunkt. Har du något annat i tankarna skrädda…"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_085
+    label: "Så går det till"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_086
+    label: "Från första meddelandet till färdig produkt"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_087
+    label: "En tydlig process från första samtalet till leverans, där du är med i …"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_088
+    label: "Tillval"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: services_089
     label: "Tillval efter behov"
     type: object
     fields:
