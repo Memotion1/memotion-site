@@ -534,7 +534,7 @@ HERO_REEL = frame(REEL_POSTER, "archipelago", 3, "ratio-scope hero-reel", "", lo
 
 home = f'''<section class="hero">
   <div class="wrap">
-    {HERO_REEL}<button class="reel-toggle" type="button" aria-pressed="false">{RT_ICON}<span class="rt-label">{T("Pausa", "Pause")}</span></button></div>
+    {HERO_REEL}<span class="reel-big" aria-hidden="true">{RT_ICON}</span><button class="reel-toggle" type="button" aria-pressed="false">{RT_ICON}<span class="rt-label rt-l-pause">{T("Pausa", "Pause")}</span><span class="rt-label rt-l-play">{T("Spela", "Play")}</span></button></div>
     <div class="hero-copy">
       {T("Berättelser som rör sig", "Stories that move", "h1")}
       {BOOK_BTN}

@@ -325,14 +325,34 @@
     };
   }
 
+  /* ---------- Big pause / play sign in the middle of the showreel ----------
+     Same logo-stroke animation as the small button, large and centred. While the film is paused it stays
+     as a play sign; when the film starts again it turns into pause and fades away. */
+  function reelBig(host) {
+    var wrap = host && host.querySelector(".reel-big"), icon = wrap && rtIcon(wrap.querySelector(".rt-icon")), hide = 0, last = null;
+    return function (paused, byUser) {
+      if (!wrap) return;
+      host.classList.toggle("is-paused", paused);
+      if (last === null && !paused) { last = paused; return; }   /* film starting on its own: no sign */
+      if (byUser || last !== paused) {
+        icon.show(paused ? "play" : "pause");
+        clearTimeout(hide);
+        if (!paused) { wrap.classList.add("flash"); hide = setTimeout(function () { wrap.classList.remove("flash"); }, reduce ? 500 : 1100); }
+        else wrap.classList.remove("flash");
+      }
+      last = paused;
+    };
+  }
+
   /* ---------- Silent looping showreel in the opening frame ---------- */
   document.querySelectorAll("video[data-loop-src]").forEach(function (v) {
     setSrcs(v, srcList(v.getAttribute("data-loop-src")));
     v.muted = true;
-    var host = v.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), icon = btn && rtIcon(btn.querySelector(".rt-icon"));
+    var host = v.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), icon = btn && rtIcon(btn.querySelector(".rt-icon")), big = reelBig(host);
     function sync() {
       if (!btn) return;
       var paused = v.paused;
+      big(paused, false);
       btn.setAttribute("aria-pressed", paused ? "true" : "false");
       btn.setAttribute("aria-label", paused ? L("Spela showreel", "Play showreel") : L("Pausa showreel", "Pause showreel"));
       btn.classList.toggle("is-paused", paused);
@@ -349,7 +369,7 @@
 
   /* ---------- Showreel from Vimeo (background player): cover the frame, pause/play button ---------- */
   document.querySelectorAll("iframe.vimeo-loop").forEach(function (ifr) {
-    var host = ifr.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), paused = false, icon = btn && rtIcon(btn.querySelector(".rt-icon"));
+    var host = ifr.closest(".frame"), btn = host && host.querySelector(".reel-toggle"), paused = false, icon = btn && rtIcon(btn.querySelector(".rt-icon")), big = reelBig(host), byUser = false;
     var ratio = parseFloat(ifr.getAttribute("data-ratio")) || 16 / 9;
     function fit() {
       if (!host) return;
@@ -360,12 +380,13 @@
     function send(m) { try { ifr.contentWindow.postMessage(JSON.stringify({ method: m }), "https://player.vimeo.com"); } catch (e) {} }
     function sync() {
       if (!btn) return;
+      big(paused, byUser); byUser = false;
       btn.setAttribute("aria-pressed", paused ? "true" : "false");
       btn.setAttribute("aria-label", paused ? L("Spela showreel", "Play showreel") : L("Pausa showreel", "Pause showreel"));
       btn.classList.toggle("is-paused", paused);
       if (icon) icon.show(paused ? "play" : "pause");
     }
-    if (host && btn) host.addEventListener("click", function (e) { if (e.target.closest("a")) return; paused = !paused; send(paused ? "pause" : "play"); sync(); });
+    if (host && btn) host.addEventListener("click", function (e) { if (e.target.closest("a")) return; paused = !paused; byUser = true; send(paused ? "pause" : "play"); sync(); });
     ifr.addEventListener("load", function () { if (reduce || paused) { paused = true; send("pause"); sync(); } });
     langListeners.push(sync);
     fit(); window.addEventListener("resize", fit);

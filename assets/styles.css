@@ -904,7 +904,6 @@ body, :root[data-theme="light"] body { background: var(--bg) !important; }
 .reel-toggle .ic-play { display: none; width: 0; height: 0; border-left: 9px solid #fff; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
 .reel-toggle.is-paused .ic-pause { display: none; }
 .reel-toggle.is-paused .ic-play { display: block; }
-.reel-toggle.is-paused .rt-label { display: none; }
 .hero-reel .vf .info { display: none; }
 
 /* ---------- Home: "Through the lens" strip ---------- */
@@ -1293,7 +1292,6 @@ h2 { font-size: clamp(1.5rem, 1.1rem + 1.9vw, 2.4rem); }
 .hero > .wrap { height: auto !important; width: 100% !important; max-width: none !important; margin-inline: 0 !important; align-self: stretch !important; }
 .hero .hero-reel { flex: none !important; width: 100% !important; max-width: none !important; height: auto !important; min-height: 0 !important;
   aspect-ratio: var(--reel-r, 1.7778) !important; margin: 0 !important; }
-.hero .hero-reel::after { display: none !important; }
 
 /* Through the lens: the strip runs edge to edge, no empty space at the start or the end
    (phones keep the normal small page margin so the labels never touch the screen edge) */
@@ -1323,3 +1321,28 @@ h2 { font-size: clamp(1.5rem, 1.1rem + 1.9vw, 2.4rem); }
 }
 /* Add-ons: two per row on small laptops so long names never break */
 @media (min-width: 901px) and (max-width: 1180px) { .addons { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } }
+
+/* ================= Round 14 ================= */
+/* Section labels: text only, no icon in front */
+.eyebrow::before, .svc-grid .svc .eyebrow::before, .modal .eyebrow::before { content: none !important; display: none !important; }
+
+/* Showreel button label: "Pause" while playing, "Play" while paused */
+.reel-toggle .rt-l-play { display: none; }
+.reel-toggle.is-paused .rt-l-pause { display: none; }
+.reel-toggle.is-paused .rt-l-play { display: inline; }
+
+/* Big pause / play sign in the middle of the showreel, drawn from the logo strokes */
+.hero-reel .reel-big { position: absolute; left: 50%; top: 50%; z-index: 58; width: clamp(64px, 9vw, 132px); aspect-ratio: 1;
+  transform: translate(-50%, -50%) scale(.92); color: #fff; opacity: 0; pointer-events: none;
+  filter: drop-shadow(0 4px 22px rgba(0, 0, 0, .45)); transition: opacity .35s ease, transform .5s cubic-bezier(.2, .75, .2, 1); }
+.hero-reel .reel-big .rt-icon { display: block; width: 100%; height: 100%; fill: currentColor; overflow: visible; }
+.hero-reel.is-paused .reel-big, .hero-reel .reel-big.flash { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.hero-reel .reel-big.flash { transition-duration: .2s, .5s; }
+@media (prefers-reduced-motion: reduce) { .hero-reel .reel-big { transition: opacity .2s linear; transform: translate(-50%, -50%); } }
+
+/* Selected work: frames grow with the window, so the strip always has more to scroll to */
+.lens { --lens-gap: clamp(10px, 1.4vw, 18px); container-type: inline-size; }
+.lens-track { gap: var(--lens-gap) !important; }
+.lens-item, .lens-item.tall, .lens-item.wide, .lens-item.square { width: min(calc((100cqw - 2.3 * var(--lens-gap)) / 2.3), 46svh) !important; }
+@container (min-width: 700px) { .lens-item, .lens-item.tall, .lens-item.wide, .lens-item.square { width: min(calc((100cqw - 3.5 * var(--lens-gap)) / 3.5), 40svh) !important; } }
+@container (min-width: 1200px) { .lens-item, .lens-item.tall, .lens-item.wide, .lens-item.square { width: min(calc((100cqw - 5.4 * var(--lens-gap)) / 5.4), 40svh) !important; } }

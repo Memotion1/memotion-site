@@ -42,108 +42,114 @@
     "en": "Pause"
   },
   "home_008": {
+    "orig": "Spela",
+    "orig_en": "Play",
+    "sv": "Spela",
+    "en": "Play"
+  },
+  "home_009": {
     "orig": "Berättelser som rör sig",
     "orig_en": "Stories that move",
     "sv": "Berättelser som rör sig",
     "en": "Stories that move"
   },
-  "home_009": {
+  "home_010": {
     "orig": "Bakom kameran",
     "orig_en": "Behind the camera",
     "sv": "Bakom kameran",
     "en": "Behind the camera"
   },
-  "home_010": {
+  "home_011": {
     "orig": "Lugn på plats, noggrann i efterarbetet",
     "orig_en": "Calm on location, meticulous in post-production",
     "sv": "Lugn på plats, noggrann i efterarbetet",
     "en": "Calm on location, meticulous in post-production"
   },
-  "home_011": {
+  "home_012": {
     "orig": "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.",
     "orig_en": "Every project starts with a conversation, long before the camera comes out. The work begins once the feeling you're after is clear.",
     "sv": "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.",
     "en": "Every project starts with a conversation, long before the camera comes out. The work begins once the feeling you're after is clear."
   },
-  "home_012": {
+  "home_013": {
     "orig": "Läs om ME Motion",
     "orig_en": "About ME Motion",
     "sv": "Läs om ME Motion",
     "en": "About ME Motion"
   },
-  "home_013": {
+  "home_014": {
     "orig": "Utvalda projekt",
     "orig_en": "Selected work",
     "sv": "Utvalda projekt",
     "en": "Selected work"
   },
-  "home_014": {
+  "home_015": {
     "orig": "Genom linsen",
     "orig_en": "Through the lens",
     "sv": "Genom linsen",
     "en": "Through the lens"
   },
-  "home_015": {
+  "home_016": {
     "orig": "Vad jag gör",
     "orig_en": "What I do",
     "sv": "Vad jag gör",
     "en": "What I do"
   },
-  "home_016": {
+  "home_017": {
     "orig": "Stora som små uppdrag",
     "orig_en": "Projects big and small",
     "sv": "Stora som små uppdrag",
     "en": "Projects big and small"
   },
-  "home_017": {
+  "home_018": {
     "orig": "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?",
     "orig_en": "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?",
     "sv": "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?",
     "en": "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?"
   },
-  "home_018": {
+  "home_019": {
     "orig": "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.",
     "orig_en": "I plan, film and edit everything myself. That means short decision paths and a film that holds together all the way from idea to delivery.",
     "sv": "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.",
     "en": "I plan, film and edit everything myself. That means short decision paths and a film that holds together all the way from idea to delivery."
   },
-  "home_019": {
+  "home_020": {
     "orig": "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.",
     "orig_en": "Commercials and brand films, interviews, YouTube, social media clips and product photography.",
     "sv": "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.",
     "en": "Commercials and brand films, interviews, YouTube, social media clips and product photography."
   },
-  "home_020": {
+  "home_021": {
     "orig": "Evenemang och idrott",
     "orig_en": "Events and sport",
     "sv": "Evenemang och idrott",
     "en": "Events and sport"
   },
-  "home_021": {
+  "home_022": {
     "orig": "Konferenser, lanseringar, matcher och fester, fångade medan de pågår.",
     "orig_en": "Conferences, launches, matches and parties, captured as they happen.",
     "sv": "Konferenser, lanseringar, matcher och fester, fångade medan de pågår.",
     "en": "Conferences, launches, matches and parties, captured as they happen."
   },
-  "home_022": {
+  "home_023": {
     "orig": "Film och foto från vigseln till sista dansen.",
     "orig_en": "Film and photography from the ceremony to the last dance.",
     "sv": "Film och foto från vigseln till sista dansen.",
     "en": "Film and photography from the ceremony to the last dance."
   },
-  "home_023": {
+  "home_024": {
     "orig": "Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.",
     "orig_en": "Aerial footage of the archipelago, properties and events, wherever flying is permitted.",
     "sv": "Flygbilder över skärgård, fastigheter och evenemang, där det är tillåtet att flyga.",
     "en": "Aerial footage of the archipelago, properties and events, wherever flying is permitted."
   },
-  "home_024": {
+  "home_025": {
     "orig": "Något helt annat i tankarna?",
     "orig_en": "Something else entirely in mind?",
     "sv": "Något helt annat i tankarna?",
     "en": "Something else entirely in mind?"
   },
-  "home_025": {
+  "home_026": {
     "orig": "Berätta om det",
     "orig_en": "Tell me about it",
     "sv": "Berätta om det",

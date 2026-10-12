@@ -241,7 +241,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_008
-    label: "Berättelser som rör sig"
+    label: "Spela"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -249,7 +249,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_009
-    label: "Bakom kameran"
+    label: "Berättelser som rör sig"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -257,7 +257,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_010
-    label: "Lugn på plats, noggrann i efterarbetet"
+    label: "Bakom kameran"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -265,7 +265,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_011
-    label: "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. …"
+    label: "Lugn på plats, noggrann i efterarbetet"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -273,7 +273,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_012
-    label: "Läs om ME Motion"
+    label: "Varje projekt börjar med ett samtal, långt innan kameran kommer fram. …"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -281,7 +281,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_013
-    label: "Utvalda projekt"
+    label: "Läs om ME Motion"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -289,7 +289,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_014
-    label: "Genom linsen"
+    label: "Utvalda projekt"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -297,7 +297,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_015
-    label: "Vad jag gör"
+    label: "Genom linsen"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -305,7 +305,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_016
-    label: "Stora som små uppdrag"
+    label: "Vad jag gör"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -313,7 +313,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_017
-    label: "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i…"
+    label: "Stora som små uppdrag"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -321,7 +321,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_018
-    label: "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och…"
+    label: "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -329,7 +329,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_019
-    label: "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala med…"
+    label: "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -337,7 +337,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_020
-    label: "Evenemang och idrott"
+    label: "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala med…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -345,7 +345,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_021
-    label: "Konferenser, lanseringar, matcher och fester, fångade medan de pågår."
+    label: "Evenemang och idrott"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -353,7 +353,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_022
-    label: "Film och foto från vigseln till sista dansen."
+    label: "Konferenser, lanseringar, matcher och fester, fångade medan de pågår."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -361,7 +361,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_023
-    label: "Flygbilder över skärgård, fastigheter och evenemang, där det är tillåt…"
+    label: "Film och foto från vigseln till sista dansen."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -369,7 +369,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_024
-    label: "Något helt annat i tankarna?"
+    label: "Flygbilder över skärgård, fastigheter och evenemang, där det är tillåt…"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -377,6 +377,14 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: home_025
+    label: "Något helt annat i tankarna?"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: home_026
     label: "Berätta om det"
     type: object
     fields:
