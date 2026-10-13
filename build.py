@@ -686,10 +686,14 @@ page("work.html", f"Arbeten · {BRAND}", f"Work · {BRAND}", "work", work)
 
 # ---------------- SERVICES ----------------
 SECTION[0] = "services"
+# Pictures for the three service boxes (admin panel: Site settings - "Services - ... picture")
+SVC_IMG = {k: media_url(SETTINGS.get(f"service_{k}_image")) for k in ("business", "event", "wedding")}
+
+
 def svc_panel(pid, scene, seed, eb, title, intro, lis, btn):
     lis_html = "".join(f"<li>{T(sv, en)}</li>" for sv, en in lis)
     return f'''<article class="svc" id="{pid}-panel">
-      <div class="frame" data-scene="{scene}" data-seed="{seed}"></div>
+      {frame(SVC_IMG[pid], scene, seed, "", eb[1])}
       <div class="wedding-body">
         {T(*eb, "span", 'class="eyebrow"')}
         {T(*title, "h2")}
@@ -791,7 +795,7 @@ def seg(group, opts, default):
 
 
 wedding = f'''<article class="svc wedding" id="wedding-panel">
-      <div class="frame" data-scene="wedding" data-seed="44"></div>
+      {frame(SVC_IMG["wedding"], "wedding", 44, "", "Weddings")}
       <div class="wedding-body wedding-split">
         <div class="w-left">
           {T("Bröllop", "Weddings", "span", 'class="eyebrow"')}
@@ -891,24 +895,12 @@ def book_btn(cls="btn primary"):
 
 
 IG_LINK = (f'<a href="{e(INSTAGRAM)}" target="_blank" rel="noopener">Instagram</a>' if INSTAGRAM else "")
-about = f'''<section class="about-hero">
-  <div class="wrap">
-    {T("Om", "About", "span", 'class="eyebrow"')}
-    {T("Det här är ME Motion", "This is ME Motion", "h1")}
-    <div class="about-intro">
-      {T("ME Motion är en studio för film och foto i Stockholm. Uppdragen kommer från företag, evenemang och brudpar, och varje bildruta får samma omsorg oavsett hur stort projektet är.", "ME Motion is a film and photography studio in Stockholm. The work comes from companies, events and couples, and every frame gets the same care however big the project is.", "p", 'class="about-lead"')}
-      {T("Allt görs från början till slut av samma person. Samma öga som planerar inspelningen står bakom kameran och sitter sedan vid klippbordet. Det gör vägen kort mellan idé och färdig film, och resultatet håller ihop.", "Everything is made from start to finish by the same person. The eye that plans the shoot is behind the camera and then at the edit. That keeps the path from idea to finished film short, and the result holds together.", "p")}
-      {T("Ingen produktion är för liten för att göras ordentligt, och ingen är så stor att den tappar det personliga.", "No production is too small to be done properly, and none is so big that it loses the personal touch.", "p")}
-    </div>
-  </div>
-</section>
-
-<section style="padding-top: clamp(16px, 3vw, 40px);">
+about = f'''<section>
   <div class="wrap founder-grid">
     {frame(PORTRAIT, "interview", 61, "ratio-4x5", "Mikael Edström", "" if PORTRAIT else vf(meta="4:5"))}
     <div class="stack founder-copy">
       {T("Grundaren", "The founder", "span", 'class="eyebrow"')}
-      {T("Mikael Edström", "Mikael Edström", "h2")}
+      {T("Mikael Edström", "Mikael Edström", "h1", 'class="founder-name"')}
       {T("ME Motion är en studio för visuellt berättande i Stockholm, grundad av Mikael Edström. Uppdragen spänner från företagsfilm och evenemang till bröllop, med samma krav på hantverk oavsett vad det gäller.", "ME Motion is a visual storytelling studio in Stockholm, founded by Mikael Edström. The work spans company films, events and weddings, held to the same standard whatever the assignment.", "p", 'class="lede"')}
       {T("Mikael kombinerar tekniskt kunnande med ett öga för detaljer. Planering och efterarbete får lika mycket omsorg som inspelningen, och målet är bilder som håller även när man ser dem en andra gång.", "Mikael combines technical precision with an eye for detail. Planning and post-production get as much care as the shoot, with the aim of images that still hold up on a second watch.", "p", 'class="lede"')}
     </div>

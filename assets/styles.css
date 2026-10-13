@@ -1457,3 +1457,5 @@ a.bts-item:hover img { opacity: .85; }
 
 /* Round 18: the portrait keeps his face in frame when the box is cropped wide on phones */
 .behind-portrait > img, .founder-grid > .frame > img { object-position: 50% 15%; }
+/* Round 19: the About page now opens with the founder, his name is the page heading at the old size */
+.founder-name { font-size: clamp(1.7rem, 3.6vw, 2.8rem); }
