@@ -12,7 +12,7 @@
   "length": "0:21",
   "format": "4K · 16:9",
   "show_on_home": true,
-  "wide": true,
+  "wide": false,
   "order": 2,
   "draft": false,
   "scene": "wedding",
