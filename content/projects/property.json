@@ -13,7 +13,7 @@
   "show_on_home": false,
   "wide": true,
   "order": 110,
-  "draft": true,
+  "draft": false,
   "scene": "aerial",
   "seed": 19,
   "demo_loop": false
