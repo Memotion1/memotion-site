@@ -13,7 +13,7 @@
   "show_on_home": true,
   "wide": false,
   "order": 5,
-  "draft": false,
+  "draft": true,
   "scene": "interview",
   "seed": 5,
   "demo_loop": false
