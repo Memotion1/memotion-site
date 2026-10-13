@@ -7,14 +7,15 @@
   "video": "https://vimeo.com/1235475613?share=copy&fl=sv&fe=ci",
   "extra_films": [
     {
-      "video": "https://vimeo.com/1235563524?share=copy&fl=sv&fe=ci"
+      "video": "https://vimeo.com/1235563524?share=copy&fl=sv&fe=ci",
+      "length": "0:59"
     }
   ],
   "client_sv": "Road to Åland",
   "client_en": "Road to Åland",
   "summary_sv": "Videoproduktion för Road to Åland, en resande golfklubb som arrangerar event på banor runtom i Sverige. Materialet dokumenterar spelet på banan, miljöerna och spelarna på plats i Sala och Karlstad.",
   "summary_en": "Video documentation for Road to Åland, a traveling golf club hosting events at courses across Sweden. This project covers on-course play, facility environments, and player activity across locations in Sala and Karlstad.",
-  "length": "0:47 and 0:59",
+  "length": "0:47 ",
   "format": "4K · 16:9",
   "show_on_home": true,
   "wide": false,
