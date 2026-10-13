@@ -11,10 +11,10 @@
   "summary_en": "Japanese Rice lager",
   "length": "0:21",
   "format": "4K · 16:9",
-  "show_on_home": true,
+  "show_on_home": false,
   "wide": false,
   "order": 2,
-  "draft": false,
+  "draft": true,
   "scene": "wedding",
   "seed": 11,
   "demo_loop": false
