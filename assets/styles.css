@@ -1450,6 +1450,7 @@ iframe.tile-preview { inset: auto; top: 50%; left: 50%; transform: translate(-50
 .lightbox.single [data-pv="-1"], .lightbox.single [data-pv="1"], .lightbox.single .lb-count { display: none; }
 .photo-view .lb-stage { cursor: zoom-out; }
 .photo-view .lb-img { cursor: default; }
+.photo-view .lb-img[hidden], .photo-view .lb-video[hidden] { display: none; }   /* Round 20: the home page viewer also plays films */
 a.bts-item { display: block; cursor: zoom-in; }
 a.bts-item img { transition: opacity .25s ease; }
 a.bts-item:hover img { opacity: .85; }

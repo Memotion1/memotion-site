@@ -63,18 +63,22 @@ content:
   - {name: service_event_image,label: Services - Events picture,description: "The picture in the Events box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
   - {name: service_wedding_image,label: Services - Weddings picture,description: "The picture in the Weddings box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
 - name: lens
-  label: Through the lens - BTS pictures
+  label: Home page - Through the lens extras
   type: file
   path: content/lens.json
   format: json
   fields:
   - name: pictures
-    label: Behind-the-scenes pictures
-    description: "Shown only in the Through the lens strip on the home page, mixed in between the projects. They are not projects and do not appear on the Work page. Drag to change the order."
+    label: Pictures and films
+    description: "Extra pictures and films for the Through the lens strip on the home page, placed between the projects. They are not projects and do not appear on the Work page. Projects get into the strip with their own 'Show on the home page' switch. Drag to change the order."
     type: object
     list: true
     fields:
-    - {name: image,label: Picture,type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+    - {name: show_on_home,label: Show on the home page,type: boolean,default: true}
+    - {name: image,label: Picture,description: "The photo. For a film this is its cover. Leave empty on a Vimeo film to use Vimeo's own thumbnail.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+    - {name: video,label: Film - Vimeo link (optional),description: "e.g. https://vimeo.com/1235029705. Plays large when the tile is clicked.",type: string}
+    - {name: video_file,label: Film - video file (optional),description: "A short .mp4 instead of a Vimeo link. Files over about 3 MB have to be uploaded through GitHub first, then chosen here.",type: file,options: {extensions: [mp4,webm,mov]}}
+    - {name: label,label: Tag in the corner,type: select,default: bts,options: {values: [{name: bts,label: Behind the scenes},{name: business,label: Business},{name: event,label: Event},{name: wedding,label: Wedding},{name: drone,label: Drone},{name: stills,label: Other},{name: none,label: No tag}]}}
     - {name: caption_sv,label: Caption - Swedish (optional),type: string}
     - {name: caption_en,label: Caption - English (optional),type: string}
 - name: wedding

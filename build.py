@@ -536,20 +536,42 @@ def lens_item(p):
             f'<span class="lens-cat mono">{T(*CATNAME[p["category"]])}</span></a>')
 
 
-# Behind-the-scenes pictures for the strip (admin panel: "Through the lens - BTS pictures"). Not projects:
-# they open as a large picture and never appear on the Work page.
+# Extra pictures and films for the strip (admin panel: "Home page - Through the lens extras"). Not projects:
+# they open large on the home page and never appear on the Work page.
+LENS_TAG = {"bts": ("Bakom kulisserna", "Behind the scenes"), **CATNAME}
 LENS_BTS = []
 for _x in (load("lens.json", {}) or {}).get("pictures") or []:
-    if isinstance(_x, dict) and media_url(_x.get("image")):
-        LENS_BTS.append({"img": media_url(_x.get("image")), "sv": str(_x.get("caption_sv") or "").strip(), "en": str(_x.get("caption_en") or "").strip()})
+    if not isinstance(_x, dict) or _x.get("show_on_home") is False:
+        continue
+    _vid = str(_x.get("video") or "").strip() or media_url(_x.get("video_file"))
+    _img = media_url(_x.get("image")) or (video_thumb(_vid) if _vid else "")
+    if not _img and not _vid:
+        continue
+    _tag = str(_x.get("label") or "bts").strip()
+    LENS_BTS.append({"img": _img, "video": _vid, "tag": _tag if _tag in LENS_TAG else ("" if _tag == "none" else "bts"),
+                     "sv": str(_x.get("caption_sv") or "").strip(), "en": str(_x.get("caption_en") or "").strip()})
 
 
 def bts_item(b):
     sv, en = b["sv"] or b["en"], b["en"] or b["sv"]
     title = T(e(sv), e(en), "span", 'class="tile-title"', edit=False) if sv else ""
-    return (f'<a class="lens-item tall lens-bts" href="{e(b["img"])}" data-photo="lens" data-cap-sv="{e(sv)}" data-cap-en="{e(en)}" '
-            f'data-cat="stills" aria-label="{e(sv or "Bakom kulisserna")}">'
-            f'{frame(b["img"], "studio", 7, "", sv, title)}<span class="lens-cat mono">{T("Bakom kulisserna", "Behind the scenes")}</span></a>')
+    tag = T(*LENS_TAG[b["tag"]]) if b["tag"] else ""
+    attrs, loop = "", ""
+    if b["video"]:
+        srcs = "|".join(video_srcs(b["video"], ("720p", "360p")))
+        vr = vimeo_ref(b["video"])
+        ratio = vimeo_ratio(vr) if vr else 16 / 9
+        attrs = f' data-video="{e(srcs)}" data-video-r="{ratio:.4f}"'
+        if b["img"]:
+            attrs += f' data-poster="{e(b["img"])}" data-preview="{e(srcs)}" data-preview-r="{ratio:.4f}"'
+        else:   # a video file with no picture: the tile plays it silently
+            loop = loop_video(srcs)
+    label = sv or (LENS_TAG[b["tag"]][0] if b["tag"] else "Bild")
+    tag_html = f'<span class="lens-cat mono">{tag}</span>' if tag else ""
+    cat = b["tag"] if b["tag"] in CATNAME else "stills"
+    return (f'<a class="lens-item tall lens-bts" href="{e(b["img"] or "#")}" data-photo="lens" data-cap-sv="{e(sv)}" data-cap-en="{e(en)}" '
+            f'data-cat="{cat}" aria-label="{e(label)}"{attrs}>'
+            f'{frame(b["img"], "studio", 7, "", sv, loop + title)}{tag_html}</a>')
 
 
 # projects first, with a behind-the-scenes picture after every second one; any left over go at the end

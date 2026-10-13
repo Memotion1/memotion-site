@@ -684,25 +684,41 @@
     if (location.hash && projects.some(function (p) { return p.id === location.hash.slice(1); })) open(location.hash.slice(1));
   }
 
-  /* ---------- Behind-the-scenes pictures: open large, step through with the arrows ---------- */
+  /* ---------- Home page extras (pictures and films): open large, step through with the arrows ---------- */
   (function () {
     var groups = {};
     document.querySelectorAll("a[data-photo]").forEach(function (a) { var g = a.getAttribute("data-photo"); (groups[g] = groups[g] || []).push(a); });
     if (!Object.keys(groups).length) return;
     var v = document.createElement("div"); v.className = "lightbox photo-view"; v.hidden = true;
     v.setAttribute("role", "dialog"); v.setAttribute("aria-modal", "true");
-    v.innerHTML = '<div class="lb-stage"><img class="lb-img" alt=""></div><div class="lb-bar"><button class="icon-btn" type="button" data-pv="-1" aria-label="Föregående / Previous">←</button><span class="mono lb-cap"></span><span class="mono lb-count"></span><button class="icon-btn" type="button" data-pv="1" aria-label="Nästa / Next">→</button><button class="icon-btn" type="button" data-pv="x" aria-label="Stäng / Close">✕</button></div>';
+    v.innerHTML = '<div class="lb-stage"><img class="lb-img" alt=""><video class="lb-video" controls playsinline preload="metadata" hidden></video><iframe class="lb-vimeo" title="Film" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen hidden></iframe></div><div class="lb-bar"><button class="icon-btn" type="button" data-pv="-1" aria-label="Föregående / Previous">←</button><span class="mono lb-cap"></span><span class="mono lb-count"></span><button class="icon-btn" type="button" data-pv="1" aria-label="Nästa / Next">→</button><button class="icon-btn" type="button" data-pv="x" aria-label="Stäng / Close">✕</button></div>';
     document.body.appendChild(v);
-    var list = [], i = 0, from = null, img = v.querySelector(".lb-img");
+    var list = [], i = 0, from = null, img = v.querySelector(".lb-img"), vid = v.querySelector(".lb-video"), vm = v.querySelector(".lb-vimeo");
     function cap(a) { return a.getAttribute("data-cap-" + lang()) || ""; }
+    function stop() {
+      vid.pause(); vid.hidden = true; vid.removeAttribute("data-key");
+      if (vm.getAttribute("data-key")) { vm.removeAttribute("data-key"); vm.src = "about:blank"; }
+      vm.hidden = true;
+    }
     function show() {
-      var a = list[i]; img.src = a.getAttribute("href"); img.alt = cap(a);
+      var a = list[i], film = a.getAttribute("data-video");
+      stop();
+      if (film && isVimeo(film)) {
+        img.hidden = true; img.removeAttribute("src");
+        var url = vimeoURL(film, "autoplay=1&dnt=1&title=0&byline=0&portrait=0");
+        vm.style.setProperty("--r", a.getAttribute("data-video-r") || String(16 / 9));
+        vm.hidden = false; vm.setAttribute("data-key", url); vm.src = url;
+      } else if (film) {
+        img.hidden = true; img.removeAttribute("src");
+        vid.hidden = false; vid.poster = a.getAttribute("data-poster") || ""; vid.setAttribute("data-key", film);
+        setSrcs(vid, srcList(film)); var pr = vid.play(); if (pr && pr.catch) pr.catch(function () {});
+      } else { img.hidden = false; img.src = a.getAttribute("href"); img.alt = cap(a); }
       v.querySelector(".lb-cap").textContent = cap(a);
       v.querySelector(".lb-count").textContent = (i + 1) + " / " + list.length;
       v.classList.toggle("single", list.length < 2);
     }
     function open(g, k, a) { list = groups[g]; i = k; from = a; v.hidden = false; show(); v.querySelector('[data-pv="x"]').focus(); }
-    function close() { v.hidden = true; img.removeAttribute("src"); if (from) from.focus(); }
+    function close() { stop(); v.hidden = true; img.removeAttribute("src"); if (from) from.focus(); }
     function go(d) { i = (i + d + list.length) % list.length; show(); }
     Object.keys(groups).forEach(function (g) {
       groups[g].forEach(function (a, k) { a.addEventListener("click", function (e) { e.preventDefault(); open(g, k, a); }); });
@@ -716,7 +732,7 @@
       if (v.hidden) return;
       if (e.key === "Escape") close(); else if (e.key === "ArrowRight") go(1); else if (e.key === "ArrowLeft") go(-1);
     });
-    langListeners.push(function () { if (!v.hidden) show(); });
+    langListeners.push(function () { if (!v.hidden) { v.querySelector(".lb-cap").textContent = cap(list[i]); img.alt = cap(list[i]); } });
   })();
 
   /* ---------- Copy helpers ---------- */
