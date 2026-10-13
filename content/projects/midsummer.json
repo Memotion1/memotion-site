@@ -3,16 +3,19 @@
   "title_en": "Road to Åland",
   "category": "event",
   "type": "film",
+  "cover": "/media/Still 2026-10-13 183457_1.10.1.jpg",
   "video": "https://vimeo.com/1235475613?share=copy&fl=sv&fe=ci",
-  "images": [
-    "/media/Still 2026-10-13 183457_1.10.1.jpg"
+  "extra_films": [
+    {
+      "video": "https://vimeo.com/1235563524?share=copy&fl=sv&fe=ci"
+    }
   ],
   "client_sv": "Road to Åland",
   "client_en": "Road to Åland",
-  "summary_sv": "Ett kort klip från en golftävling på Sala Golfklubb",
-  "summary_en": "A Short clip from a golf competition at Sala Golfklubb",
-  "length": "0:47",
-  "format": "1080p 16:9",
+  "summary_sv": "Videoproduktion för Road to Åland, en resande golfklubb som arrangerar event på banor runtom i Sverige. Materialet dokumenterar spelet på banan, miljöerna och spelarna på plats i Sala och Karlstad.",
+  "summary_en": "Video documentation for Road to Åland, a traveling golf club hosting events at courses across Sweden. This project covers on-course play, facility environments, and player activity across locations in Sala and Karlstad.",
+  "length": "0:47 and 0:59",
+  "format": "4K · 16:9",
   "show_on_home": true,
   "wide": false,
   "order": 6,
