@@ -1454,3 +1454,6 @@ a.bts-item { display: block; cursor: zoom-in; }
 a.bts-item img { transition: opacity .25s ease; }
 a.bts-item:hover img { opacity: .85; }
 .lens-bts { cursor: zoom-in; }
+
+/* Round 18: the portrait keeps his face in frame when the box is cropped wide on phones */
+.behind-portrait > img, .founder-grid > .frame > img { object-position: 50% 15%; }

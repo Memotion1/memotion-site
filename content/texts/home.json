@@ -6,10 +6,10 @@
     "en": "Event"
   },
   "home_002": {
-    "orig": "Bröllop",
-    "orig_en": "Wedding",
-    "sv": "Bröllop",
-    "en": "Wedding"
+    "orig": "Övrigt",
+    "orig_en": "Other",
+    "sv": "Övrigt",
+    "en": "Other"
   },
   "home_003": {
     "orig": "Företag",
@@ -18,118 +18,118 @@
     "en": "Business"
   },
   "home_004": {
-    "orig": "Övrigt",
-    "orig_en": "Other",
-    "sv": "Övrigt",
-    "en": "Other"
-  },
-  "home_005": {
     "orig": "Drönare",
     "orig_en": "Drone",
     "sv": "Drönare",
     "en": "Drone"
   },
-  "home_006": {
+  "home_005": {
     "orig": "Boka ett samtal",
     "orig_en": "Book a call",
     "sv": "Boka ett samtal",
     "en": "Book a call"
   },
-  "home_007": {
+  "home_006": {
     "orig": "Pausa",
     "orig_en": "Pause",
     "sv": "Pausa",
     "en": "Pause"
   },
-  "home_008": {
+  "home_007": {
     "orig": "Spela",
     "orig_en": "Play",
     "sv": "Spela",
     "en": "Play"
   },
-  "home_009": {
+  "home_008": {
     "orig": "Berättelser som rör sig",
     "orig_en": "Stories that move",
     "sv": "Berättelser som rör sig",
     "en": "Stories that move"
   },
-  "home_010": {
+  "home_009": {
     "orig": "Bakom kameran",
     "orig_en": "Behind the camera",
     "sv": "Bakom kameran",
     "en": "Behind the camera"
   },
-  "home_011": {
+  "home_010": {
     "orig": "Lugn på plats, noggrann i efterarbetet",
     "orig_en": "Calm on location, meticulous in post-production",
     "sv": "Lugn på plats, noggrann i efterarbetet",
     "en": "Calm on location, meticulous in post-production"
   },
-  "home_012": {
+  "home_011": {
     "orig": "Varje projekt börjar med en idé, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.",
     "orig_en": "Every project starts with an idea, long before the camera comes out. The work begins once the feeling you're after is clear.",
     "sv": "Varje projekt börjar med en idé, långt innan kameran kommer fram. Först när känslan du är ute efter är tydlig börjar arbetet.",
     "en": "Every project starts with an idea, long before the camera comes out. The work begins once the feeling you're after is clear."
   },
-  "home_013": {
+  "home_012": {
     "orig": "Läs om ME Motion",
     "orig_en": "About ME Motion",
     "sv": "Läs om ME Motion",
     "en": "About ME Motion"
   },
-  "home_014": {
+  "home_013": {
     "orig": "Utvalda projekt",
     "orig_en": "Selected work",
     "sv": "Utvalda projekt",
     "en": "Selected work"
   },
-  "home_015": {
+  "home_014": {
     "orig": "Genom linsen",
     "orig_en": "Through the lens",
     "sv": "Genom linsen",
     "en": "Through the lens"
   },
-  "home_016": {
+  "home_015": {
     "orig": "Vad jag gör",
     "orig_en": "What I do",
     "sv": "Vad jag gör",
     "en": "What I do"
   },
-  "home_017": {
+  "home_016": {
     "orig": "Stora som små uppdrag",
     "orig_en": "Projects big and small",
     "sv": "Stora som små uppdrag",
     "en": "Projects big and small"
   },
-  "home_018": {
+  "home_017": {
     "orig": "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?",
     "orig_en": "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?",
     "sv": "Reklamfilm, intervjuer, en YouTube-serie, en match eller ett bröllop i skärgården. Uppdragen ser olika ut, men alla börjar med samma fråga: vad ska bilderna göra för dig?",
     "en": "A commercial, interviews, a YouTube series, a match or a wedding in the archipelago. Every project looks different, but they all start with the same question: what should the footage do for you?"
   },
-  "home_019": {
+  "home_018": {
     "orig": "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.",
     "orig_en": "I plan, film and edit everything myself. That means short decision paths and a film that holds together all the way from idea to delivery.",
     "sv": "Jag planerar, filmar och klipper själv. Det ger korta beslutsvägar och en film som håller ihop hela vägen från idé till leverans.",
     "en": "I plan, film and edit everything myself. That means short decision paths and a film that holds together all the way from idea to delivery."
   },
-  "home_020": {
+  "home_019": {
     "orig": "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.",
     "orig_en": "Commercials and brand films, interviews, YouTube, social media clips and product photography.",
     "sv": "Reklam- och varumärkesfilm, intervjuer, YouTube, klipp för sociala medier och produktbilder.",
     "en": "Commercials and brand films, interviews, YouTube, social media clips and product photography."
   },
-  "home_021": {
+  "home_020": {
     "orig": "Evenemang och idrott",
     "orig_en": "Events and sport",
     "sv": "Evenemang och idrott",
     "en": "Events and sport"
   },
-  "home_022": {
+  "home_021": {
     "orig": "Konferenser, lanseringar, matcher och fester, fångade medan de pågår.",
     "orig_en": "Conferences, launches, matches and parties, captured as they happen.",
     "sv": "Konferenser, lanseringar, matcher och fester, fångade medan de pågår.",
     "en": "Conferences, launches, matches and parties, captured as they happen."
+  },
+  "home_022": {
+    "orig": "Bröllop",
+    "orig_en": "Weddings",
+    "sv": "Bröllop",
+    "en": "Weddings"
   },
   "home_023": {
     "orig": "Film och foto från vigseln till sista dansen.",
