@@ -3,6 +3,13 @@
   "title_en": "Alova",
   "category": "business",
   "type": "series",
+  "images": [
+    "/media/alova-1-escalator.webp",
+    "/media/alova-2-portrait.webp",
+    "/media/alova-3-rooftop.webp",
+    "/media/alova-4-meeting.webp",
+    "/media/alova-6-meeting.webp"
+  ],
   "client_sv": "Alova",
   "client_en": "Alova",
   "length": "12",
