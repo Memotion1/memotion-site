@@ -903,18 +903,7 @@ about = f'''<section class="about-hero">
   </div>
 </section>
 
-<section class="about-facts" aria-label="ME Motion">
-  <div class="wrap">
-    <dl class="facts-row">
-      <div>{T("Bas", "Based in", "dt")}{T("Stockholm", "Stockholm", "dd")}</div>
-      <div>{T("Arbetar", "Works", "dt")}{T("I hela Sverige och utomlands", "Across Sweden and abroad", "dd")}</div>
-      <div>{T("Gör", "Makes", "dt")}{T("Film, foto och drönarbilder", "Film, photography and aerial footage", "dd")}</div>
-      <div>{T("Levererar", "Delivers", "dt")}{T("I de format du behöver", "In the formats you need", "dd")}</div>
-    </dl>
-  </div>
-</section>
-
-<section style="padding-top: 0;">
+<section style="padding-top: clamp(16px, 3vw, 40px);">
   <div class="wrap founder-grid">
     {frame(PORTRAIT, "interview", 61, "ratio-4x5", "Mikael Edström", "" if PORTRAIT else vf(meta="4:5"))}
     <div class="stack founder-copy">
@@ -935,13 +924,6 @@ about = f'''<section class="about-hero">
       <li><span class="approach-num">03</span>{T('Detaljerna gör helheten', 'The details make the whole', "h3")}{T('Ljus, ljud och klipp får samma omsorg som själva inspelningen.', 'Light, sound and cut get the same care as the shoot itself.', "p")}</li>
     </ol>
   </div>
-</section>
-
-<section class="bts-sec">
-  <div class="wrap">
-    <div class="section-head">{T("Bakom kulisserna", "Behind the scenes", "span", 'class="eyebrow"')}{T("På plats", "On location", "h2")}</div>
-  </div>
-  <div class="bts">{BTS_HTML}</div>
 </section>
 
 <section class="about-contact">
