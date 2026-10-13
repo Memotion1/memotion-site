@@ -4,6 +4,9 @@
   "category": "event",
   "type": "film",
   "video": "https://vimeo.com/1235475613?share=copy&fl=sv&fe=ci",
+  "images": [
+    "/media/Still 2026-10-13 183457_1.10.1.jpg"
+  ],
   "client_sv": "Road to Åland",
   "client_en": "Road to Åland",
   "summary_sv": "Ett kort klip från en golftävling på Sala Golfklubb",
