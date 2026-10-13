@@ -1,3 +1,9 @@
 {
-  "pictures": []
+  "pictures": [
+    {
+      "show_on_home": true,
+      "image": "/media/IMG_9899.jpg",
+      "label": "bts"
+    }
+  ]
 }
