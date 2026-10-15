@@ -67,6 +67,16 @@ for f in (ROOT / "assets").iterdir():
         shutil.copy2(f, OUT / f.name)
 if (ROOT / "media").is_dir():
     shutil.copytree(ROOT / "media", OUT / "media", ignore=shutil.ignore_patterns(".gitkeep"))
+# Files whose ending is in capitals (IMG_1234.JPG, straight from a camera or phone) are published with a
+# small-letter ending, so every browser gets the right file type. media_url() points to the new name.
+MEDIA_LOWER = {}
+if (OUT / "media").is_dir():
+    for _f in sorted((OUT / "media").rglob("*")):
+        if _f.is_file() and _f.suffix != _f.suffix.lower():
+            _t = _f.with_suffix(_f.suffix.lower())
+            if not _t.exists():
+                _f.rename(_t)
+                MEDIA_LOWER["/" + _f.relative_to(OUT).as_posix()] = "/" + _t.relative_to(OUT).as_posix()
 
 
 def optimise_photos(folder, max_side=2400):
@@ -110,9 +120,9 @@ def media_url(v):
     v = str(v or "").strip()
     if not v:
         return ""
-    if v.startswith(("http://", "https://", "/")):
-        return v
-    return "/" + v
+    if not v.startswith(("http://", "https://", "/")):
+        v = "/" + v
+    return MEDIA_LOWER.get(v, v)
 
 
 def media_list(v):

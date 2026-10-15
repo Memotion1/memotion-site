@@ -16,9 +16,9 @@ content:
     required: true
     options: {values: [{name: wedding,label: Bröllop / Wedding},{name: business,label: Företag / Business},{name: event,label: Evenemang / Event},{name: drone,label: Drönare / Drone},{name: stills,label: Övrigt / Other}]}
   - {name: type,label: Kind of project,type: select,required: true,options: {values: [{name: film,label: Film},{name: series,label: Photo series}]}}
-  - {name: cover,label: Cover image,description: "Shown on the Work page and the home page. Leave empty to use the film's own thumbnail from Vimeo.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+  - {name: cover,label: Cover image,description: "Shown on the Work page and the home page. Leave empty to use the film's own thumbnail from Vimeo.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
   - {name: video,label: Main film - Vimeo link,description: "Paste the film's Vimeo link, e.g. https://vimeo.com/1235029705. Leave empty for a photo series.",type: string}
-  - {name: images,label: Photos,description: "All photos for this project.",type: image,options: {multiple: true,extensions: [jpg,jpeg,png,webp]}}
+  - {name: images,label: Photos,description: "All photos for this project.",type: image,options: {multiple: true,extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
   - name: extra_films
     label: More films (optional)
     description: "e.g. the full ceremony, the speeches or a vertical social media cut."
@@ -58,11 +58,11 @@ content:
   - {name: booking,label: Booking link (Cal.com),description: "e.g. https://cal.com/memotion/introsamtal. Leave empty to open an email instead.",type: string}
   - {name: bunny_host,label: Bunny video address (not needed with Vimeo),description: "Leave empty. Only used if videos are hosted on Bunny instead of Vimeo.",type: string}
   - {name: showreel,label: Showreel - Vimeo link,description: "The silent looping film at the top of the home page, e.g. https://vimeo.com/1235029705",type: string}
-  - {name: portrait,label: Portrait of Mikael,description: "Shown on the About page.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
-  - {name: behind_image,label: Home page - Behind the camera picture,description: "The photo next to Calm on location, meticulous in post-production. Leave empty to use the portrait.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
-  - {name: service_business_image,label: Services - Companies picture,description: "The picture in the Companies box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
-  - {name: service_event_image,label: Services - Events picture,description: "The picture in the Events box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
-  - {name: service_wedding_image,label: Services - Weddings picture,description: "The picture in the Weddings box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+  - {name: portrait,label: Portrait of Mikael,description: "Shown on the About page.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
+  - {name: behind_image,label: Home page - Behind the camera picture,description: "The photo next to Calm on location, meticulous in post-production. Leave empty to use the portrait.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
+  - {name: service_business_image,label: Services - Companies picture,description: "The picture in the Companies box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
+  - {name: service_event_image,label: Services - Events picture,description: "The picture in the Events box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
+  - {name: service_wedding_image,label: Services - Weddings picture,description: "The picture in the Weddings box on the Services page. Landscape works best.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
 - name: lens
   label: Home page - Through the lens extras
   type: file
@@ -76,9 +76,9 @@ content:
     list: true
     fields:
     - {name: show_on_home,label: Show on the home page,type: boolean,default: true}
-    - {name: image,label: Picture,description: "The photo. For a film this is its cover. Leave empty on a Vimeo film to use Vimeo's own thumbnail.",type: image,options: {extensions: [jpg,jpeg,png,webp]}}
+    - {name: image,label: Picture,description: "The photo. For a film this is its cover. Leave empty on a Vimeo film to use Vimeo's own thumbnail.",type: image,options: {extensions: [jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP]}}
     - {name: video,label: Film - Vimeo link (optional),description: "e.g. https://vimeo.com/1235029705. Plays large when the tile is clicked.",type: string}
-    - {name: video_file,label: Film - video file (optional),description: "A short .mp4 instead of a Vimeo link. Files over about 3 MB have to be uploaded through GitHub first, then chosen here.",type: file,options: {extensions: [mp4,webm,mov]}}
+    - {name: video_file,label: Film - video file (optional),description: "A short .mp4 instead of a Vimeo link. Files over about 3 MB have to be uploaded through GitHub first, then chosen here.",type: file,options: {extensions: [mp4,webm,mov,MP4,WEBM,MOV]}}
     - {name: label,label: Tag in the corner,type: select,default: bts,options: {values: [{name: bts,label: Behind the scenes},{name: business,label: Business},{name: event,label: Event},{name: wedding,label: Wedding},{name: drone,label: Drone},{name: stills,label: Other},{name: none,label: No tag}]}}
     - {name: caption_sv,label: Caption - Swedish (optional),type: string}
     - {name: caption_en,label: Caption - English (optional),type: string}
