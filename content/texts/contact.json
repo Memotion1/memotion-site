@@ -102,72 +102,78 @@
     "en": "Something else"
   },
   "contact_018": {
+    "orig": "Ni får gärna visa vårt bröllop bland ME Motions arbeten (valfritt)",
+    "orig_en": "You're welcome to show our wedding in ME Motion's portfolio (optional)",
+    "sv": "Ni får gärna visa vårt bröllop bland ME Motions arbeten (valfritt)",
+    "en": "You're welcome to show our wedding in ME Motion's portfolio (optional)"
+  },
+  "contact_019": {
     "orig": "Telefon (valfritt)",
     "orig_en": "Phone (optional)",
     "sv": "Telefon (valfritt)",
     "en": "Phone (optional)"
   },
-  "contact_019": {
+  "contact_020": {
     "orig": "Datum",
     "orig_en": "Date",
     "sv": "Datum",
     "en": "Date"
   },
-  "contact_020": {
+  "contact_021": {
     "orig": "Plats",
     "orig_en": "Location",
     "sv": "Plats",
     "en": "Location"
   },
-  "contact_021": {
+  "contact_022": {
     "orig": "Berätta mer",
     "orig_en": "The details",
     "sv": "Berätta mer",
     "en": "The details"
   },
-  "contact_022": {
+  "contact_023": {
     "orig": "Skriv några rader om vad du planerar.",
     "orig_en": "Write a few lines about what you're planning.",
     "sv": "Skriv några rader om vad du planerar.",
     "en": "Write a few lines about what you're planning."
   },
-  "contact_023": {
+  "contact_024": {
     "orig": "Skicka meddelande",
     "orig_en": "Send message",
     "sv": "Skicka meddelande",
     "en": "Send message"
   },
-  "contact_024": {
+  "contact_025": {
     "orig": "Tack! Meddelandet är skickat.",
     "orig_en": "Thank you! Your message has been sent.",
     "sv": "Tack! Meddelandet är skickat.",
     "en": "Thank you! Your message has been sent."
   },
-  "contact_025": {
+  "contact_026": {
     "orig": "Svaret kommer till e-postadressen du angav.",
     "orig_en": "The reply will come to the email address you entered.",
     "sv": "Svaret kommer till e-postadressen du angav.",
     "en": "The reply will come to the email address you entered."
   },
-  "contact_026": {
+  "contact_027": {
     "orig": "Meddelandet kunde inte skickas.",
     "orig_en": "The message couldn't be sent.",
     "sv": "Meddelandet kunde inte skickas.",
     "en": "The message couldn't be sent."
   },
-  "contact_027": {
+  "contact_028": {
     "orig": "Kontrollera internetanslutningen och försök igen om en stund. Det går också bra att skriva direkt till",
     "orig_en": "Check your internet connection and try again in a moment. You can also write directly to",
     "sv": "Kontrollera internetanslutningen och försök igen om en stund. Det går också bra att skriva direkt till",
     "en": "Check your internet connection and try again in a moment. You can also write directly to"
   },
-  "contact_028": {
+  "contact_029": {
     "orig": "Kontaktuppgifter",
     "orig_en": "Contact details",
     "sv": "Kontaktuppgifter",
     "en": "Contact details"
   },
-  "contact_029": {
+  "contact_030": {
     "orig": "FAQ",
     "orig_en": "FAQ",
     "sv": "FAQ",

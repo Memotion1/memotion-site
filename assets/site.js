@@ -768,15 +768,18 @@
       errBox.hidden = true;
       if (!endpoint || !window.fetch) { failed(); return; }
       btn.disabled = true; btn.setAttribute("aria-busy", "true"); btn.textContent = L("Skickar…", "Sending…");
+      var payload = {
+        _subject: "Ny förfrågan från memotion.se · " + v("name"), _template: "table", _captcha: "false",
+        _honey: hp ? hp.value : "", _replyto: v("email"),
+        "Namn": v("name"), "email": v("email"), "Telefon": v("phone") || "–", "Gäller": occasionText(),
+        "Datum": v("date") || tbd, "Plats": v("location") || tbd, "Meddelande": v("message"), "Språk på sidan": lang().toUpperCase()
+      };
+      var kind = pressed("type")[0], pf = document.getElementById("portfolio");
+      if (pf && kind && kind.getAttribute("data-val") === "wedding") payload["Får visas i portfolio"] = pf.checked ? "Ja" : "Nej";
       fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          _subject: "Ny förfrågan från memotion.se · " + v("name"), _template: "table", _captcha: "false",
-          _honey: hp ? hp.value : "", _replyto: v("email"),
-          "Namn": v("name"), "email": v("email"), "Telefon": v("phone") || "–", "Gäller": occasionText(),
-          "Datum": v("date") || tbd, "Plats": v("location") || tbd, "Meddelande": v("message"), "Språk på sidan": lang().toUpperCase()
-        })
+        body: JSON.stringify(payload)
       }).then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (j) {
           if (!r.ok || String(j.success) !== "true") throw new Error(j.message || ("HTTP " + r.status));

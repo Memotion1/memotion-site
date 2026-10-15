@@ -1432,7 +1432,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_018
-    label: "Telefon (valfritt)"
+    label: "Ni får gärna visa vårt bröllop bland ME Motions arbeten (valfritt)"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1440,7 +1440,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_019
-    label: "Datum"
+    label: "Telefon (valfritt)"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1448,7 +1448,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_020
-    label: "Plats"
+    label: "Datum"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1456,7 +1456,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_021
-    label: "Berätta mer"
+    label: "Plats"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1464,7 +1464,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_022
-    label: "Skriv några rader om vad du planerar."
+    label: "Berätta mer"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1472,7 +1472,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_023
-    label: "Skicka meddelande"
+    label: "Skriv några rader om vad du planerar."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1480,7 +1480,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_024
-    label: "Tack! Meddelandet är skickat."
+    label: "Skicka meddelande"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1488,7 +1488,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_025
-    label: "Svaret kommer till e-postadressen du angav."
+    label: "Tack! Meddelandet är skickat."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1496,7 +1496,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_026
-    label: "Meddelandet kunde inte skickas."
+    label: "Svaret kommer till e-postadressen du angav."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1504,7 +1504,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_027
-    label: "Kontrollera internetanslutningen och försök igen om en stund. Det går …"
+    label: "Meddelandet kunde inte skickas."
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1512,7 +1512,7 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_028
-    label: "Kontaktuppgifter"
+    label: "Kontrollera internetanslutningen och försök igen om en stund. Det går …"
     type: object
     fields:
     - {name: orig, type: string, hidden: true}
@@ -1520,6 +1520,14 @@ content:
     - {name: sv, label: Svenska, type: text}
     - {name: en, label: English, type: text}
   - name: contact_029
+    label: "Kontaktuppgifter"
+    type: object
+    fields:
+    - {name: orig, type: string, hidden: true}
+    - {name: orig_en, type: string, hidden: true}
+    - {name: sv, label: Svenska, type: text}
+    - {name: en, label: English, type: text}
+  - name: contact_030
     label: "FAQ"
     type: object
     fields:

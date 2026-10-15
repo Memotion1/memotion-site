@@ -1032,6 +1032,7 @@ contact = f'''<div class="wrap page-hero">
             {fseg("wcov", COV, "single")}
             {fseg("wlen", LEN, "single")}
           </div>
+          <label class="sub consent" data-for="wedding" hidden><input type="checkbox" id="portfolio"><span>{T("Ni får gärna visa vårt bröllop bland ME Motions arbeten (valfritt)", "You're welcome to show our wedding in ME Motion's portfolio (optional)")}</span></label>
         </div>
         <div class="row">
           <div class="field"><label for="phone">{T("Telefon (valfritt)", "Phone (optional)")}</label><input id="phone" type="tel" autocomplete="tel"></div>

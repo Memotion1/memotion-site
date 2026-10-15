@@ -497,6 +497,9 @@ body.modal-open { overflow: hidden; }
 #occasion .seg { flex-wrap: wrap; border-radius: 18px; }
 #occasion .sub { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border: 1px dashed var(--line); border-radius: 12px; }
 #occasion .sub[hidden] { display: none; }
+#occasion .sub.consent { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 10px; padding: 2px 2px 0; border: 0; overflow: visible; font-family: var(--f-body); font-size: 0.95rem; letter-spacing: 0; text-transform: none; line-height: 1.45; color: var(--fg); cursor: pointer; }   /* Round 21: wedding portfolio checkbox */
+#occasion .sub.consent[hidden] { display: none; }
+#occasion .consent input[type="checkbox"] { flex: none; width: 18px; height: 18px; margin: 1px 0 0; padding: 0; accent-color: var(--fg); cursor: pointer; }
 #occasion .sub .seg button, .chips-multi button { font-size: 0.78rem; }
 .chips-multi { display: flex; flex-wrap: wrap; gap: 6px; }
 .chips-multi button { font-family: var(--f-mono); letter-spacing: 0.04em; color: var(--muted); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
