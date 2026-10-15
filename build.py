@@ -615,7 +615,7 @@ home = f'''<section class="hero">
 
 <section class="behind">
   <div class="wrap behind-grid">
-    {frame(PORTRAIT, "interview", 61, "ratio-4x5 behind-portrait", "Mikael Edström")}
+    {frame(media_url(SETTINGS.get("behind_image")) or PORTRAIT, "interview", 61, "ratio-4x5 behind-portrait", "Mikael Edström")}
     <div class="stack behind-copy">
       {T("Bakom kameran", "Behind the camera", "span", 'class="eyebrow"')}
       {T("Lugn på plats, noggrann i efterarbetet", "Calm on location, meticulous in post-production", "h2")}
@@ -761,31 +761,50 @@ def _price(key):
 
 
 PRICE = {(c, l): _price(f"{c}_{'full' if l == '10' else l}") for c in ("photo", "film", "both") for l in ("3", "6", "10")}
-IMG = {"3": "300+", "6": "500+", "10": "800+"}
-FILM = {
-    "3": [("Highlightfilm, 2–3 minuter", "Highlight film, 2–3 minutes"), ("Hela vigseln som egen film", "The full ceremony as its own film")],
-    "6": [("Highlightfilm, 3–5 minuter", "Highlight film, 3–5 minutes"), ("Vigseln och talen i sin helhet", "Ceremony and speeches in full"), ("Kort version för sociala medier", "Short version for socials")],
-    "10": [("Highlightfilm, 5–7 minuter", "Highlight film, 5–7 minutes"), ("Vigsel, tal och första dansen i sin helhet", "Ceremony, speeches and first dance in full"), ("Längre dokumentärfilm, 15–20 minuter", "Longer documentary film, 15–20 minutes"), ("Kort version för sociala medier", "Short version for socials")],
+# What each wedding package includes, written out per package so each one can differ.
+# Keys: (what, hours) with what = photo / film / both and hours = 3 / 6 / 10 (10 = full day).
+_D = {"3": ("Vigseln, parporträtt och familjebilder", "Ceremony, couple portraits and family photos"),
+      "6": ("Vigseln, porträtt, mingel och middagens viktigaste stunder", "Ceremony, portraits, drinks reception and the key moments of dinner"),
+      "10": ("Hela dagen, från förberedelserna till festen på kvällen", "The whole day, from getting ready to the party at night")}
+_PEEK = ("Ett första smakprov inom 48 timmar", "A first sneak peek within 48 hours")
+_SOCIAL = ("Kort version för sociala medier", "Short version for socials")
+
+
+def _imgs(n):
+    return (f"{n} redigerade bilder", f"{n} edited images")
+
+
+def _weeks(w):
+    return (f"Levereras inom {w} veckor", f"Delivered within {w} weeks")
+
+
+def _both_weeks(p, f):
+    return (f"Bilder inom {p} veckor, film inom {f} veckor", f"Images within {p} weeks, film within {f} weeks")
+
+
+_H3 = ("Highlightfilm, 2–3 minuter", "Highlight film, 2–3 minutes")
+_H6 = ("Highlightfilm, 3–5 minuter", "Highlight film, 3–5 minutes")
+_H10 = ("Highlightfilm, 5–7 minuter", "Highlight film, 5–7 minutes")
+_CER3 = ("Hela vigseln som egen film", "The full ceremony as its own film")
+_CER6 = ("Vigseln och talen i sin helhet", "Ceremony and speeches in full")
+_CER10 = ("Vigsel, tal och första dansen i sin helhet", "Ceremony, speeches and first dance in full")
+PACKAGE = {
+    ("photo", "3"): [_D["3"], _imgs("150"), _PEEK, _weeks("3")],
+    ("photo", "6"): [_D["6"], _imgs("350"), _PEEK, _weeks("5")],
+    ("photo", "10"): [_D["10"], _imgs("800+"), _PEEK, _weeks("5")],
+    ("film", "3"): [_H3, _CER3, _weeks("4")],
+    ("film", "6"): [_H6, _CER6, _SOCIAL, _weeks("6")],
+    ("film", "10"): [_H10, _CER10, ("Längre dokumentärfilm, 12–15 minuter", "Longer documentary film, 12–15 minutes"), _SOCIAL, _weeks("6")],
+    ("both", "3"): [_D["3"], _imgs("150"), _H3, _CER3, _both_weeks("3", "4")],
+    ("both", "6"): [_D["6"], _imgs("250"), _PEEK, _H6, _CER6,
+                    ("Kort version för sociala medier, upp till 1 minut", "Short version for socials, up to 1 minute"), _both_weeks("4", "6")],
+    ("both", "10"): [_D["10"], _imgs("600"), _H10, _CER10, ("Längre dokumentärfilm, 15–20 minuter", "Longer documentary film, 15–20 minutes"),
+                     _SOCIAL, _both_weeks("5", "6")],
 }
-PHOTO_DAYS = {"3": "3", "6": "5", "10": "5"}
-FILM_WEEKS = {"3": "4", "6": "6", "10": "6"}
 
 
 def w_items(cov, ln):
-    t = TIER[ln]
-    items = [(t[4], t[5])]
-    if cov in ("photo", "both"):
-        items += [(f"{IMG[ln]} redigerade bilder", f"{IMG[ln]} edited images"),
-                  ("Ett första smakprov inom 48 timmar", "A first sneak peek within 48 hours")]
-    if cov in ("film", "both"):
-        items += FILM[ln]
-    if cov == "photo":
-        items.append((f"Levereras inom {PHOTO_DAYS[ln]} veckor", f"Delivered within {PHOTO_DAYS[ln]} weeks"))
-    elif cov == "film":
-        items.append((f"Levereras inom {FILM_WEEKS[ln]} veckor", f"Delivered within {FILM_WEEKS[ln]} weeks"))
-    else:
-        items.append((f"Bilder inom {PHOTO_DAYS[ln]} veckor, film inom {FILM_WEEKS[ln]} veckor", f"Images within {PHOTO_DAYS[ln]} weeks, film within {FILM_WEEKS[ln]} weeks"))
-    return items
+    return PACKAGE[(cov, ln)]
 
 def _kr(v):
     return int(v.replace(" ", ""))

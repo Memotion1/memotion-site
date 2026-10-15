@@ -96,10 +96,10 @@
     "en": "Ceremony, couple portraits and family photos"
   },
   "services_017": {
-    "orig": "300+ redigerade bilder",
-    "orig_en": "300+ edited images",
-    "sv": "300+ redigerade bilder",
-    "en": "300+ edited images"
+    "orig": "150 redigerade bilder",
+    "orig_en": "150 edited images",
+    "sv": "150 redigerade bilder",
+    "en": "150 edited images"
   },
   "services_018": {
     "orig": "Ett första smakprov inom 48 timmar",
@@ -138,10 +138,10 @@
     "en": "Ceremony, portraits, drinks reception and the key moments of dinner"
   },
   "services_024": {
-    "orig": "500+ redigerade bilder",
-    "orig_en": "500+ edited images",
-    "sv": "500+ redigerade bilder",
-    "en": "500+ edited images"
+    "orig": "350 redigerade bilder",
+    "orig_en": "350 edited images",
+    "sv": "350 redigerade bilder",
+    "en": "350 edited images"
   },
   "services_025": {
     "orig": "Levereras inom 5 veckor",
@@ -240,10 +240,10 @@
     "en": "Ceremony, speeches and first dance in full"
   },
   "services_041": {
-    "orig": "Längre dokumentärfilm, 15–20 minuter",
-    "orig_en": "Longer documentary film, 15–20 minutes",
-    "sv": "Längre dokumentärfilm, 15–20 minuter",
-    "en": "Longer documentary film, 15–20 minutes"
+    "orig": "Längre dokumentärfilm, 12–15 minuter",
+    "orig_en": "Longer documentary film, 12–15 minutes",
+    "sv": "Längre dokumentärfilm, 12–15 minuter",
+    "en": "Longer documentary film, 12–15 minutes"
   },
   "services_042": {
     "orig": "Bilder inom 3 veckor, film inom 4 veckor",
@@ -252,240 +252,270 @@
     "en": "Images within 3 weeks, film within 4 weeks"
   },
   "services_043": {
+    "orig": "250 redigerade bilder",
+    "orig_en": "250 edited images",
+    "sv": "250 redigerade bilder",
+    "en": "250 edited images"
+  },
+  "services_044": {
+    "orig": "Kort version för sociala medier, upp till 1 minut",
+    "orig_en": "Short version for socials, up to 1 minute",
+    "sv": "Kort version för sociala medier, upp till 1 minut",
+    "en": "Short version for socials, up to 1 minute"
+  },
+  "services_045": {
+    "orig": "Bilder inom 4 veckor, film inom 6 veckor",
+    "orig_en": "Images within 4 weeks, film within 6 weeks",
+    "sv": "Bilder inom 4 veckor, film inom 6 veckor",
+    "en": "Images within 4 weeks, film within 6 weeks"
+  },
+  "services_046": {
+    "orig": "600 redigerade bilder",
+    "orig_en": "600 edited images",
+    "sv": "600 redigerade bilder",
+    "en": "600 edited images"
+  },
+  "services_047": {
+    "orig": "Längre dokumentärfilm, 15–20 minuter",
+    "orig_en": "Longer documentary film, 15–20 minutes",
+    "sv": "Längre dokumentärfilm, 15–20 minuter",
+    "en": "Longer documentary film, 15–20 minutes"
+  },
+  "services_048": {
     "orig": "Bilder inom 5 veckor, film inom 6 veckor",
     "orig_en": "Images within 5 weeks, film within 6 weeks",
     "sv": "Bilder inom 5 veckor, film inom 6 veckor",
     "en": "Images within 5 weeks, film within 6 weeks"
   },
-  "services_044": {
+  "services_049": {
     "orig": "Välj det som passar er dag",
     "orig_en": "Choose what fits your day",
     "sv": "Välj det som passar er dag",
     "en": "Choose what fits your day"
   },
-  "services_045": {
+  "services_050": {
     "orig": "Vad vill ni ha?",
     "orig_en": "What would you like?",
     "sv": "Vad vill ni ha?",
     "en": "What would you like?"
   },
-  "services_046": {
+  "services_051": {
     "orig": "Bilder",
     "orig_en": "Images",
     "sv": "Bilder",
     "en": "Images"
   },
-  "services_047": {
+  "services_052": {
     "orig": "Film",
     "orig_en": "Film",
     "sv": "Film",
     "en": "Film"
   },
-  "services_048": {
+  "services_053": {
     "orig": "Båda",
     "orig_en": "Both",
     "sv": "Båda",
     "en": "Both"
   },
-  "services_049": {
+  "services_054": {
     "orig": "Hur länge?",
     "orig_en": "How long?",
     "sv": "Hur länge?",
     "en": "How long?"
   },
-  "services_050": {
+  "services_055": {
     "orig": "3 h",
     "orig_en": "3 h",
     "sv": "3 h",
     "en": "3 h"
   },
-  "services_051": {
+  "services_056": {
     "orig": "6 h",
     "orig_en": "6 h",
     "sv": "6 h",
     "en": "6 h"
   },
-  "services_052": {
+  "services_057": {
     "orig": "Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priserna gäller i Stockholms län. En handpenning på 30 % säkrar datumet.",
     "orig_en": "Every package includes a planning meeting and a private online gallery. Prices apply within Stockholm county. A 30% deposit holds the date.",
     "sv": "Alla paket har ett planeringsmöte och ett privat onlinegalleri. Priserna gäller i Stockholms län. En handpenning på 30 % säkrar datumet.",
     "en": "Every package includes a planning meeting and a private online gallery. Prices apply within Stockholm county. A 30% deposit holds the date."
   },
-  "services_053": {
+  "services_058": {
     "orig": "Fråga om ert datum",
     "orig_en": "Ask about your date",
     "sv": "Fråga om ert datum",
     "en": "Ask about your date"
   },
-  "services_054": {
+  "services_059": {
     "orig": "Samtalet",
     "orig_en": "The conversation",
     "sv": "Samtalet",
     "en": "The conversation"
   },
-  "services_055": {
+  "services_060": {
     "orig": "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av det.",
     "orig_en": "A first conversation about the idea, who's involved and what you hope to get out of it.",
     "sv": "Ett första samtal om idén, vilka som är med och vad du hoppas få ut av det.",
     "en": "A first conversation about the idea, who's involved and what you hope to get out of it."
   },
-  "services_056": {
+  "services_061": {
     "orig": "Planeringen",
     "orig_en": "The plan",
     "sv": "Planeringen",
     "en": "The plan"
   },
-  "services_057": {
+  "services_062": {
     "orig": "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår från det som är viktigast för dig.",
     "orig_en": "Location, schedule and details are worked out together, so the plan starts from what matters most to you.",
     "sv": "Plats, schema och detaljer gås igenom tillsammans, så att planen utgår från det som är viktigast för dig.",
     "en": "Location, schedule and details are worked out together, so the plan starts from what matters most to you."
   },
-  "services_058": {
+  "services_063": {
     "orig": "Dagen",
     "orig_en": "The day",
     "sv": "Dagen",
     "en": "The day"
   },
-  "services_059": {
+  "services_064": {
     "orig": "Du fokuserar på det som händer. Allt annat är redan ordnat.",
     "orig_en": "You focus on what's happening. Everything else is taken care of.",
     "sv": "Du fokuserar på det som händer. Allt annat är redan ordnat.",
     "en": "You focus on what's happening. Everything else is taken care of."
   },
-  "services_060": {
+  "services_065": {
     "orig": "Leveransen",
     "orig_en": "Delivery",
     "sv": "Leveransen",
     "en": "Delivery"
   },
-  "services_061": {
+  "services_066": {
     "orig": "Ditt färdiga material, levererat i tid och redo att delas.",
     "orig_en": "Your finished work, delivered on time and ready to share.",
     "sv": "Ditt färdiga material, levererat i tid och redo att delas.",
     "en": "Your finished work, delivered on time and ready to share."
   },
-  "services_062": {
+  "services_067": {
     "orig": "25 kr/mil",
     "orig_en": "25 kr/mil",
     "sv": "25 kr/mil",
     "en": "25 kr/mil"
   },
-  "services_063": {
+  "services_068": {
     "orig": "Resor",
     "orig_en": "Travel",
     "sv": "Resor",
     "en": "Travel"
   },
-  "services_064": {
+  "services_069": {
     "orig": "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid inräknad. Flyg och boende läggs till i offerten.",
     "orig_en": "Included within Stockholm county. Longer trips by car are charged per mil (10 km), travel time included. Flights and accommodation are added to the quote.",
     "sv": "Ingår inom Stockholms län. Längre bilresor debiteras per mil, restid inräknad. Flyg och boende läggs till i offerten.",
     "en": "Included within Stockholm county. Longer trips by car are charged per mil (10 km), travel time included. Flights and accommodation are added to the quote."
   },
-  "services_065": {
+  "services_070": {
     "orig": "Flygbilder där det är tillåtet att flyga",
     "orig_en": "Drone shots where flying is allowed",
     "sv": "Flygbilder där det är tillåtet att flyga",
     "en": "Drone shots where flying is allowed"
   },
-  "services_066": {
+  "services_071": {
     "orig": "Extra timme",
     "orig_en": "Extra hour",
     "sv": "Extra timme",
     "en": "Extra hour"
   },
-  "services_067": {
+  "services_072": {
     "orig": "Mer tid under dagen",
     "orig_en": "More time on the day",
     "sv": "Mer tid under dagen",
     "en": "More time on the day"
   },
-  "services_068": {
+  "services_073": {
     "orig": "Råmaterial",
     "orig_en": "Raw footage",
     "sv": "Råmaterial",
     "en": "Raw footage"
   },
-  "services_069": {
+  "services_074": {
     "orig": "Alla användbara klipp, sorterade per scen",
     "orig_en": "All usable clips, sorted by scene",
     "sv": "Alla användbara klipp, sorterade per scen",
     "en": "All usable clips, sorted by scene"
   },
-  "services_070": {
+  "services_075": {
     "orig": "Expressleverans",
     "orig_en": "Express delivery",
     "sv": "Expressleverans",
     "en": "Express delivery"
   },
-  "services_071": {
+  "services_076": {
     "orig": "Leverans på halva den vanliga tiden",
     "orig_en": "Delivery in half the usual time",
     "sv": "Leverans på halva den vanliga tiden",
     "en": "Delivery in half the usual time"
   },
-  "services_072": {
+  "services_077": {
     "orig": "Tryckta bilder",
     "orig_en": "Printed frames",
     "sv": "Tryckta bilder",
     "en": "Printed frames"
   },
-  "services_073": {
+  "services_078": {
     "orig": "Tio favoriter tryckta på arkivbeständigt papper",
     "orig_en": "Ten favourites on archival paper",
     "sv": "Tio favoriter tryckta på arkivbeständigt papper",
     "en": "Ten favourites on archival paper"
   },
-  "services_074": {
+  "services_079": {
     "orig": "Så går ett samarbete till",
     "orig_en": "Ways to work together",
     "sv": "Så går ett samarbete till",
     "en": "Ways to work together"
   },
-  "services_075": {
+  "services_080": {
     "orig": "Allt görs i egen regi, och du är med i varje steg.",
     "orig_en": "Everything is made in-house, and you're involved in every step.",
     "sv": "Allt görs i egen regi, och du är med i varje steg.",
     "en": "Everything is made in-house, and you're involved in every step."
   },
-  "services_076": {
+  "services_081": {
     "orig": "Har du en annan idé?",
     "orig_en": "Have a different idea?",
     "sv": "Har du en annan idé?",
     "en": "Have a different idea?"
   },
-  "services_077": {
+  "services_082": {
     "orig": "Paketen är bara en utgångspunkt. Har du något annat i tankarna skräddarsys ett upplägg efter dig.",
     "orig_en": "The packages are only a starting point. If you have something else in mind, a setup is tailored to you.",
     "sv": "Paketen är bara en utgångspunkt. Har du något annat i tankarna skräddarsys ett upplägg efter dig.",
     "en": "The packages are only a starting point. If you have something else in mind, a setup is tailored to you."
   },
-  "services_078": {
+  "services_083": {
     "orig": "Så går det till",
     "orig_en": "How it goes",
     "sv": "Så går det till",
     "en": "How it goes"
   },
-  "services_079": {
+  "services_084": {
     "orig": "Från första meddelandet till färdig produkt",
     "orig_en": "From first message to finished product",
     "sv": "Från första meddelandet till färdig produkt",
     "en": "From first message to finished product"
   },
-  "services_080": {
+  "services_085": {
     "orig": "En tydlig process från första samtalet till leverans, där du är med i varje steg.",
     "orig_en": "A clear process from the first conversation to delivery, with you involved at every step.",
     "sv": "En tydlig process från första samtalet till leverans, där du är med i varje steg.",
     "en": "A clear process from the first conversation to delivery, with you involved at every step."
   },
-  "services_081": {
+  "services_086": {
     "orig": "Tillval",
     "orig_en": "Add-ons",
     "sv": "Tillval",
     "en": "Add-ons"
   },
-  "services_082": {
+  "services_087": {
     "orig": "Tillval efter behov",
     "orig_en": "Extras as needed",
     "sv": "Tillval efter behov",
